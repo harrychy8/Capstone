@@ -10,18 +10,30 @@
      
     </style>
 </head>
-</body>
+<body>
     <div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
         <div class = "row">
             <div class="col sa12">
-                <button class="waves-effect waves-light btn-large button" id="newProcess">New Process</button>
+                <button class="waves-effect waves-light btn-large button" id="newProcess"
+                        onclick=createNewProcess()>New Process</button>
             </div>
         </div>
         <div class = "row">
             <div class="col s1a2">
-                <button class="waves-effect waves-light btn-large button" id="previousData">View Previous Data</button>
+                <button class="waves-effect waves-light btn-large button" id="previousData"
+                        onclick=viewData()>View Previous Data</button>
             </div>
         </div>
     </div>
 </body>
+
+<script>
+    function createNewProcess() {
+        window.location.href = './processView.html';
+    }
+
+    function viewData() {
+        window.location.href = './resultTableWindow.html';
+    }
+</script>
 </html>

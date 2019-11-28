@@ -1,6 +1,7 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
+var R = require("r-script");
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
@@ -70,6 +71,12 @@ const mainMenuTemplate = [
     {
         label: 'File',
         submenu: [
+            {
+              label: 'Main Window',
+              click() {
+                  mainWindow.show();
+              }
+            },
             {
                 label: 'Add Item',
                 click() {
