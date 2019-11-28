@@ -1,0 +1,21 @@
+.progressBar {
+	margin: 180px auto;
+}
+
+.progressBar img {
+	width: 60px;
+}
+
+.progressBar ul {
+	text-align: center;
+}
+
+.progressBar ul li{
+	display: inline-block;
+	width: 120px;
+}
+
+.progressBar p {
+	font-family: "calibri", Garamond, 'Comic Sans MS';
+	font-size: 14px; 
+}
