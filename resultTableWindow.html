@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <style>
+        
+        table {
+        vertical-align: middle;
+        border-collapse: collapse;
+        }
+
+        td, th {
+        text-align: left;
+        padding: 8px;
+        }
+
+        tr:nth-child(even) {
+        background-color: #e8eaf6;
+        }
+        .center-plase {
+            margin: 1% 5%;
+        }
+        #squares div {
+            display: block;
+            float: left;
+
+            width: 75px;
+            height: 25px;
+            background:#3f51b5;
+            border-radius: 5px;
+
+            margin-right: 5px;
+        }
+        .centered-text {
+            text-align: center;
+            vertical-align: middle;
+            color: #e8eaf6;
+        }
+        .button{background-color:#3f51b5; width: 100px; color: #e8eaf6; float:right; margin-right:5%} 
+        .button:hover{background-color:#283593;}
+        .button:active{background-color:#3f51b5;}
+        .button:focus{background-color:#3f51b5;}
+     
+    </style>
+</head>
+<body>
+
+<div class="datasets">
+    <div class = "center-plase">
+    <table>
+    <tr>
+        <th>File</th>
+        <th>Status</th>
+        <th>Graphs</th>
+        <th>Time</th>
+    </tr>
+    <tr>
+        <td>jaccard1.temp</td>
+        <td style="color:green">Success</td>
+        <td>
+            <div id="squares">
+                <div id="1" class="centered-text">Graph1</div>
+                <div id="1" class="centered-text">Graph2</div>
+                <div id="3" class="centered-text">Graph3</div>
+                <div id="4" class="centered-text">Graph4</div>
+                <div id="5" class="centered-text">Graph5</div>
+            </div>   
+        </td>
+        <td>24-09-19</td>
+    </tr>
+    <tr>
+        <td>jaccard2.temp</td>
+        <td style="color:red">Fail</td>
+        <td>
+            <div id="squares">
+                <div id="1" class="centered-text">Graph1</div>
+                <div id="1" class="centered-text">Graph2</div>
+                <div id="3" class="centered-text">Graph3</div>
+                <div id="4" class="centered-text">Graph4</div>
+                <div id="5" class="centered-text">Graph5</div>
+            </div>
+        </td>
+        <td>24-09-19</td>
+    </tr>
+    </table>
+</div>
+    <button class="button" id = "toMain">Back</button>
+</div>
+
+</body>
+</html>
