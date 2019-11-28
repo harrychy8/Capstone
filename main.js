@@ -29,7 +29,6 @@ app.on('ready', function () {
     mainWindow.on('close', function () {
         app.quit();
     });
-
     //Build menu from the template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     //Insert menu
@@ -96,7 +95,7 @@ const mainMenuTemplate = [
 
 //If mac, add empty object to menu
 if (process.platform === 'darwin') {
-    mainMenuTemplate.unshift({});
+    mainMenuTemplate.unshift({label: ''});
 }
 
 //Add developer tools item if not in prod
