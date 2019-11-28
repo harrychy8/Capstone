@@ -44,6 +44,23 @@
     		Update your dataset below:
 		</label></br>
 		<input id="file-upload" type="file"/>
+		<button onclick=progress()>Submit</button>
 	</div>
+
+
+<script>
+	let i = 0;
+	function progress() {
+		console.log(i);
+		//const list = document.querySelector('ul');
+		//list.children[i].children[2].className = 'fa fa-refresh blue';
+		if (i > 5) {
+			window.location.href = "./resultView.html";
+		} else {
+			i++;
+			setTimeout(progress, 1000);
+		}
+	}
+</script>
 </body>
 <html>
