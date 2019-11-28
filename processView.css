@@ -1,21 +1,94 @@
 .progressBar {
-	margin: 180px auto;
+	margin-top: 180px;
+	margin-left: auto;
 }
 
 .progressBar img {
 	width: 60px;
+	margin-bottom: 10px;
 }
 
 .progressBar ul {
 	text-align: center;
+	padding-inline-start: 0px;
 }
 
 .progressBar ul li{
 	display: inline-block;
 	width: 120px;
+	position: relative;
 }
 
 .progressBar p {
 	font-family: "calibri", Garamond, 'Comic Sans MS';
 	font-size: 14px; 
 }
+
+.progressBar ul li i {
+	margin-top: 17px;
+	font-size: 15px;
+}
+
+.progressBar .fa {
+	background-color: #e0e0e0;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	padding: 4px;
+	color: white;
+}
+
+.progressBar .fa::after {
+	content: '';
+	background: #e0e0e0;
+	height: 4px;
+	width: 130px;
+	display: block;
+	position: absolute;
+	left: 0;
+	z-index: -1;
+	margin-top: -8px;
+}
+
+.progressBar ul li:nth-child(3) .fa {
+	background: #7986cb;
+}
+
+.progressBar ul li:nth-child(3) .fa::after {
+	background: #7986cb;
+}
+
+.progressBar ul li:nth-child(1) .fa {
+	background: #00e676;
+}
+
+.progressBar ul li:nth-child(2) .fa {
+	background: #00e676;
+}
+
+.progressBar ul li:nth-child(1) .fa::after {
+	background: #00e676;
+}
+
+.progressBar ul li:nth-child(2) .fa::after {
+	background: #00e676;
+}
+
+.fileUpload {
+	width: 30%;
+	margin: 80px auto;
+}
+
+.fileUpload label {
+	text-align: center;
+	font-family: "calibri", Garamond, 'Comic Sans MS';
+	font-size: 16px; 
+}
+
+.fileUpload input {
+	margin-top: 20px;
+	background-color: #e0e0e0;
+	size: 150%;
+}
+
+
