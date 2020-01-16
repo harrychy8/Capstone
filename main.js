@@ -1,12 +1,13 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
-var R = require("r-script");
+const R = require("r-script");
+const spawn = require('child_process').spawn;
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
 //SET ENV
-//process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'production';
 
 let mainWindow;
 let addWindow;
@@ -66,29 +67,33 @@ ipcMain.on('item:add', function (e, item) {
     addWindow.close();
 });
 
+//Catch r:step1
+ipcMain.on('r:step1',function (e, input) {
+    setup_R_job(input);
+});
+
+function setup_R_job(input){
+    const RCall = ['mouseBrain.R ', input];
+    const R  = spawn('Rscript', RCall);
+
+    R.on('exit',function(code){
+        console.log('got exit code: '+code);
+        if(code===1){
+            // do something special
+            console.log("failure")
+        }else{
+            console.log("success")
+        }
+        return null;
+    });
+    return null;
+}
+
 //Create menu template
 const mainMenuTemplate = [
     {
         label: 'File',
         submenu: [
-            {
-              label: 'Main Window',
-              click() {
-                  mainWindow.show();
-              }
-            },
-            {
-                label: 'Add Item',
-                click() {
-                    createAddWindow();
-                }
-            },
-            {
-                label: 'Clear Items',
-                click() {
-                    mainWindow.webContents.send('item:clear')
-                }
-            },
             {
                 label: 'Quit',
                 accelerator: process.platform === 'darwin' ? 'Command+Q' : "Ctrl+Q",
