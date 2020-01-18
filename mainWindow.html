@@ -24,6 +24,12 @@
                         onclick=viewData()>View Previous Data</button>
             </div>
         </div>
+        <div class = "row">
+            <div class="col s1a2">
+                <button class="waves-effect waves-light btn-large button" id="barcode"
+                        onclick=barcode()>Try Barcode Selection</button>
+            </div>
+        </div>
         <form>
             <div>
                 <label>Enter Item</label>
@@ -41,6 +47,10 @@
 
     function viewData() {
         window.location.href = './resultTableWindow.html';
+    }
+
+    function barcode() {
+        window.location.href = './barcodeSelection.html';
     }
 
     const electron = require('electron');

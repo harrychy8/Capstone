@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <style>
+        .button{background-color:#3f51b5; width: 300px}
+        .button:hover{background-color:#283593;}
+        .button:active{background-color:#3f51b5;}
+        .button:focus{background-color:#3f51b5;}
+
+    </style>
+</head>
+<body>
+<div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+    <form>
+        <div>
+            <label>Enter Name</label>
+            <label for="item"></label><input type="text" id="item" autofocus>
+        </div>
+        <div>
+            <label>Enter Snap</label>
+            <label for="item2"></label><input type="text" id="item2" autofocus>
+        </div>
+        <div>
+            <label>Enter CSV</label>
+            <label for="item3"></label><input type="text" id="item3" autofocus>
+        </div>
+        <button class="waves-effect waves-light btn" type="submit">Run R </button>
+    </form>
+</div>
+</body>
+
+<script>
+
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    document.querySelector('form').addEventListener('submit', submitForm);
+    function submitForm(e){
+        console.log("hi");
+        e.preventDefault();
+        const name = document.querySelector('#item').value;
+        const snap = document.querySelector('#item2').value;
+        const csv = document.querySelector('#item3').value;
+        ipcRenderer.send('barcodeSelection', name, snap, csv);
+    }
+
+</script>
+</html>

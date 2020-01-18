@@ -7,7 +7,7 @@ const spawn = require('child_process').spawn;
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
 //SET ENV
-process.env.NODE_ENV = 'production';
+//process.env.NODE_ENV = 'production';
 
 let mainWindow;
 let addWindow;
@@ -72,8 +72,36 @@ ipcMain.on('r:step1',function (e, input) {
     setup_R_job(input);
 });
 
+//Catch Barcode selection
+ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
+    console.log("123");
+    runR('barcodeSelection.R',[snap, csv, name]);
+});
+
+function runR(script, params){
+    let RCall = [script];
+    for (let i = 0; i < params.length; i++) {
+        RCall.push(params[i]);
+    }
+    console.log(RCall);
+    const R  = spawn('Rscript', RCall);
+
+    R.on('exit',function(code){
+        console.log('got exit code: '+code);
+        if(code===1){
+            // do something special
+            console.log("failure")
+        }else{
+            console.log("success")
+        }
+        return null;
+    });
+    return null;
+}
+
 function setup_R_job(input){
-    const RCall = ['mouseBrain.R ', input];
+    const Rfile = 'mouseBrain.R';
+    const RCall = [Rfile, input];
     const R  = spawn('Rscript', RCall);
 
     R.on('exit',function(code){

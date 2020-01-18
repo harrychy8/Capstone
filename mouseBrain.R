@@ -10,3 +10,5 @@ args <- commandArgs(trailingOnly=T)
 fileConn<-file("output.txt")
 writeLines(c("Hello", args), fileConn)
 close(fileConn)
+
+#library(SnapATAC);
