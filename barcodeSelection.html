@@ -17,14 +17,23 @@
             <label>Enter Name</label>
             <label for="item"></label><input type="text" id="item" autofocus>
         </div>
+        <br>
         <div>
-            <label>Enter Snap</label>
-            <label for="item2"></label><input type="text" id="item2" autofocus>
+            <label>
+                Update your .snap dataset below:
+            </label>
+            <br>
+            <input id="item2" type="file"/>
         </div>
+        <br>
         <div>
-            <label>Enter CSV</label>
-            <label for="item3"></label><input type="text" id="item3" autofocus>
+            <label>
+                Update your .csv dataset below:
+            </label>
+            <br>
+            <input id="item3" type="file"/>
         </div>
+        <br><br>
         <button class="waves-effect waves-light btn" type="submit">Run R </button>
     </form>
 </div>
@@ -41,7 +50,7 @@
         const name = document.querySelector('#item').value;
         const snap = document.querySelector('#item2').value;
         const csv = document.querySelector('#item3').value;
-        ipcRenderer.send('barcodeSelection', name, snap, csv);
+        ipcRenderer.send('barcodeSelection', name, snap.replace(/^.*[\\\/]/, ''), csv.replace(/^.*[\\\/]/, ''));
     }
 
 </script>
