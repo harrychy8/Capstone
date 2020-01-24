@@ -75,7 +75,8 @@ ipcMain.on('r:step1',function (e, input) {
 //Catch Barcode selection
 ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
     console.log("123");
-    runR('barcodeSelection.R',["./data/" + snap, "./data/" + csv, name]);
+    runR('barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name]);
+    alert("Barcode Selection Done! Please check your directory for output image.");
 });
 
 function runR(script, params){

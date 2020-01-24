@@ -11,6 +11,17 @@
     </style>
 </head>
 <body>
+<nav>
+    <div class="nav-wrapper">
+        <ul class="left">
+            <li onclick=mainWindow()><a class="waves-effect waves-light btn">< Previous</a></li>
+        </ul>
+        <ul class="right">
+            <li onclick=next()><a class="waves-effect waves-light btn">Next ></a></li>
+        </ul>
+    </div>
+</nav>
+
 <div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
     <form>
         <div>
@@ -44,13 +55,22 @@
     const electron = require('electron');
     const {ipcRenderer} = electron;
     document.querySelector('form').addEventListener('submit', submitForm);
-    function submitForm(e){
+
+    function submitForm(e) {
         console.log("hi");
         e.preventDefault();
         const name = document.querySelector('#item').value;
         const snap = document.querySelector('#item2').value;
         const csv = document.querySelector('#item3').value;
         ipcRenderer.send('barcodeSelection', name, snap.replace(/^.*[\\\/]/, ''), csv.replace(/^.*[\\\/]/, ''));
+    }
+
+    function mainWindow() {
+        window.location.href = './mainWindow.html';
+    }
+
+    function next() {
+        window.location.href = './barcodeSelection.html';
     }
 
 </script>
