@@ -68,9 +68,14 @@ ipcMain.on('item:add', function (e, item) {
 });
 
 //Catch r:step1
-ipcMain.on('r:step1',function (e, input) {
-    setup_R_job(input);
+ipcMain.on('r:step1', function (e, input) {
+    test1();
+    e.reply('r:step1:reply');
 });
+
+function test1() {
+    for (let i = 0; i < 50; i++) setup_R_job("!!!");
+}
 
 //Catch Barcode selection
 ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
@@ -79,7 +84,7 @@ ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
     alert("Barcode Selection Done! Please check your directory for output image.");
 });
 
-function runR(script, params){
+function runR(script, params) {
     let RCall = [script];
     for (let i = 0; i < params.length; i++) {
         RCall.push(params[i]);
