@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Steps</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <style>
+        .button {
+            background-color: #3f51b5;
+            width: 150px;
+        }
+
+        #Primary {
+            width: 320px;
+        }
+
+        .button:hover {
+            background-color: #283593;
+        }
+
+        .button:active {
+            background-color: #3f51b5;
+        }
+
+        .button:focus {
+            background-color: #3f51b5;
+        }
+
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper" style="background-color:#3f51b5;">
+        <ul class="left">
+            <li onclick=mainWindow()><a class="waves-effect waves-light btn">< Previous</a></li>
+        </ul>
+        <a class="brand-logo center">Custom Steps</a>
+    </div>
+</nav>
+<br>
+
+<div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -30%);">
+    <div class="section">
+        <div class="row">
+            <div class="col sa12">
+                <button class="waves-effect waves-light btn-large button" id="Primary"
+                        onclick="window.location.href = './primary.html'">Primary
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="section">
+        <div class="row">
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick="window.location.href = './dimReduction.html'">5
+                </button>
+            </div>
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>6
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>7
+                </button>
+            </div>
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>8
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>9
+                </button>
+            </div>
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>10
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>11
+                </button>
+            </div>
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>12
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>13
+                </button>
+            </div>
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>14
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>15
+                </button>
+            </div>
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>16
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>17
+                </button>
+            </div>
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick=''>18
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+    function mainWindow() {
+        window.location.href = './mainWindow.html';
+    }
+</script>
+</html>

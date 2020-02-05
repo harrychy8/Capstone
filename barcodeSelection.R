@@ -18,12 +18,14 @@ barcodes$promoter_ratio = promoter_ratio;
 library(viridisLite);
 library(ggplot2);
 p1 <- ggplot(
-  data, 
-  aes(x= UMI, y= promoter_ratio)) + 
-  geom_point(size=0.1, col="grey") +
+  data,
+  aes(x = UMI, y = promoter_ratio)) +
+  geom_point(size = 0.1, col = "grey") +
   theme_classic() +
   ggtitle(args[3]) +
-  ylim(0, 1) + xlim(0, 6) +
-  labs(x = "log10(UMI)", y="promoter ratio") 
-name <- paste(args[3],"png", sep=".")
-ggsave(name)
+  ylim(0, 1) +
+  xlim(0, 6) +
+  labs(x = "log10(UMI)", y = "promoter ratio")
+name <- paste(args[3], "png", sep = ".")
+path <- paste("./output", name, sep = "/")
+ggsave(path)

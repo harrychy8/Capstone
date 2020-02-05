@@ -81,7 +81,13 @@ function test1() {
 ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
     console.log("123");
     runR('barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name]);
-    alert("Barcode Selection Done! Please check your directory for output image.");
+    e.reply('barcodeSelection:reply');
+});
+
+ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
+    console.log("123");
+    runR('primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist]);
+    e.reply('primary:reply');
 });
 
 function runR(script, params) {

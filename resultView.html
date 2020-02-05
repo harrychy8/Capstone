@@ -9,7 +9,10 @@
 <body>
 <nav>
     <div class="nav-wrapper" style="background-color:#3f51b5;">
-        <a class="brand-logo center" onclick="window.location.href = './mainWindow.html';">Outputs</a>
+        <ul class="left">
+            <li onclick=mainWindow()><a class="waves-effect waves-light btn">< Main Menu</a></li>
+        </ul>
+        <a class="brand-logo center">Outputs</a>
     </div>
 </nav>
 
@@ -47,4 +50,11 @@
 </ul>
 
 </body>
+
+<script>
+    function mainWindow() {
+        window.location.href = './mainWindow.html';
+    }
+</script>
+
 </html>
