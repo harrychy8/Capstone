@@ -69,4 +69,5 @@ ggsave(path)
 bin.cutoff = quantile(bin.cov[bin.cov > 0], 0.95);
 idy = which(bin.cov <= bin.cutoff & bin.cov > 0);
 x.sp = x.sp[, idy, mat = "bmat"];
+saveRDS(x.sp, "./data/snap.rds")
 x.sp

@@ -82,10 +82,10 @@
     async function submitForm(e) {
         e.preventDefault();
         const name = document.querySelector('#item').value;
-        const snap = document.querySelector('#item2').value;
+        const snap = document.querySelector('#item').value;
         loading();
-        ipcRenderer.send('r:step1', e);
-        ipcRenderer.on('r:step1:reply', (e) => {
+        ipcRenderer.send('dimReduction', name, snap.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.on('dimReduction:reply', (e) => {
             unLoading();
         })
     }

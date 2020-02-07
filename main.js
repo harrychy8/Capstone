@@ -79,15 +79,18 @@ function test1() {
 
 //Catch Barcode selection
 ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
-    console.log("123");
     runR('barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name]);
     e.reply('barcodeSelection:reply');
 });
 
 ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
-    console.log("123");
     runR('primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist]);
     e.reply('primary:reply');
+});
+
+ipcMain.on('dimReduction', function (e, name, snap) {
+    runR('dimReduction.R', [name, "./data/" + snap]);
+    e.reply('dimReduction:reply');
 });
 
 function runR(script, params) {
@@ -96,7 +99,7 @@ function runR(script, params) {
         RCall.push(params[i]);
     }
     console.log(RCall);
-    const R  = spawn('Rscript', RCall);
+    const R = spawn('Rscript', RCall);
 
     R.on('exit',function(code){
         console.log('got exit code: '+code);
