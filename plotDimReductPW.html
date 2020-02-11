@@ -29,10 +29,9 @@
         <ul class="left">
             <li onclick="window.history.back()"><a class="waves-effect waves-light btn">< Previous</a></li>
         </ul>
-        <a class="brand-logo center">Dimensionality Reduction</a>
+        <a class="brand-logo center">Significant Components</a>
         <ul class="right">
-            <li onclick="window.location.href = './plotDimReductPW.html'"><a class="waves-effect waves-light btn">Next
-                ></a></li>
+            <li onclick=next()><a class="waves-effect waves-light btn">Next ></a></li>
         </ul>
     </div>
 </nav>
@@ -40,16 +39,11 @@
 <div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
     <form>
         <div>
-            <label>Enter Name</label>
-            <label for="item"></label><input type="text" id="item" autofocus>
-        </div>
-        <br>
-        <div>
             <label>
                 Choose your snap object below:
             </label>
             <br>
-            <input id="item2" type="file"/>
+            <input id="item" type="file"/>
         </div>
         <br><br>
         <button class="waves-effect waves-light btn" type="submit">Run R</button>
@@ -82,11 +76,10 @@
 
     async function submitForm(e) {
         e.preventDefault();
-        const name = document.querySelector('#item').value;
-        const snap = document.querySelector('#item2').value;
+        const snap = document.querySelector('#item').value;
         loading();
-        ipcRenderer.send('dimReduction', name, snap.replace(/^.*[\\\/]/, ''));
-        ipcRenderer.on('dimReduction:reply', (e) => {
+        ipcRenderer.send('plotDimReductPW', name, snap.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.on('plotDimReductPW:reply', (e) => {
             unLoading();
         })
     }

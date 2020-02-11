@@ -93,6 +93,11 @@ ipcMain.on('dimReduction', function (e, name, snap) {
     e.reply('dimReduction:reply');
 });
 
+ipcMain.on('plotDimReductPW', function (e, name, snap) {
+    runR('plotDimReductPW.R', ["./data/" + snap]);
+    e.reply('plotDimReductPW:reply');
+});
+
 function runR(script, params) {
     let RCall = [script];
     for (let i = 0; i < params.length; i++) {
@@ -101,7 +106,7 @@ function runR(script, params) {
     console.log(RCall);
     const R = spawn('Rscript', RCall);
 
-    R.on('exit',function(code){
+    R.on('exit', function (code) {
         console.log('got exit code: '+code);
         if(code===1){
             // do something special
