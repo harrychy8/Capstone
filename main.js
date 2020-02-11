@@ -98,6 +98,11 @@ ipcMain.on('plotDimReductPW', function (e, name, snap) {
     e.reply('plotDimReductPW:reply');
 });
 
+ipcMain.on('GBclustering', function (e, snap) {
+    runR('GBclustering.R', ["./data/" + snap]);
+    e.reply('GBclustering:reply');
+});
+
 function runR(script, params) {
     let RCall = [script];
     for (let i = 0; i < params.length; i++) {
