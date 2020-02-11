@@ -88,13 +88,13 @@ ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
     e.reply('primary:reply');
 });
 
-ipcMain.on('dimReduction', function (e, name, snap) {
+ipcMain.on('dimReduction', function (e, snap) {
     runR('dimReduction.R', [name, "./data/" + snap]);
     e.reply('dimReduction:reply');
 });
 
 ipcMain.on('plotDimReductPW', function (e, name, snap) {
-    runR('plotDimReductPW.R', ["./data/" + snap]);
+    runR('plotDimReductPW.R', [name, "./data/" + snap]);
     e.reply('plotDimReductPW:reply');
 });
 

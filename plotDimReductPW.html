@@ -39,11 +39,16 @@
 <div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
     <form>
         <div>
+            <label>Enter Name</label>
+            <label for="item"></label><input type="text" id="item" autofocus>
+        </div>
+        <br>
+        <div>
             <label>
                 Choose your snap object below:
             </label>
             <br>
-            <input id="item" type="file"/>
+            <input id="item2" type="file"/>
         </div>
         <br><br>
         <button class="waves-effect waves-light btn" type="submit">Run R</button>
@@ -76,7 +81,8 @@
 
     async function submitForm(e) {
         e.preventDefault();
-        const snap = document.querySelector('#item').value;
+        const name = document.querySelector('#item').value;
+        const snap = document.querySelector('#item2').value;
         loading();
         ipcRenderer.send('plotDimReductPW', name, snap.replace(/^.*[\\\/]/, ''));
         ipcRenderer.on('plotDimReductPW:reply', (e) => {
