@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="loader.css">
+    <style>
+        .button {
+            background-color: #3f51b5;
+            width: 300px
+        }
+
+        .button:hover {
+            background-color: #283593;
+        }
+
+        .button:active {
+            background-color: #3f51b5;
+        }
+
+        .button:focus {
+            background-color: #3f51b5;
+        }
+
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper" style="background-color:#3f51b5;">
+        <ul class="left">
+            <li onclick="window.history.back()"><a class="waves-effect waves-light btn">< Previous</a></li>
+        </ul>
+        <a class="brand-logo center">Visualization</a>
+        <ul class="right">
+            <li onclick="window.location.href = './geneBasedAnnotation.html'"><a class="waves-effect waves-light btn">Next
+                ></a></li>
+        </ul>
+    </div>
+</nav>
+
+<div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -20%);">
+    <h5>Dimensionality Reduction for Visualization</h5>
+    <form id="viz">
+        <div>
+            <label>
+                Choose your snap object below:
+            </label>
+            <br>
+            <input id="item3" type="file"/>
+        </div>
+        <br>
+        <div>
+            <label for="method"> Select method: </label>
+            <select style="display: inline-block" id="method">
+                <option value="Rtsne">Rtsne</option>
+                <option value="umap">umap</option>
+            </select>
+        </div>
+
+        <br>
+        <button class="waves-effect waves-light btn" type="submit">Reduce</button>
+    </form>
+
+    <br><br>
+    <h5>Visualization</h5>
+    <form id='plot'>
+        <div>
+            <label>Enter Name</label>
+            <label for="item"></label><input type="text" id="item" autofocus>
+        </div>
+        <div>
+            <label>
+                Choose your snap object below:
+            </label>
+            <br>
+            <input id="item2" type="file"/>
+        </div>
+        <br>
+        <div>
+            <label for="function"> Select plot function: </label>
+            <select style="display: inline-block" id="function">
+                <option value="PlotViz">PlotViz</option>
+                <option value="PlotFeatureSingle">PlotFeatureSingle</option>
+            </select>
+            <label for="method2"> Select method: </label>
+            <select style="display: inline-block" id="method2">
+                <option value="tsne">tsne</option>
+                <option value="umap">umap</option>
+            </select>
+        </div>
+        <br>
+        <button class="waves-effect waves-light btn" type="submit">Run R</button>
+    </form>
+</div>
+
+<div class="cssload-wrap">
+    <div class="cssload-container">
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+    </div>
+</div>
+
+</body>
+
+<script>
+
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    document.querySelector('#plot').addEventListener('submit', submitForm);
+    document.querySelector('#viz').addEventListener('submit', runViz);
+
+    async function submitForm(e) {
+        e.preventDefault();
+        const name = document.querySelector('#item').value;
+        const snap = document.querySelector('#item2').value;
+        const choice = document.querySelector('#function').value;
+        const method = document.querySelector('#method2').value;
+
+        loading();
+        if (choice === 'PlotViz') {
+            ipcRenderer.send('plotViz', name, snap.replace(/^.*[\\\/]/, ''), method);
+        } else {
+            ipcRenderer.send('plotFeatureSingle', name, snap.replace(/^.*[\\\/]/, ''), method);
+        }
+        ipcRenderer.on('visualization:reply', (e) => {
+            unLoading();
+        })
+    }
+
+    function runViz(e) {
+        e.preventDefault();
+        const snap = document.querySelector('#item3').value;
+        const method = document.querySelector('#method').value;
+        loading();
+        ipcRenderer.send('runViz', snap.replace(/^.*[\\\/]/, ''), method);
+    }
+
+
+    function loading() {
+        document.querySelector('.cssload-wrap').style.display = 'block';
+    }
+
+    function unLoading() {
+        document.querySelector('.cssload-wrap').style.display = 'none';
+    }
+
+</script>
+</html>
