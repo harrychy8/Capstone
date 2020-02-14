@@ -94,7 +94,7 @@ ipcMain.on('dimReduction', function (e, snap) {
 });
 
 ipcMain.on('plotDimReductPW', function (e, name, snap) {
-    runR('plotDimReductPW.R', [name, "./data/" + snap]);
+    runR('plotDimReductPW.R', ["./data/" + snap]);
     e.reply('plotDimReductPW:reply');
 });
 
