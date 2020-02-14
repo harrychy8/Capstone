@@ -137,13 +137,36 @@ function runR(script, params) {
     console.log(RCall);
     const R = spawn('Rscript', RCall);
 
-    R.on('exit', function (code) {
+    const step_name = RCall[0].substring(0, RCall[0].indexOf('.'));
+    console.log("Step:"+step_name);
+
+    R.on('exit',function(code){
         console.log('got exit code: '+code);
-        if (code !== 0) {
+        if(code===1){
             // do something special
             console.log("failure")
-        } else {
+        }else{
             console.log("success")
+            
+            const output_path = __dirname+"/output";
+            const filename = "/"+step_name+".png";
+
+            if(filename === undefined){
+                console.log("No file found");
+                return;
+            }
+            else {
+                console.log("Loading plot...");
+                plotWindow = new BrowserWindow({
+                    useContentSize: true
+                });
+                
+                plotWindow.loadURL(url.format({
+                    pathname: path.join(output_path, filename),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+            }
         }
         return null;
     });
