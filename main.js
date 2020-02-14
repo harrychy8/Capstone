@@ -103,11 +103,6 @@ ipcMain.on('GBclustering', function (e, snap) {
     e.reply('GBclustering:reply');
 });
 
-ipcMain.on('visualization', function (e, name, snap) {
-    runR('visualization.R', [name, "./data/" + snap]);
-    e.reply('visualization:reply');
-});
-
 ipcMain.on('runViz', function (e, snap, method) {
     runR('runViz.R', ["./data/" + snap, method]);
     e.reply('runViz:reply');
@@ -127,6 +122,10 @@ ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
 
 ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
     runR('rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+});
+
+ipcMain.on('hereticalClustering', function (e, name, snap) {
+    runR('hereticalClustering.R', ["./data/" + snap, name]);
 });
 
 function runR(script, params) {
