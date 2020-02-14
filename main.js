@@ -149,13 +149,42 @@ function runR(script, params) {
             console.log("success")
             
             const output_path = __dirname+"/output";
-            const filename = "/"+step_name+".png";
+            if(step_name === 'primary'){
 
-            if(filename === undefined){
-                console.log("No file found");
-                return;
-            }
+                const barcode = "/"+RCall[3]+".barcodeSelection.png";
+                const histogram = "/"+RCall[3]+".histogram.png";
+
+                console.log("Loading plots...");
+                plotWindow1 = new BrowserWindow({
+                    useContentSize: true
+                });
+                
+                plotWindow1.loadURL(url.format({
+                    pathname: path.join(output_path, barcode),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+
+                plotWindow2 = new BrowserWindow({
+                    useContentSize: true
+                });
+                
+                plotWindow2.loadURL(url.format({
+                    pathname: path.join(output_path, histogram),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+                
+            } 
             else {
+                var filename = "/"+RCall[3]+"."+step_name;
+                if (step_name === 'dimReduction'){
+                    filename = filename + ".pdf";
+                }
+                else {
+                    filename = filename+".png";
+                }
+                
                 console.log("Loading plot...");
                 plotWindow = new BrowserWindow({
                     useContentSize: true
