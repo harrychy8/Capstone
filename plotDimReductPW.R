@@ -3,7 +3,7 @@ args <- commandArgs(trailingOnly = T)
 library(SnapATAC);
 x.sp = readRDS(args[2])
 
-name <- paste(args[1], "plotDimRefuctPW", "pdf", sep = ".")
+name <- paste(args[1], "plotDimReductPW", "pdf", sep = ".")
 path <- paste("./output", name, sep = "/")
 plotDimReductPW(
   obj = x.sp,
