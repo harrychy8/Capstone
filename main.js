@@ -211,26 +211,29 @@ function runR(script, params) {
             } 
             else {
 
-                if (step_name === 'plotDimReductPW'){
+                if (step_name === 'plotDimReductPW' || step_name === 'plotViz' || step_name === 'plotFeatureSingle'){
 
-                    if (RCall[1] === undefined){
-                        // do nothing;
+                    console.log("Loading plot...");
+
+                    var filename = "."+step_name+".pdf";
+                    
+                    if (step_name === 'plotDimReductPW') {
+                        filename = "/"+RCall[1]+filename;
                     }
                     else {
-                        console.log("Loading plot...");
-                        
-                        var filename = "/"+RCall[1]+"."+"dimReduction.pdf";
-
-                        plotWindow = new PDFWindow({
-                            useContentSize: true
-                        });
-                        
-                        plotWindow.loadURL(url.format({
-                            pathname: path.join(output_path, filename),
-                            protocol: 'file:',
-                            slashes: true
-                        }));
+                        filename = "/"+RCall[2]+filename;
                     }
+
+                    plotWindow = new PDFWindow({
+                        useContentSize: true
+                    });
+                    
+                    plotWindow.loadURL(url.format({
+                        pathname: path.join(output_path, filename),
+                        protocol: 'file:',
+                        slashes: true
+                    }));
+                    
                 }
                 else {
                     if (RCall[3] === undefined){
