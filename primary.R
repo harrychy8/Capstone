@@ -1,3 +1,4 @@
+# Step 1: barcodeSelection
 args <- commandArgs(trailingOnly = T)
 
 library(SnapATAC);
@@ -26,10 +27,11 @@ p1 <- ggplot(
   ylim(0, 1) +
   xlim(0, 6) +
   labs(x = "log10(UMI)", y = "promoter ratio")
-name <- paste(args[3], "barcode", "png", sep = ".")
+name <- paste(args[3], "barcodeSelection", "png", sep = ".")
 path <- paste("./output", name, sep = "/")
 ggsave(path)
 
+# Step 2-4 Generates Histogram
 barcodes.sel = barcodes[which(UMI >= 3 &
                                 UMI <= 5 &
                                 promoter_ratio >= 0.15 &

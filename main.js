@@ -149,6 +149,18 @@ ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
     runR('plotFeatureSingle.R', ["./data/" + snap, name, method]);
 });
 
+ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
+    runR('geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+});
+
+ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
+    runR('rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+});
+
+ipcMain.on('hereticalClustering', function (e, name, snap) {
+    runR('hereticalClustering.R', ["./data/" + snap, name]);
+});
+
 function runR(script, params) {
     let RCall = [script];
     for (let i = 0; i < params.length; i++) {
@@ -157,13 +169,65 @@ function runR(script, params) {
     console.log(RCall);
     const R = spawn('Rscript', RCall);
 
-    R.on('exit', function (code) {
+    const step_name = RCall[0].substring(0, RCall[0].indexOf('.'));
+    console.log("Step:"+step_name);
+
+    R.on('exit',function(code){
         console.log('got exit code: '+code);
         if(code===1){
             // do something special
             console.log("failure")
         }else{
             console.log("success")
+            
+            const output_path = __dirname+"/output";
+            if(step_name === 'primary'){
+
+                const barcode = "/"+RCall[3]+".barcodeSelection.png";
+                const histogram = "/"+RCall[3]+".histogram.png";
+
+                console.log("Loading plots...");
+                plotWindow1 = new BrowserWindow({
+                    useContentSize: true
+                });
+                
+                plotWindow1.loadURL(url.format({
+                    pathname: path.join(output_path, barcode),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+
+                plotWindow2 = new BrowserWindow({
+                    useContentSize: true
+                });
+                
+                plotWindow2.loadURL(url.format({
+                    pathname: path.join(output_path, histogram),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+                
+            } 
+            else {
+                var filename = "/"+RCall[3]+"."+step_name;
+                if (step_name === 'dimReduction'){
+                    filename = filename + ".pdf";
+                }
+                else {
+                    filename = filename+".png";
+                }
+                
+                console.log("Loading plot...");
+                plotWindow = new BrowserWindow({
+                    useContentSize: true
+                });
+                
+                plotWindow.loadURL(url.format({
+                    pathname: path.join(output_path, filename),
+                    protocol: 'file:',
+                    slashes: true
+                }));
+            }
         }
         return null;
     });
