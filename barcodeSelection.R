@@ -26,6 +26,6 @@ p1 <- ggplot(
   ylim(0, 1) +
   xlim(0, 6) +
   labs(x = "log10(UMI)", y = "promoter ratio")
-name <- paste(args[3], "png", sep = ".")
+name <- paste(args[3], "barcodeSelection", "png", sep = ".")
 path <- paste("./output", name, sep = "/")
 ggsave(path)
