@@ -4,6 +4,7 @@ const url = require('url');
 const path = require('path');
 const R = require("r-script");
 const spawn = require('child_process').spawn;
+const PDFWindow = require('electron-pdf-window')
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 
@@ -274,24 +275,47 @@ function runR(script, params) {
                 
             } 
             else {
-                var filename = "/"+RCall[3]+"."+step_name;
-                if (step_name === 'dimReduction'){
-                    filename = filename + ".pdf";
+
+                if (step_name === 'plotDimReductPW'){
+
+                    if (RCall[1] === undefined){
+                        // do nothing;
+                    }
+                    else {
+                        console.log("Loading plot...");
+                        
+                        var filename = "/"+RCall[1]+"."+"dimReduction.pdf";
+
+                        plotWindow = new PDFWindow({
+                            useContentSize: true
+                        });
+                        
+                        plotWindow.loadURL(url.format({
+                            pathname: path.join(output_path, filename),
+                            protocol: 'file:',
+                            slashes: true
+                        }));
+                    }
                 }
                 else {
-                    filename = filename+".png";
+                    if (RCall[3] === undefined){
+                        // do nothing;
+                    } else {
+                        var filename = "/"+RCall[3]+"."+step_name;
+                        filename = filename+".png";
+
+                        plotWindow = new BrowserWindow({
+                            useContentSize: true
+                        });
+                        
+                        plotWindow.loadURL(url.format({
+                            pathname: path.join(output_path, filename),
+                            protocol: 'file:',
+                            slashes: true
+                        }));
+                    }
                 }
                 
-                console.log("Loading plot...");
-                plotWindow = new BrowserWindow({
-                    useContentSize: true
-                });
-                
-                plotWindow.loadURL(url.format({
-                    pathname: path.join(output_path, filename),
-                    protocol: 'file:',
-                    slashes: true
-                }));
             }
         }
         return null;

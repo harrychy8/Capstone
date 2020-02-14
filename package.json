@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "electron": "^7.1.2",
+    "electron-pdf-window": "^1.0.12",
     "r-script": "0.0.4"
   },
   "devDependencies": {
