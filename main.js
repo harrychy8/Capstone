@@ -108,16 +108,6 @@ ipcMain.on('visualization', function (e, name, snap) {
     e.reply('visualization:reply');
 });
 
-ipcMain.on('geneBasedAnnotation', function (e, name, snap, gene) {
-    runR('geneBasedAnnotation.R', [name, "./data/" + snap, gene]);
-    e.reply('geneBasedAnnotation:reply');
-});
-
-ipcMain.on('hereticalClustering', function (e, name, snap) {
-    runR('hereticalClustering.R', [name, "./data/" + snap]);
-    e.reply('hereticalClustering:reply');
-});
-
 ipcMain.on('runViz', function (e, snap, method) {
     runR('runViz.R', ["./data/" + snap, method]);
     e.reply('runViz:reply');
@@ -131,6 +121,14 @@ ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
     runR('plotFeatureSingle.R', ["./data/" + snap, name, method]);
 });
 
+ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
+    runR('geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+});
+
+ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
+    runR('rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+});
+
 function runR(script, params) {
     let RCall = [script];
     for (let i = 0; i < params.length; i++) {
@@ -141,10 +139,10 @@ function runR(script, params) {
 
     R.on('exit', function (code) {
         console.log('got exit code: '+code);
-        if(code===1){
+        if (code !== 0) {
             // do something special
             console.log("failure")
-        }else{
+        } else {
             console.log("success")
         }
         return null;
