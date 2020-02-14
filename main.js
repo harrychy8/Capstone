@@ -238,15 +238,48 @@ ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
-    runR('geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+    child = runR('geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+    child.on('exit', function (code) {
+        e.reply('geneBasedAnnotation:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
+    });
 });
 
 ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
-    runR('rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+    child = runR('rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+    child.on('exit', function (code) {
+        e.reply('rnaBasedAnnotation:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
+    });
 });
 
 ipcMain.on('hereticalClustering', function (e, name, snap) {
-    runR('hereticalClustering.R', ["./data/" + snap, name]);
+    child = runR('hereticalClustering.R', ["./data/" + snap, name]);
+    child.on('exit', function (code) {
+        e.reply('hereticalClustering:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
+    });
 });
 
 function runR(script, params) {
