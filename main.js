@@ -93,7 +93,7 @@ ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
 });
 
 ipcMain.on('dimReduction', function (e, snap) {
-    child = runR('dimReduction.R', [name, "./data/" + snap]);
+    child = runR('dimReduction.R', ["./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('dimReduction:reply');
     });
