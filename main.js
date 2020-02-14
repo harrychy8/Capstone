@@ -79,48 +79,66 @@ function test1() {
 
 //Catch Barcode selection
 ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
-    runR('barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name]);
-    e.reply('barcodeSelection:reply');
+    child = runR('barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name]);
+    child.on('exit', function (code) {
+        e.reply('barcodeSelection:reply');
+    });
 });
 
 ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
-    runR('primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist]);
-    e.reply('primary:reply');
+    child = runR('primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist]);
+    child.on('exit', function (code) {
+        e.reply('primary:reply');
+    });
 });
 
 ipcMain.on('dimReduction', function (e, snap) {
-    runR('dimReduction.R', [name, "./data/" + snap]);
-    e.reply('dimReduction:reply');
+    child = runR('dimReduction.R', [name, "./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('dimReduction:reply');
+    });
 });
 
 ipcMain.on('plotDimReductPW', function (e, name, snap) {
-    runR('plotDimReductPW.R', [name, "./data/" + snap]);
-    e.reply('plotDimReductPW:reply');
+    child = runR('plotDimReductPW.R', [name, "./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('plotDimReductPW:reply');
+    });
 });
 
 ipcMain.on('GBclustering', function (e, snap) {
-    runR('GBclustering.R', ["./data/" + snap]);
-    e.reply('GBclustering:reply');
+    child = runR('GBclustering.R', ["./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('GBclustering:reply');
+    });
 });
 
 ipcMain.on('visualization', function (e, name, snap) {
-    runR('visualization.R', [name, "./data/" + snap]);
-    e.reply('visualization:reply');
+    child = runR('visualization.R', [name, "./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('visualization:reply');
+    });
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, name, snap, gene) {
-    runR('geneBasedAnnotation.R', [name, "./data/" + snap, gene]);
-    e.reply('geneBasedAnnotation:reply');
+    child = runR('geneBasedAnnotation.R', [name, "./data/" + snap, gene]);
+    child.on('exit', function (code) {
+        e.reply('geneBasedAnnotation:reply');
+    });
 });
 
 ipcMain.on('hereticalClustering', function (e, name, snap) {
-    runR('hereticalClustering.R', [name, "./data/" + snap]);
-    e.reply('hereticalClustering:reply');
+    child = runR('hereticalClustering.R', [name, "./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('hereticalClustering:reply');
+    });
 });
 
 ipcMain.on('runViz', function (e, snap, method) {
-    runR('runViz.R', ["./data/" + snap, method]);
-    e.reply('runViz:reply');
+    child = runR('runViz.R', ["./data/" + snap, method]);
+    child.on('exit', function (code) {
+        e.reply('runViz:reply');
+    });
 });
 
 ipcMain.on('plotViz', function (e, name, snap, method) {
@@ -149,7 +167,7 @@ function runR(script, params) {
         }
         return null;
     });
-    return null;
+    return R;
 }
 
 function setup_R_job(input){
