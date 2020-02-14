@@ -1,4 +1,5 @@
 const electron = require('electron');
+const { dialog } = require('electron')
 const url = require('url');
 const path = require('path');
 const R = require("r-script");
@@ -89,6 +90,14 @@ ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
     child = runR('primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist]);
     child.on('exit', function (code) {
         e.reply('primary:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
     });
 });
 
@@ -96,6 +105,14 @@ ipcMain.on('dimReduction', function (e, snap) {
     child = runR('dimReduction.R', ["./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('dimReduction:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
     });
 });
 
@@ -103,6 +120,14 @@ ipcMain.on('plotDimReductPW', function (e, name, snap) {
     child = runR('plotDimReductPW.R', [name, "./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('plotDimReductPW:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
     });
 });
 
@@ -110,6 +135,14 @@ ipcMain.on('GBclustering', function (e, snap) {
     child = runR('GBclustering.R', ["./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('GBclustering:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
     });
 });
 
@@ -117,6 +150,14 @@ ipcMain.on('visualization', function (e, name, snap) {
     child = runR('visualization.R', [name, "./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('visualization:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
     });
 });
 
@@ -124,6 +165,14 @@ ipcMain.on('geneBasedAnnotation', function (e, name, snap, gene) {
     child = runR('geneBasedAnnotation.R', [name, "./data/" + snap, gene]);
     child.on('exit', function (code) {
         e.reply('geneBasedAnnotation:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
     });
 });
 
@@ -131,6 +180,14 @@ ipcMain.on('hereticalClustering', function (e, name, snap) {
     child = runR('hereticalClustering.R', [name, "./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('hereticalClustering:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
     });
 });
 
@@ -138,6 +195,14 @@ ipcMain.on('runViz', function (e, snap, method) {
     child = runR('runViz.R', ["./data/" + snap, method]);
     child.on('exit', function (code) {
         e.reply('runViz:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
     });
 });
 
