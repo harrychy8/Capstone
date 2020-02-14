@@ -49,6 +49,8 @@
         <br><br>
         <button class="waves-effect waves-light btn" type="submit">Run R</button>
     </form>
+    <br>
+    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Steps</button>
 </div>
 
 <div class="cssload-wrap">
@@ -93,6 +95,8 @@
     function unLoading() {
         document.querySelector('.cssload-wrap').style.display = 'none';
     }
-
+    function customSteps() {
+        window.location.href = './customSteps.html';
+    }
 </script>
 </html>

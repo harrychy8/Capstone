@@ -90,6 +90,8 @@
         <br>
         <button class="waves-effect waves-light btn" type="submit">Run R</button>
     </form>
+    <br>
+    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Steps</button>
 </div>
 
 <div class="cssload-wrap">
@@ -126,12 +128,15 @@
         loading();
         if (choice === 'PlotViz') {
             ipcRenderer.send('plotViz', name, snap.replace(/^.*[\\\/]/, ''), method);
+            ipcRenderer.on('plotViz:reply', (e) => {
+                unLoading();
+            })
         } else {
             ipcRenderer.send('plotFeatureSingle', name, snap.replace(/^.*[\\\/]/, ''), method);
+            ipcRenderer.on('plotFeatureSingle:reply', (e) => {
+                unLoading();
+            })
         }
-        ipcRenderer.on('visualization:reply', (e) => {
-            unLoading();
-        })
     }
 
     function runViz(e) {
@@ -140,15 +145,20 @@
         const method = document.querySelector('#method').value;
         loading();
         ipcRenderer.send('runViz', snap.replace(/^.*[\\\/]/, ''), method);
+        ipcRenderer.on('runViz:reply', (e) => {
+            unLoading();
+        })
     }
 
 
     function loading() {
         document.querySelector('.cssload-wrap').style.display = 'block';
     }
-
     function unLoading() {
         document.querySelector('.cssload-wrap').style.display = 'none';
+    }
+    function customSteps() {
+        window.location.href = './customSteps.html';
     }
 
 </script>

@@ -208,11 +208,33 @@ ipcMain.on('runViz', function (e, snap, method) {
 });
 
 ipcMain.on('plotViz', function (e, name, snap, method) {
-    runR('plotViz.R', ["./data/" + snap, name, method]);
+    child = runR('plotViz.R', ["./data/" + snap, name, method]);
+    child.on('exit', function (code) {
+        e.reply('plotViz:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
+    });
 });
 
 ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
-    runR('plotFeatureSingle.R', ["./data/" + snap, name, method]);
+    child = runR('plotFeatureSingle.R', ["./data/" + snap, name, method]);
+    child.on('exit', function (code) {
+        e.reply('plotFeatureSingle:reply');
+        message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title:'Result',
+            message: 'Process has been completed',
+            detail: message,
+          })
+    });
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
