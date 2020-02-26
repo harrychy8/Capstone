@@ -59,6 +59,17 @@ ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
 
 ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
     child = runR('./Rscripts/primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist]);
+    var scriptOutput = "";
+
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function(data) {
+        //Here is where the output goes
+
+        console.log('stdout: ' + data);
+
+        data=data.toString();
+        scriptOutput+=data;
+    });
     child.on('exit', function (code) {
         e.reply('primary:reply');
         message = code ? 'Failure' : 'Success';
