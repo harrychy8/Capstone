@@ -101,8 +101,14 @@
         loading();
         if (method === 'gene-based') {
             ipcRenderer.send('geneBasedAnnotation', snap.replace(/^.*[\\\/]/, ''), table.replace(/^.*[\\\/]/, ''));
+            ipcRenderer.on('geneBasedAnnotation:reply', (e) => {
+                unLoading();
+            });
         } else {
             ipcRenderer.send('rnaBasedAnnotation', snap.replace(/^.*[\\\/]/, ''), table.replace(/^.*[\\\/]/, ''));
+            ipcRenderer.on('rnaBasedAnnotation:reply', (e) => {
+                unLoading();
+            });
         }
     }
 

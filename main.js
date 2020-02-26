@@ -24,7 +24,7 @@ app.on('ready', function () {
     });
     //load html into window
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'mainWindow.html'),
+        pathname: path.join(__dirname, './views/mainWindow.html'),
         protocol: 'file:',
         slashes: true
     }));
@@ -39,36 +39,6 @@ app.on('ready', function () {
     Menu.setApplicationMenu(mainMenu);
 });
 
-//Handle create add window
-function createAddWindow() {
-    //Create new window
-    addWindow = new BrowserWindow({
-        width: 300,
-        height: 200,
-        title: 'Add Shopping List Item',
-        webPreferences: {
-            nodeIntegration: true
-        }
-    });
-    //load html into window
-    addWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'addWindow.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
-
-    //Garbage collection handle
-    addWindow.on('close', function () {
-        addWindow = null;
-    })
-}
-//Catch item:add
-ipcMain.on('item:add', function (e, item) {
-    console.log(item);
-    mainWindow.webContents.send('item:add', item);
-    addWindow.close();
-});
-
 //Catch r:step1
 ipcMain.on('r:step1', function (e, input) {
     test1();
@@ -81,14 +51,14 @@ function test1() {
 
 //Catch Barcode selection
 ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
-    child = runR('barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name]);
+    child = runR('./Rscripts/barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name]);
     child.on('exit', function (code) {
         e.reply('barcodeSelection:reply');
     });
 });
 
 ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
-    child = runR('primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist]);
+    child = runR('./Rscripts/primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist]);
     child.on('exit', function (code) {
         e.reply('primary:reply');
         message = code ? 'Failure' : 'Success';
@@ -103,7 +73,7 @@ ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
 });
 
 ipcMain.on('dimReduction', function (e, snap) {
-    child = runR('dimReduction.R', ["./data/" + snap]);
+    child = runR('./Rscripts/dimReduction.R', ["./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('dimReduction:reply');
         message = code ? 'Failure' : 'Success';
@@ -118,7 +88,7 @@ ipcMain.on('dimReduction', function (e, snap) {
 });
 
 ipcMain.on('plotDimReductPW', function (e, name, snap) {
-    child = runR('plotDimReductPW.R', [name, "./data/" + snap]);
+    child = runR('./Rscripts/plotDimReductPW.R', [name, "./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('plotDimReductPW:reply');
         message = code ? 'Failure' : 'Success';
@@ -133,7 +103,7 @@ ipcMain.on('plotDimReductPW', function (e, name, snap) {
 });
 
 ipcMain.on('GBclustering', function (e, snap) {
-    child = runR('GBclustering.R', ["./data/" + snap]);
+    child = runR('./Rscripts/GBclustering.R', ["./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('GBclustering:reply');
         message = code ? 'Failure' : 'Success';
@@ -148,7 +118,7 @@ ipcMain.on('GBclustering', function (e, snap) {
 });
 
 ipcMain.on('visualization', function (e, name, snap) {
-    child = runR('visualization.R', [name, "./data/" + snap]);
+    child = runR('./Rscripts/visualization.R', [name, "./data/" + snap]);
     child.on('exit', function (code) {
         e.reply('visualization:reply');
         message = code ? 'Failure' : 'Success';
@@ -163,7 +133,7 @@ ipcMain.on('visualization', function (e, name, snap) {
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, name, snap, gene) {
-    child = runR('geneBasedAnnotation.R', [name, "./data/" + snap, gene]);
+    child = runR('./Rscripts/geneBasedAnnotation.R', [name, "./data/" + snap, gene]);
     child.on('exit', function (code) {
         e.reply('geneBasedAnnotation:reply');
         message = code ? 'Failure' : 'Success';
@@ -177,23 +147,8 @@ ipcMain.on('geneBasedAnnotation', function (e, name, snap, gene) {
     });
 });
 
-ipcMain.on('hereticalClustering', function (e, name, snap) {
-    child = runR('hereticalClustering.R', [name, "./data/" + snap]);
-    child.on('exit', function (code) {
-        e.reply('hereticalClustering:reply');
-        message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title:'Result',
-            message: 'Process has been completed',
-            detail: message,
-          })
-    });
-});
-
 ipcMain.on('runViz', function (e, snap, method) {
-    child = runR('runViz.R', ["./data/" + snap, method]);
+    child = runR('./Rscripts/runViz.R', ["./data/" + snap, method]);
     child.on('exit', function (code) {
         e.reply('runViz:reply');
         message = code ? 'Failure' : 'Success';
@@ -208,7 +163,7 @@ ipcMain.on('runViz', function (e, snap, method) {
 });
 
 ipcMain.on('plotViz', function (e, name, snap, method) {
-    child = runR('plotViz.R', ["./data/" + snap, name, method]);
+    child = runR('./Rscripts/plotViz.R', ["./data/" + snap, name, method]);
     child.on('exit', function (code) {
         e.reply('plotViz:reply');
         message = code ? 'Failure' : 'Success';
@@ -223,7 +178,7 @@ ipcMain.on('plotViz', function (e, name, snap, method) {
 });
 
 ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
-    child = runR('plotFeatureSingle.R', ["./data/" + snap, name, method]);
+    child = runR('./Rscripts/plotFeatureSingle.R', ["./data/" + snap, name, method]);
     child.on('exit', function (code) {
         e.reply('plotFeatureSingle:reply');
         message = code ? 'Failure' : 'Success';
@@ -238,7 +193,7 @@ ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
-    child = runR('geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+    child = runR('./Rscripts/geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
     child.on('exit', function (code) {
         e.reply('geneBasedAnnotation:reply');
         message = code ? 'Failure' : 'Success';
@@ -253,7 +208,7 @@ ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
 });
 
 ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
-    child = runR('rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+    child = runR('./Rscripts/rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
     child.on('exit', function (code) {
         e.reply('rnaBasedAnnotation:reply');
         message = code ? 'Failure' : 'Success';
@@ -268,7 +223,7 @@ ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
 });
 
 ipcMain.on('hereticalClustering', function (e, name, snap) {
-    child = runR('hereticalClustering.R', ["./data/" + snap, name]);
+    child = runR('./Rscripts/hereticalClustering.R', ["./data/" + snap, name]);
     child.on('exit', function (code) {
         e.reply('hereticalClustering:reply');
         message = code ? 'Failure' : 'Success';
