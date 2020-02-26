@@ -58,18 +58,7 @@ ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
 });
 
 ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
-    child = runR('./Rscripts/primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist]);
-    var scriptOutput = "";
-
-    child.stdout.setEncoding('utf8');
-    child.stdout.on('data', function(data) {
-        //Here is where the output goes
-
-        console.log('stdout: ' + data);
-
-        data=data.toString();
-        scriptOutput+=data;
-    });
+    child = runR('./Rscripts/primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist], e);
     child.on('exit', function (code) {
         e.reply('primary:reply');
         message = code ? 'Failure' : 'Success';
@@ -248,7 +237,7 @@ ipcMain.on('hereticalClustering', function (e, name, snap) {
     });
 });
 
-function runR(script, params) {
+function runR(script, params, event) {
     let RCall = [script];
     for (let i = 0; i < params.length; i++) {
         RCall.push(params[i]);
@@ -258,6 +247,28 @@ function runR(script, params) {
 
     const step_name = RCall[0].substring(0, RCall[0].indexOf('.'));
     console.log("Step:"+step_name);
+
+    var scriptOutput = "";
+
+    R.stdout.setEncoding('utf8');
+    R.stdout.on('data', function(data) {
+        console.log('stdout: ' + data);
+
+        data=data.toString();
+        scriptOutput+=data;
+        event.reply("console:log", data);
+    });
+
+    R.stderr.setEncoding('utf8');
+    R.stderr.on('data', function(data) {
+        console.log('stderr: ' + data);
+
+        data=data.toString();
+        scriptOutput+=data;
+        event.reply("console:log", data);
+    });
+
+    console.log(scriptOutput);
 
     R.on('exit',function(code){
         console.log('got exit code: '+code);
@@ -345,24 +356,6 @@ function runR(script, params) {
         return null;
     });
     return R;
-}
-
-function setup_R_job(input){
-    const Rfile = 'mouseBrain.R';
-    const RCall = [Rfile, input];
-    const R  = spawn('Rscript', RCall);
-
-    R.on('exit',function(code){
-        console.log('got exit code: '+code);
-        if(code===1){
-            // do something special
-            console.log("failure")
-        }else{
-            console.log("success")
-        }
-        return null;
-    });
-    return null;
 }
 
 //Create menu template

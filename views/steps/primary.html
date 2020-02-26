@@ -87,6 +87,7 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div id ="myDiv"></div>
 </div>
 
 </body>
@@ -106,6 +107,9 @@
         const bl = document.querySelector('#item4').value;
         loading();
         ipcRenderer.send('primary', name, snap.replace(/^.*[\\\/]/, ''), csv.replace(/^.*[\\\/]/, ''), bl.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        })
         ipcRenderer.on('primary:reply', (e) => {
             unLoading();
         })
