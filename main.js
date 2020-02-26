@@ -232,6 +232,21 @@ ipcMain.on('hereticalClustering', function (e, name, snap) {
     });
 });
 
+function createCellByPeak(snap, peak_combined, event) {
+    let snap_call = ["snap-add-pmat"];
+    snap_call.push("--snap-file " + snap);
+    snap_call.push("--peak-file " + peak_combined);
+
+    console.log(snap_call);
+    const snap_peak = spawn("snaptools", snap_call);
+
+    snap_peak.on("exit", function(code){
+        console.log('got exit code: ' + code);
+    });
+
+    return snap_peak;
+}
+
 function runR(script, params, event) {
     let RCall = [script];
     for (let i = 0; i < params.length; i++) {
