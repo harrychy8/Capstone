@@ -5,6 +5,7 @@ library(SnapATAC);
 x.sp = readRDS(args[1])
 
 #What do i do about the path to snaptools and path to macs?
+#Can I add the table that is generated with peak.gr to save?
 
     clusters.sel = names(table(x.sp@cluster))[which(table(x.sp@cluster) > 200)];
     peaks.ls = mclapply(seq(clusters.sel), function(i){
@@ -28,7 +29,6 @@ peak.gr.ls = lapply(peaks.names, function(x){
     GRanges(peak.df[,1], IRanges(peak.df[,2], peak.df[,3]))
   })
 peak.gr = reduce(Reduce(c, peak.gr.ls));
-peak.gr
 
 peaks.df = as.data.frame(peak.gr)[,1:3];
 write.table(peaks.df,file = "peaks.combined.bed",append=FALSE,
