@@ -44,6 +44,19 @@ ipcMain.on('r:step1', function (e, input) {
     e.reply('r:step1:reply');
 });
 
+//catch fastq > snap
+ipcMain.on('snaptools', function (e, fa, fastq1, fastq2, aligner, snap) {
+    console.log(e + fa + fastq1 + fastq2+  aligner+ snap);
+    let child = createBam(fa, fastq1, fastq2, aligner);
+    child.on('exit', function (code) {
+        console.log("executing next process");
+        let child = createSnap(snap, fastq1, fastq2);
+        child.on('exit', function (code) {
+            e.reply('snaptools:reply');
+        });
+    });
+});
+
 //Catch Barcode selection
 ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
     let child = runR('./Rscripts/barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name], e);
@@ -307,7 +320,7 @@ ipcMain.on('greatAnalysis', function (e, snap) {
     });
 });
 
-function createCellByPeak(snap, peak_combined, event) {
+function createCellByPeak(snap, peak_combined) {
     let snap_call = ["snap-add-pmat"];
     snap_call.push("--snap-file " + snap);
     snap_call.push("--peak-file " + peak_combined);
@@ -320,6 +333,81 @@ function createCellByPeak(snap, peak_combined, event) {
     });
 
     return snap_peak;
+}
+
+function createBam(fa, fastq1, fastq2, aligner) {
+    const child = spawn("snaptools", ['align-paired-end',
+	'--input-reference='+fa,
+	'--input-fastq1='+fastq1,
+	'--input-fastq2='+fastq2,
+	'--output-bam='+fastq1+fastq2+'.bam',
+	'--aligner=bwa',
+	'--path-to-aligner='+aligner,
+	'--read-fastq-command=gzcat',
+	'--min-cov=0',
+	'--num-threads=5',
+	'--if-sort=True',
+	'--tmp-folder=./',
+    '--overwrite=TRUE']);
+
+    let scriptOutput = "";
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function (data) {
+        console.log('stdout: ' + data);
+
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+    child.stderr.setEncoding('utf8');
+    child.stderr.on('data', function (data) {
+        console.log('stderr: ' + data);
+
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+    console.log(scriptOutput);
+
+    return child;
+}
+function createSnap(snap, fastq1, fastq2) {
+    const child = spawn("snaptools", ['snap-pre',
+	'--input-file='+fastq1+fastq2+'.bam',
+	'--output-snap='+snap+'.snap',
+	'--genome-name=mm10',
+	'--genome-size=mm10.chrom.size',
+	'--min-mapq=30',
+	'--min-flen=0',
+	'--max-flen=1000',
+	'--keep-chrm=TRUE',
+	'--keep-single=TRUE',
+	'--keep-secondary=False ',
+	'--overwrite=True',
+	'--max-num=1000000',
+	'--min-cov=100',
+    '--verbose=True']);
+
+    let scriptOutput = "";
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function (data) {
+        console.log('stdout: ' + data);
+
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+    child.stderr.setEncoding('utf8');
+    child.stderr.on('data', function (data) {
+        console.log('stderr: ' + data);
+
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+    console.log(scriptOutput);
+
+    return child;
 }
 
 function runR(script, params, event) {

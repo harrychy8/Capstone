@@ -38,8 +38,11 @@
 
 <div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
     <form>
+        <br>
+        <br>
+        <br>
         <div>
-            <label>Enter Name</label>
+            <label>Enter Name For Snap (.snap)</label>
             <label for="item"></label><input type="text" id="item" autofocus>
         </div>
         <br>
@@ -65,6 +68,14 @@
             </label>
             <br>
             <input id="item4" type="file"/>
+        </div>
+        <br>
+        <div>
+            <label>
+                Upload an input reference (.fa)
+            </label>
+            <br>
+            <input id="item5" type="file"/>
         </div>
         <br><br>
         <button class="waves-effect waves-light btn" type="submit">Generate Snap File</button>
@@ -100,16 +111,18 @@
 
     async function submitForm(e) {
         e.preventDefault();
-        const name = document.querySelector('#item').value;
-        const snap = document.querySelector('#item2').value;
-        const csv = document.querySelector('#item3').value;
-        const bl = document.querySelector('#item4').value;
+        const snap = document.querySelector('#item').value;
+        const fastq1 = document.querySelector('#item2').value;
+        const fastq2 = document.querySelector('#item3').value;
+        const aligner = document.querySelector('#item4').value;
+        const fa = document.querySelector('#item5').value;
         loading();
-        ipcRenderer.send('primary', name, snap.replace(/^.*[\\\/]/, ''), csv.replace(/^.*[\\\/]/, ''), bl.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.send('snaptools', fa.replace(/^.*[\\\/]/, ''), fastq1.replace(/^.*[\\\/]/, ''),
+            fastq2.replace(/^.*[\\\/]/, ''), aligner.replace(/^.*[\\\/]/, ''), snap.replace(/^.*[\\\/]/, ''));
         ipcRenderer.on('console:log', (e, arg) => {
             document.getElementById("myDiv").innerText = arg;
         })
-        ipcRenderer.on('primary:reply', (e) => {
+        ipcRenderer.on('snaptools:reply', (e) => {
             unLoading();
         })
     }
