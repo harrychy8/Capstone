@@ -356,24 +356,24 @@ function runR(script, params) {
                     
                 }
                 else {
-                    if (RCall[3] === undefined){
-                        // do nothing;
-                    } else {
-                        var filename = "/"+RCall[3]+"."+step_name;
-                        filename = filename+".png";
 
-                        plotWindow = new BrowserWindow({
-                            useContentSize: true
-                        });
-                        
-                        plotWindow.loadURL(url.format({
-                            pathname: path.join(output_path, filename),
-                            protocol: 'file:',
-                            slashes: true
-                        }));
+                    var filename = "."+step_name+".png";
+
+                    if (step_name === 'hereticalClustering'){
+                        filename = "/"+RCall[2]+filename;
+                    } else {
+                        filename = "/"+RCall[3]+filename;
                     }
+                    plotWindow = new BrowserWindow({
+                        useContentSize: true
+                    });
+                    
+                    plotWindow.loadURL(url.format({
+                        pathname: path.join(output_path, filename),
+                        protocol: 'file:',
+                        slashes: true
+                    }));
                 }
-                
             }
         }
         return null;

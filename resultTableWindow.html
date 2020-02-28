@@ -43,49 +43,77 @@
      
     </style>
 </head>
-<body>
+<body onload=updateResults()>
 
 <div class="datasets">
     <div class = "center-plase">
-    <table>
-    <tr>
-        <th>File</th>
-        <th>Status</th>
-        <th>Graphs</th>
-        <th>Time</th>
-    </tr>
-    <tr>
-        <td>jaccard1.temp</td>
-        <td style="color:green">Success</td>
-        <td>
-            <div id="squares">
-                <div id="1" class="centered-text">Graph1</div>
-                <div id="1" class="centered-text">Graph2</div>
-                <div id="3" class="centered-text">Graph3</div>
-                <div id="4" class="centered-text">Graph4</div>
-                <div id="5" class="centered-text">Graph5</div>
-            </div>   
-        </td>
-        <td>24-09-19</td>
-    </tr>
-    <tr>
-        <td>jaccard2.temp</td>
-        <td style="color:red">Fail</td>
-        <td>
-            <div id="squares">
-                <div id="1" class="centered-text">Graph1</div>
-                <div id="1" class="centered-text">Graph2</div>
-                <div id="3" class="centered-text">Graph3</div>
-                <div id="4" class="centered-text">Graph4</div>
-                <div id="5" class="centered-text">Graph5</div>
-            </div>
-        </td>
-        <td>24-09-19</td>
-    </tr>
+    <table id="insertRuns">
+        <tr>
+            <th>Process</th>
+            <th>Status</th>
+            <th>Graphs</th>
+            <th>Time</th>
+        </tr>
     </table>
 </div>
     <button class="button" id = "toMain" onclick="window.location.href='./mainWindow.html'">Back</button>
 </div>
 
 </body>
+
+<script>
+   
+    function updateResults(){
+
+        const fs = require('fs');
+
+        const { BrowserWindow } = require('electron');
+
+        var directory = './output';
+
+        var file_names = [];
+        var table = document.getElementById("insertRuns");
+        var process_names = document.getElementsByClassName("process-name");
+
+        function addRun(name) {
+            let newRow = table.insertRow(1);
+            let newCell = newRow.insertCell(0);
+            let newText = document.createTextNode(name);
+            let graph = document.createElement('button')
+            let graph_text = document.createTextNode("barcode"); 
+            let newCell2 = newRow.insertCell(1);
+            graph.appendChild(graph_text); 
+            graph.className = "btn";
+            graph.addEventListener("click", function(){
+                window.location.href = './barcodeSelectionGraph.html';
+            });
+            newCell.appendChild(newText);
+            newCell2.appendChild(graph);
+        }
+
+        fs.readdir(directory, (err, files) => {
+            if(err) {
+            // handle error; e.g., folder didn't exist
+            }
+            // 'files' is an array of the files found in the directory
+            files.forEach(function (file) {
+            // Do whatever you want to do with the file
+                const filename = file.split(".")[0]
+                file_names.push(filename);
+                //alert(filename)
+            });
+
+            var filtered_names = file_names.filter(function (element) {
+                return element != "";
+            });
+
+            for(i = 0;i < filtered_names.length; i++){
+                addRun(filtered_names[i]);
+            }
+        });
+
+    }
+
+</script>
+
 </html>
