@@ -232,6 +232,81 @@ ipcMain.on('hereticalClustering', function (e, name, snap) {
     });
 });
 
+ipcMain.on('identifyPeaks', function (e, snap) {
+    let child = runR('./Rscripts/identifyPeaks.R', ["./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('identifyPeaks:reply');
+        let message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title: 'Result',
+            message: 'Process has been completed',
+            detail: message,
+        })
+    });
+});
+
+ipcMain.on('addCellByPeak', function (e, snap) {
+    let child = runR('./Rscripts/addCellByPeak.R', ["./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('addCellByPeak:reply');
+        let message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title: 'Result',
+            message: 'Process has been completed',
+            detail: message,
+        })
+    });
+});
+
+ipcMain.on('identifyDARs', function (e, snap) {
+    let child = runR('./Rscripts/identifyDARs.R', ["./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('identifyDARs:reply');
+        let message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title: 'Result',
+            message: 'Process has been completed',
+            detail: message,
+        })
+    });
+});
+
+ipcMain.on('motifAnalysis', function (e, snap) {
+    let child = runR('./Rscripts/motifAnalysis.R', ["./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('motifAnalysis:reply');
+        let message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title: 'Result',
+            message: 'Process has been completed',
+            detail: message,
+        })
+    });
+});
+
+ipcMain.on('greatAnalysis', function (e, snap) {
+    let child = runR('./Rscripts/greatAnalysis.R', ["./data/" + snap]);
+    child.on('exit', function (code) {
+        e.reply('greatAnalysis:reply');
+        let message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title: 'Result',
+            message: 'Process has been completed',
+            detail: message,
+        })
+    });
+});
+
 function createCellByPeak(snap, peak_combined, event) {
     let snap_call = ["snap-add-pmat"];
     snap_call.push("--snap-file " + snap);
@@ -240,7 +315,7 @@ function createCellByPeak(snap, peak_combined, event) {
     console.log(snap_call);
     const snap_peak = spawn("snaptools", snap_call);
 
-    snap_peak.on("exit", function(code){
+    snap_peak.on("exit", function (code) {
         console.log('got exit code: ' + code);
     });
 
