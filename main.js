@@ -46,7 +46,7 @@ ipcMain.on('r:step1', function (e, input) {
 
 //Catch Barcode selection
 ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
-    let child = runR('./Rscripts/barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name]);
+    let child = runR('./Rscripts/barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name], e);
     child.on('exit', function () {
         e.reply('barcodeSelection:reply');
     });
@@ -68,7 +68,7 @@ ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
 });
 
 ipcMain.on('dimReduction', function (e, snap) {
-    let child = runR('./Rscripts/dimReduction.R', ["./data/" + snap]);
+    let child = runR('./Rscripts/dimReduction.R', ["./data/" + snap], e);
     child.on('exit', function (code) {
         e.reply('dimReduction:reply');
         let message = code ? 'Failure' : 'Success';
@@ -83,7 +83,7 @@ ipcMain.on('dimReduction', function (e, snap) {
 });
 
 ipcMain.on('plotDimReductPW', function (e, name, snap) {
-    let child = runR('./Rscripts/plotDimReductPW.R', [name, "./data/" + snap]);
+    let child = runR('./Rscripts/plotDimReductPW.R', [name, "./data/" + snap],e);
     child.on('exit', function (code) {
         e.reply('plotDimReductPW:reply');
         let message = code ? 'Failure' : 'Success';
@@ -98,7 +98,7 @@ ipcMain.on('plotDimReductPW', function (e, name, snap) {
 });
 
 ipcMain.on('GBclustering', function (e, snap) {
-    let child = runR('./Rscripts/GBclustering.R', ["./data/" + snap]);
+    let child = runR('./Rscripts/GBclustering.R', ["./data/" + snap], e);
     child.on('exit', function (code) {
         e.reply('GBclustering:reply');
         let message = code ? 'Failure' : 'Success';
@@ -113,7 +113,7 @@ ipcMain.on('GBclustering', function (e, snap) {
 });
 
 ipcMain.on('visualization', function (e, name, snap) {
-    let child = runR('./Rscripts/visualization.R', [name, "./data/" + snap]);
+    let child = runR('./Rscripts/visualization.R', [name, "./data/" + snap], e);
     child.on('exit', function (code) {
         e.reply('visualization:reply');
         let message = code ? 'Failure' : 'Success';
@@ -128,7 +128,7 @@ ipcMain.on('visualization', function (e, name, snap) {
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, name, snap, gene) {
-    let child = runR('./Rscripts/geneBasedAnnotation.R', [name, "./data/" + snap, gene]);
+    let child = runR('./Rscripts/geneBasedAnnotation.R', [name, "./data/" + snap, gene], e);
     child.on('exit', function (code) {
         e.reply('geneBasedAnnotation:reply');
         let message = code ? 'Failure' : 'Success';
@@ -158,7 +158,7 @@ ipcMain.on('runViz', function (e, snap, method) {
 });
 
 ipcMain.on('plotViz', function (e, name, snap, method) {
-    let child = runR('./Rscripts/plotViz.R', ["./data/" + snap, name, method]);
+    let child = runR('./Rscripts/plotViz.R', ["./data/" + snap, name, method], e);
     child.on('exit', function (code) {
         e.reply('plotViz:reply');
         let message = code ? 'Failure' : 'Success';
@@ -173,7 +173,7 @@ ipcMain.on('plotViz', function (e, name, snap, method) {
 });
 
 ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
-    let child = runR('./Rscripts/plotFeatureSingle.R', ["./data/" + snap, name, method]);
+    let child = runR('./Rscripts/plotFeatureSingle.R', ["./data/" + snap, name, method], e);
     child.on('exit', function (code) {
         e.reply('plotFeatureSingle:reply');
         let message = code ? 'Failure' : 'Success';
@@ -188,7 +188,7 @@ ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
-    let child = runR('./Rscripts/geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+    let child = runR('./Rscripts/geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table], e);
     child.on('exit', function (code) {
         e.reply('geneBasedAnnotation:reply');
         let message = code ? 'Failure' : 'Success';
@@ -203,7 +203,7 @@ ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
 });
 
 ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
-    let child = runR('./Rscripts/rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table]);
+    let child = runR('./Rscripts/rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table], e);
     child.on('exit', function (code) {
         e.reply('rnaBasedAnnotation:reply');
         let message = code ? 'Failure' : 'Success';
@@ -218,7 +218,7 @@ ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
 });
 
 ipcMain.on('hereticalClustering', function (e, name, snap) {
-    let child = runR('./Rscripts/hereticalClustering.R', ["./data/" + snap, name]);
+    let child = runR('./Rscripts/hereticalClustering.R', ["./data/" + snap, name], e);
     child.on('exit', function (code) {
         e.reply('hereticalClustering:reply');
         let message = code ? 'Failure' : 'Success';
@@ -233,7 +233,7 @@ ipcMain.on('hereticalClustering', function (e, name, snap) {
 });
 
 ipcMain.on('identifyPeaks', function (e, snap) {
-    let child = runR('./Rscripts/identifyPeaks.R', ["./data/" + snap]);
+    let child = runR('./Rscripts/identifyPeaks.R', ["./data/" + snap], e);
     child.on('exit', function (code) {
         e.reply('identifyPeaks:reply');
         let message = code ? 'Failure' : 'Success';
@@ -248,7 +248,7 @@ ipcMain.on('identifyPeaks', function (e, snap) {
 });
 
 ipcMain.on('addCellByPeak', function (e, snap) {
-    let child = runR('./Rscripts/addCellByPeak.R', ["./data/" + snap]);
+    let child = runR('./Rscripts/addCellByPeak.R', ["./data/" + snap], e);
     child.on('exit', function (code) {
         e.reply('addCellByPeak:reply');
         let message = code ? 'Failure' : 'Success';
@@ -263,7 +263,7 @@ ipcMain.on('addCellByPeak', function (e, snap) {
 });
 
 ipcMain.on('identifyDARs', function (e, snap) {
-    let child = runR('./Rscripts/identifyDARs.R', ["./data/" + snap]);
+    let child = runR('./Rscripts/identifyDARs.R', ["./data/" + snap], e);
     child.on('exit', function (code) {
         e.reply('identifyDARs:reply');
         let message = code ? 'Failure' : 'Success';
@@ -278,7 +278,7 @@ ipcMain.on('identifyDARs', function (e, snap) {
 });
 
 ipcMain.on('motifAnalysis', function (e, snap) {
-    let child = runR('./Rscripts/motifAnalysis.R', ["./data/" + snap]);
+    let child = runR('./Rscripts/motifAnalysis.R', ["./data/" + snap], e);
     child.on('exit', function (code) {
         e.reply('motifAnalysis:reply');
         let message = code ? 'Failure' : 'Success';
@@ -293,7 +293,7 @@ ipcMain.on('motifAnalysis', function (e, snap) {
 });
 
 ipcMain.on('greatAnalysis', function (e, snap) {
-    let child = runR('./Rscripts/greatAnalysis.R', ["./data/" + snap]);
+    let child = runR('./Rscripts/greatAnalysis.R', ["./data/" + snap], e);
     child.on('exit', function (code) {
         e.reply('greatAnalysis:reply');
         let message = code ? 'Failure' : 'Success';

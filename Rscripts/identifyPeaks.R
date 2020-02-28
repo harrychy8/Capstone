@@ -2,6 +2,7 @@
     # call peaks for all cluster with more than 100 cells
 args <- commandArgs(trailingOnly = T)
 library(SnapATAC);
+library(parallel);
 x.sp = readRDS(args[1])
 
 #What do i do about the path to snaptools and path to macs?
@@ -17,11 +18,11 @@ x.sp = readRDS(args[1])
 	      path.to.macs="/usr/local/bin/macs2",
         gsize="hs", # mm, hs, etc
         buffer.size=500, 
-        num.cores=8,
+        num.cores=7,
         macs.options="--nomodel --shift 100 --ext 200 --qval 5e-2 -B --SPMR",
         tmp.folder=tempdir()
    );
- }, mc.cores=5);
+ }, mc.cores=4);
 # assuming all .narrowPeak files in the current folder are generated from the clusters
 peaks.names = system("ls | grep narrowPeak", intern=TRUE);
 peak.gr.ls = lapply(peaks.names, function(x){
