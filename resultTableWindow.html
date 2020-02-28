@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <style>
+        
+        table {
+        vertical-align: middle;
+        border-collapse: collapse;
+        }
+
+        td, th {
+        text-align: left;
+        padding: 8px;
+        }
+
+        tr:nth-child(even) {
+        background-color: #e8eaf6;
+        }
+        .center-plase {
+            margin: 1% 5%;
+        }
+        #squares div {
+            display: block;
+            float: left;
+
+            width: 75px;
+            height: 25px;
+            background:#3f51b5;
+            border-radius: 5px;
+
+            margin-right: 5px;
+        }
+        .centered-text {
+            text-align: center;
+            vertical-align: middle;
+            color: #e8eaf6;
+        }
+        .button{background-color:#3f51b5; width: 100px; color: #e8eaf6; float:right; margin-right:5%} 
+        .button:hover{background-color:#283593;}
+        .button:active{background-color:#3f51b5;}
+        .button:focus{background-color:#3f51b5;}
+     
+    </style>
+</head>
+<body onload=updateResults()>
+
+<div class="datasets">
+    <div class = "center-plase">
+    <table id="insertRuns">
+        <tr>
+            <th>Process</th>
+            <th>Status</th>
+            <th>Graphs</th>
+            <th>Time</th>
+        </tr>
+    </table>
+</div>
+    <button class="button" id = "toMain" onclick="window.location.href='./mainWindow.html'">Back</button>
+</div>
+
+</body>
+
+<script>
+   
+    function updateResults(){
+
+        const fs = require('fs');
+
+        const { BrowserWindow } = require('electron');
+
+        var directory = './output';
+
+        var file_names = [];
+        var table = document.getElementById("insertRuns");
+        var process_names = document.getElementsByClassName("process-name");
+
+        function addRun(name) {
+            let newRow = table.insertRow(1);
+            let newCell = newRow.insertCell(0);
+            let newText = document.createTextNode(name);
+            let graph = document.createElement('button')
+            let graph_text = document.createTextNode("barcode"); 
+            let newCell2 = newRow.insertCell(1);
+            graph.appendChild(graph_text); 
+            graph.className = "btn";
+            graph.addEventListener("click", function(){
+                window.location.href = './barcodeSelectionGraph.html';
+            });
+            newCell.appendChild(newText);
+            newCell2.appendChild(graph);
+        }
+
+        fs.readdir(directory, (err, files) => {
+            if(err) {
+            // handle error; e.g., folder didn't exist
+            }
+            // 'files' is an array of the files found in the directory
+            files.forEach(function (file) {
+            // Do whatever you want to do with the file
+                const filename = file.split(".")[0]
+                file_names.push(filename);
+                //alert(filename)
+            });
+
+            var filtered_names = file_names.filter(function (element) {
+                return element != "";
+            });
+
+            for(i = 0;i < filtered_names.length; i++){
+                addRun(filtered_names[i]);
+            }
+        });
+
+    }
+
+</script>
+
+</html>
