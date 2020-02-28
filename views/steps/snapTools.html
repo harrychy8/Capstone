@@ -29,9 +29,9 @@
         <ul class="left">
             <li onclick="window.history.back()"><a class="waves-effect waves-light btn">&lt; Previous</a></li>
         </ul>
-        <a class="brand-logo center">Primary Step</a>
+        <a class="brand-logo center">FastQ > Snap</a>
         <ul class="right">
-            <li onclick="window.location.href = './dimReduction.html'"><a class="waves-effect waves-light btn">Next &gt;</a></li>
+            <li onclick="window.location.href = './primary.html'"><a class="waves-effect waves-light btn">Next &gt;</a></li>
         </ul>
     </div>
 </nav>
@@ -45,7 +45,7 @@
         <br>
         <div>
             <label>
-                Update your .snap dataset below:
+                Upload your first fastq (.fastq.gz) file:
             </label>
             <br>
             <input id="item2" type="file"/>
@@ -53,7 +53,7 @@
         <br>
         <div>
             <label>
-                Update your .csv dataset below:
+                Upload your second fastq (.fastq.gz) file:
             </label>
             <br>
             <input id="item3" type="file"/>
@@ -61,13 +61,13 @@
         <br>
         <div>
             <label>
-                Update your .gz blacklist below:
+                Update your path to bwa aligner
             </label>
             <br>
             <input id="item4" type="file"/>
         </div>
         <br><br>
-        <button class="waves-effect waves-light btn" type="submit">Run R</button>
+        <button class="waves-effect waves-light btn" type="submit">Generate Snap File</button>
     </form>
     <br>
     <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Steps</button>

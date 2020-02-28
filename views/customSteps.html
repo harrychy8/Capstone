@@ -7,11 +7,17 @@
     <style>
         .button {
             background-color: #3f51b5;
-            width: 150px;
+            width: 175px;
+            font-size: small;
+            height: 75px;
+            min-height: 0px;
+            line-height: 20px;
+            padding-top: 8px;
+            padding-bottom: 8px;
         }
 
         #Primary {
-            width: 320px;
+            width: 370px;
         }
 
         .button:hover {
@@ -32,7 +38,7 @@
 <nav>
     <div class="nav-wrapper" style="background-color:#3f51b5;">
         <ul class="left">
-            <li onclick=mainWindow()><a class="waves-effect waves-light btn"> Previous</a></li>
+            <li onclick=mainWindow()><a class="waves-effect waves-light btn"> &lt; Previous</a></li>
         </ul>
         <a class="brand-logo center">Custom Steps</a>
     </div>
@@ -55,72 +61,72 @@
         <div class="row">
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/dimReduction.html'">5
+                        onclick="window.location.href = './steps/dimReduction.html'"><div>Dimensionality<br/>Reduction</div>
                 </button>
             </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/plotDimReductPW.html'">6
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col sa6">
-                <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/GBclustering.html'">7
-                </button>
-            </div>
-            <div class="col sa6">
-                <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/visualization.html'">8
+                        onclick="window.location.href = './steps/plotDimReductPW.html'">Significant Components
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/annotation.html'">9
+                        onclick="window.location.href = './steps/GBclustering.html'">Graph Based Clustering
                 </button>
             </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/hereticalClustering.html'">10
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col sa6">
-                <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/identifyPeaks.html'">11
-                </button>
-            </div>
-            <div class="col sa6">
-                <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/addCellByPeak.html'">12
+                        onclick="window.location.href = './steps/visualization.html'">Visualization
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/identifyDARs.html'">13
+                        onclick="window.location.href = './steps/annotation.html'">Annotation
                 </button>
             </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/motifAnalysis.html'">14
+                        onclick="window.location.href = './steps/hereticalClustering.html'">Heretical Clustering
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/greatAnalysis.html'">15
+                        onclick="window.location.href = './steps/identifyPeaks.html'">Identify Peaks
                 </button>
             </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="">16
+                        onclick="window.location.href = './steps/addCellByPeak.html'">Add Cell By Peak
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick="window.location.href = './steps/identifyDARs.html'">Identify DARS
+                </button>
+            </div>
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick="window.location.href = './steps/motifAnalysis.html'">Motif Analysis
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick="window.location.href = './steps/greatAnalysis.html'">Great Analysis
+                </button>
+            </div>
+            <div class="col sa6">
+                <button class="waves-effect waves-light btn-large button"
+                        onclick="window.location.href = './steps/snapTools.html'">FastQ > Snap
                 </button>
             </div>
         </div>
@@ -131,7 +137,7 @@
 
 <script>
     function mainWindow() {
-        window.location.href = '../mainWindow.html';
+        window.location.href = './mainWindow.html';
     }
 </script>
 </html>
