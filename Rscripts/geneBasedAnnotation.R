@@ -1,6 +1,7 @@
 args <- commandArgs(trailingOnly = T)
 
 library(SnapATAC);
+library(GenomicRanges);
 x.sp = readRDS(args[1])
 
 genes = read.table(args[2]);

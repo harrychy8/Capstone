@@ -2,12 +2,24 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link rel="stylesheet" href="loader.css">
+    <link rel="stylesheet" href="../../loader.css">
     <style>
-        .button{background-color:#3f51b5; width: 300px}
-        .button:hover{background-color:#283593;}
-        .button:active{background-color:#3f51b5;}
-        .button:focus{background-color:#3f51b5;}
+        .button {
+            background-color: #3f51b5;
+            width: 300px
+        }
+
+        .button:hover {
+            background-color: #283593;
+        }
+
+        .button:active {
+            background-color: #3f51b5;
+        }
+
+        .button:focus {
+            background-color: #3f51b5;
+        }
 
     </style>
 </head>
@@ -15,11 +27,12 @@
 <nav>
     <div class="nav-wrapper" style="background-color:#3f51b5;">
         <ul class="left">
-            <li onclick=mainWindow()><a class="waves-effect waves-light btn">< Previous</a></li>
+            <li onclick="window.history.back()"><a class="waves-effect waves-light btn">< Previous</a></li>
         </ul>
-        <a class="brand-logo center">Barcode Selection</a>
+        <a class="brand-logo center">Primary Step</a>
         <ul class="right">
-            <li onclick=next()><a class="waves-effect waves-light btn">Next ></a></li>
+            <li onclick="window.location.href = './dimReduction.html'"><a class="waves-effect waves-light btn">Next
+                ></a></li>
         </ul>
     </div>
 </nav>
@@ -46,9 +59,19 @@
             <br>
             <input id="item3" type="file"/>
         </div>
+        <br>
+        <div>
+            <label>
+                Update your .gz blacklist below:
+            </label>
+            <br>
+            <input id="item4" type="file"/>
+        </div>
         <br><br>
         <button class="waves-effect waves-light btn" type="submit">Run R</button>
     </form>
+    <br>
+    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Steps</button>
 </div>
 
 <div class="cssload-wrap">
@@ -64,6 +87,7 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div id ="myDiv"></div>
 </div>
 
 </body>
@@ -80,10 +104,13 @@
         const name = document.querySelector('#item').value;
         const snap = document.querySelector('#item2').value;
         const csv = document.querySelector('#item3').value;
+        const bl = document.querySelector('#item4').value;
         loading();
-        ipcRenderer.send('barcodeSelection', name, snap.replace(/^.*[\\\/]/, ''), csv.replace(/^.*[\\\/]/, ''));
-        //ipcRenderer.send('r:step1', name);
-        ipcRenderer.on('barcodeSelection:reply', (e) => {
+        ipcRenderer.send('primary', name, snap.replace(/^.*[\\\/]/, ''), csv.replace(/^.*[\\\/]/, ''), bl.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        })
+        ipcRenderer.on('primary:reply', (e) => {
             unLoading();
         })
     }
@@ -96,14 +123,8 @@
     function unLoading() {
         document.querySelector('.cssload-wrap').style.display = 'none';
     }
-
-    function mainWindow() {
-        window.location.href = './mainWindow.html';
+    function customSteps() {
+        window.location.href = '../customSteps.html';
     }
-
-    function next() {
-        window.location.href = './barcodeSelection.html';
-    }
-
 </script>
 </html>

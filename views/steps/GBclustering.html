@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link rel="stylesheet" href="loader.css">
+    <link rel="stylesheet" href="../../loader.css">
     <style>
         .button {
             background-color: #3f51b5;
@@ -29,9 +29,9 @@
         <ul class="left">
             <li onclick="window.history.back()"><a class="waves-effect waves-light btn">< Previous</a></li>
         </ul>
-        <a class="brand-logo center">Significant Components</a>
+        <a class="brand-logo center">Graph-based Clustering</a>
         <ul class="right">
-            <li onclick="window.location.href = './GBclustering.html'"><a class="waves-effect waves-light btn">Next
+            <li onclick="window.location.href = './visualization.html'"><a class="waves-effect waves-light btn">Next
                 ></a></li>
         </ul>
     </div>
@@ -40,16 +40,11 @@
 <div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
     <form>
         <div>
-            <label>Enter Name</label>
-            <label for="item"></label><input type="text" id="item" autofocus>
-        </div>
-        <br>
-        <div>
             <label>
                 Choose your snap object below:
             </label>
             <br>
-            <input id="item2" type="file"/>
+            <input id="item" type="file"/>
         </div>
         <br><br>
         <button class="waves-effect waves-light btn" type="submit">Run R</button>
@@ -84,11 +79,10 @@
 
     async function submitForm(e) {
         e.preventDefault();
-        const name = document.querySelector('#item').value;
-        const snap = document.querySelector('#item2').value;
+        const snap = document.querySelector('#item').value;
         loading();
-        ipcRenderer.send('plotDimReductPW', name, snap.replace(/^.*[\\\/]/, ''));
-        ipcRenderer.on('plotDimReductPW:reply', (e) => {
+        ipcRenderer.send('GBclustering', snap.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.on('GBclustering:reply', (e) => {
             unLoading();
         })
     }

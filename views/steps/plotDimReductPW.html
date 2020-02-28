@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="../../loader.css">
+    <style>
+        .button {
+            background-color: #3f51b5;
+            width: 300px
+        }
+
+        .button:hover {
+            background-color: #283593;
+        }
+
+        .button:active {
+            background-color: #3f51b5;
+        }
+
+        .button:focus {
+            background-color: #3f51b5;
+        }
+
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper" style="background-color:#3f51b5;">
+        <ul class="left">
+            <li onclick="window.history.back()"><a class="waves-effect waves-light btn">< Previous</a></li>
+        </ul>
+        <a class="brand-logo center">Significant Components</a>
+        <ul class="right">
+            <li onclick="window.location.href = './GBclustering.html'"><a class="waves-effect waves-light btn">Next
+                ></a></li>
+        </ul>
+    </div>
+</nav>
+
+<div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+    <form>
+        <div>
+            <label>Enter Name</label>
+            <label for="item"></label><input type="text" id="item" autofocus>
+        </div>
+        <br>
+        <div>
+            <label>
+                Choose your snap object below:
+            </label>
+            <br>
+            <input id="item2" type="file"/>
+        </div>
+        <br><br>
+        <button class="waves-effect waves-light btn" type="submit">Run R</button>
+    </form>
+    <br>
+    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Steps</button>
+</div>
+
+<div class="cssload-wrap">
+    <div class="cssload-container">
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+        <span class="cssload-dots"></span>
+    </div>
+</div>
+
+</body>
+
+<script>
+
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    document.querySelector('form').addEventListener('submit', submitForm);
+    console.log(document.querySelector('.cssload-wrap'));
+
+    async function submitForm(e) {
+        e.preventDefault();
+        const name = document.querySelector('#item').value;
+        const snap = document.querySelector('#item2').value;
+        loading();
+        ipcRenderer.send('plotDimReductPW', name, snap.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.on('plotDimReductPW:reply', (e) => {
+            unLoading();
+        })
+    }
+
+
+    function loading() {
+        document.querySelector('.cssload-wrap').style.display = 'block';
+    }
+    function unLoading() {
+        document.querySelector('.cssload-wrap').style.display = 'none';
+    }
+    function customSteps() {
+        window.location.href = './customSteps.html';
+    }
+
+</script>
+</html>
