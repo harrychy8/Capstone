@@ -320,6 +320,22 @@ ipcMain.on('greatAnalysis', function (e, snap) {
     });
 });
 
+function snapDelete(snap){
+    let snap_call = ["snap-del"];
+    snap_call.push("--snap-file " + snap);
+    snap_call.push("--session-name PM");
+
+    const snap_del = spawn("snaptools", snap_call);
+
+    console.log(snap_call);
+
+    snap_del.on("exit", function (code) {
+        console.log('got exit code: ' + code);
+    });
+
+    return snap_del;
+}
+
 function createCellByPeak(snap, peak_combined) {
     let snap_call = ["snap-add-pmat"];
     snap_call.push("--snap-file " + snap);

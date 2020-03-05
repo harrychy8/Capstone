@@ -3,13 +3,30 @@
 args <- commandArgs(trailingOnly = T)
 library(SnapATAC);
 library(parallel);
+library(GenomicRanges);
 x.sp = readRDS(args[1])
 
 #What do i do about the path to snaptools and path to macs?
-#Can I add the table that is generated with peak.gr to save?
 
-    clusters.sel = names(table(x.sp@cluster))[which(table(x.sp@cluster) > 200)];
-    peaks.ls = mclapply(seq(clusters.sel), function(i){
+#Need to check if clusters is empty
+if (x.sp@clusters == logical(0)){
+  # x.sp clusters is empty, need to re run clustering steps
+  x.sp = runKNN(
+    obj=x.sp,
+    eigs.dims=1:20,
+    k=15
+  );
+  x.sp=runCluster(
+      obj=x.sp,
+      tmp.folder=tempdir(),
+      louvain.lib="R-igraph",
+      seed.use=10
+    );
+  x.sp@metaData$cluster = x.sp@cluster;
+}
+
+clusters.sel = names(table(x.sp@cluster))[which(table(x.sp@cluster) > 200)];
+peaks.ls = mclapply(seq(clusters.sel), function(i){
     print(clusters.sel[i]);
     runMACS(
         obj=x.sp[which(x.sp@cluster==clusters.sel[i]),], 
@@ -22,7 +39,7 @@ x.sp = readRDS(args[1])
         macs.options="--nomodel --shift 100 --ext 200 --qval 5e-2 -B --SPMR",
         tmp.folder=tempdir()
    );
- }, mc.cores=4);
+}, mc.cores=4);
 # assuming all .narrowPeak files in the current folder are generated from the clusters
 peaks.names = system("ls | grep narrowPeak", intern=TRUE);
 peak.gr.ls = lapply(peaks.names, function(x){
