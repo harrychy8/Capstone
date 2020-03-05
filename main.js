@@ -320,6 +320,25 @@ ipcMain.on('greatAnalysis', function (e, snap) {
     });
 });
 
+ipcMain.on('createCellByPeak', function (e, snap, peak_combined) {
+    let del = snapDelete(snap);
+    del.on('exit', function (code) {
+        let message = code ? 'Delete Failure' : 'Delete Success';
+    });
+    let child = createCellByPeak(snap, peak_combined);
+    child.on('exit', function (code) {
+        e.reply('createCellByPeak:reply');
+        let message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title: 'Result',
+            message: 'Process has been completed',
+            detail: message,
+        })
+    });
+});
+
 function snapDelete(snap){
     let snap_call = ["snap-del"];
     snap_call.push("--snap-file " + snap);

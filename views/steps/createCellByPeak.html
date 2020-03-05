@@ -29,9 +29,9 @@
         <ul class="left">
             <li onclick="window.history.back()"><a class="waves-effect waves-light btn">&lt; Previous</a></li>
         </ul>
-        <a class="brand-logo center">Add Cell-By-Peak Matrix</a>
+        <a class="brand-logo center">Create Cell-By-Peak Matrix</a>
         <ul class="right">
-            <li onclick="window.location.href = './identifyDARs.html'"><a class="waves-effect waves-light btn">Next &gt;</a></li>
+            <li onclick="window.location.href = './addCellByPeak.html'"><a class="waves-effect waves-light btn">Next &gt;</a></li>
         </ul>
     </div>
 </nav>
@@ -43,7 +43,14 @@
                 Choose your .snap file below:
             </label>
             <br>
-            <input id="item" type="file"/>
+            <input id="item1" type="file"/>
+        </div>
+        <div>
+            <label>
+                Choose your combined peaks file below:
+            </label>
+            <br>
+            <input id="item2" type="file"/>
         </div>
         <br><br>
         <button class="waves-effect waves-light btn" type="submit">Run R</button>
@@ -78,10 +85,11 @@
 
     async function submitForm(e) {
         e.preventDefault();
-        const snap = document.querySelector('#item').value;
+        const snap = document.querySelector('#item1').value;
+        const peaks_combined = document.querySelector('#item2').value;
         loading();
-        ipcRenderer.send('addCellByPeak', snap.replace(/^.*[\\\/]/, ''));
-        ipcRenderer.on('addCellByPeak:reply', (e) => {
+        ipcRenderer.send('createCellByPeak', snap.replace(/^.*[\\\/]/, peaks_combined, ''));
+        ipcRenderer.on('createCellByPeak:reply', (e) => {
             unLoading();
         })
     }
