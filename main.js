@@ -11,8 +11,26 @@ const {app, BrowserWindow, Menu, ipcMain} = electron;
 //SET ENV
 //process.env.NODE_ENV = 'production';
 
+const STEPS = {
+    primary : "primary",
+    dimReduction : "dimReduction",
+    plotDimReductPW : "plotDimReductPW",
+    GBclustering  :"GBclustering",
+    visualization : "visualization",
+    runViz : "runViz",
+    plotViz : "plotViz",
+    plotFeatureSingle: "plotFeatureSingle",
+    rnaBasedAnnotation: "rnaBasedAnnotation",
+    geneBasedAnnotation : "geneBasedAnnotation",
+    hereticalClustering: "hereticalClustering",
+    identifyPeaks: "identifyPeaks",
+    addCellByPeak: "addCellByPeak",
+    motifAnalysis: "motifAnalysis",
+    greatAnalysis: "greatAnalysis",
+    createCellByPeak: "createCellByPeak",  
+}
+
 let mainWindow;
-let addWindow;
 
 // Listen for app to be ready
 app.on('ready', function () {
@@ -66,269 +84,94 @@ ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
 });
 
 ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
-    let child = runR('./Rscripts/primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist], e);
-    child.on('exit', function (code) {
-        e.reply('primary:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist], e, STEPS.primary);
+    onExit(child, STEPS.primary, e);
 });
 
 ipcMain.on('dimReduction', function (e, snap) {
-    let child = runR('./Rscripts/dimReduction.R', ["./data/" + snap], e);
-    child.on('exit', function (code) {
-        e.reply('dimReduction:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/dimReduction.R', ["./data/" + snap], e, STEPS.dimReduction);
+    onExit(child, STEPS.dimReduction, e);
 });
 
 ipcMain.on('plotDimReductPW', function (e, name, snap) {
-    let child = runR('./Rscripts/plotDimReductPW.R', [name, "./data/" + snap],e);
-    child.on('exit', function (code) {
-        e.reply('plotDimReductPW:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/plotDimReductPW.R', [name, "./data/" + snap],e, STEPS.plotDimReductPW);
+    onExit(child, STEPS.plotDimReductPW, e);
 });
 
 ipcMain.on('GBclustering', function (e, snap) {
-    let child = runR('./Rscripts/GBclustering.R', ["./data/" + snap], e);
-    child.on('exit', function (code) {
-        e.reply('GBclustering:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/GBclustering.R', ["./data/" + snap], e, STEPS.GBclustering);
+    onExit(child, STEPS.GBclustering, e);
 });
 
 ipcMain.on('visualization', function (e, name, snap) {
-    let child = runR('./Rscripts/visualization.R', [name, "./data/" + snap], e);
-    child.on('exit', function (code) {
-        e.reply('visualization:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/visualization.R', [name, "./data/" + snap], e, STEPS.visualization);
+    onExit(child, STEPS.visualization, e);
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, name, snap, gene) {
-    let child = runR('./Rscripts/geneBasedAnnotation.R', [name, "./data/" + snap, gene], e);
-    child.on('exit', function (code) {
-        e.reply('geneBasedAnnotation:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/geneBasedAnnotation.R', [name, "./data/" + snap, gene], e, STEPS.geneBasedAnnotation);
+    onExit(child, STEPS.geneBasedAnnotation, e);
 });
 
 ipcMain.on('runViz', function (e, snap, method) {
-    let child = runR('./Rscripts/runViz.R', ["./data/" + snap, method]);
-    child.on('exit', function (code) {
-        e.reply('runViz:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/runViz.R', ["./data/" + snap, method], e, STEPS.runViz);
+    onExit(child, STEPS.runViz, e);
 });
 
 ipcMain.on('plotViz', function (e, name, snap, method) {
-    let child = runR('./Rscripts/plotViz.R', ["./data/" + snap, name, method], e);
-    child.on('exit', function (code) {
-        e.reply('plotViz:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/plotViz.R', ["./data/" + snap, name, method], e, STEPS.plotViz);
+    onExit(child, STEPS.plotViz, e);
 });
 
 ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
-    let child = runR('./Rscripts/plotFeatureSingle.R', ["./data/" + snap, name, method], e);
-    child.on('exit', function (code) {
-        e.reply('plotFeatureSingle:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/plotFeatureSingle.R', ["./data/" + snap, name, method], e, STEPS.plotFeatureSingle);
+    onExit(child, STEPS.plotFeatureSingle, e);
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
-    let child = runR('./Rscripts/geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table], e);
-    child.on('exit', function (code) {
-        e.reply('geneBasedAnnotation:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table], e, STEPS.geneBasedAnnotation);
+    onExit(child, STEPS.geneBasedAnnotation, e);
 });
 
 ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
-    let child = runR('./Rscripts/rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table], e);
-    child.on('exit', function (code) {
-        e.reply('rnaBasedAnnotation:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table], e, STEPS.rnaBasedAnnotation);
+    onExit(child, STEPS.rnaBasedAnnotation, e);
 });
 
 ipcMain.on('hereticalClustering', function (e, name, snap) {
-    let child = runR('./Rscripts/hereticalClustering.R', ["./data/" + snap, name], e);
-    child.on('exit', function (code) {
-        e.reply('hereticalClustering:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/hereticalClustering.R', ["./data/" + snap, name], e, STEPS.hereticalClustering);
+    onExit(child, STEPS.hereticalClustering, e);
 });
 
 ipcMain.on('identifyPeaks', function (e, snap) {
-    let child = runR('./Rscripts/identifyPeaks.R', ["./data/" + snap], e);
-    child.on('exit', function (code) {
-        e.reply('identifyPeaks:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/identifyPeaks.R', ["./data/" + snap], e, STEPS.identifyPeaks);
+    onExit(child, STEPS.identifyPeaks, e);
 });
 
 ipcMain.on('addCellByPeak', function (e, snap) {
-    let child = runR('./Rscripts/addCellByPeak.R', ["./data/" + snap], e);
-    child.on('exit', function (code) {
-        e.reply('addCellByPeak:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/addCellByPeak.R', ["./data/" + snap], e, STEPS.addCellByPeak);
+    onExit(child, STEPS.addCellByPeak, e);
 });
 
 ipcMain.on('identifyDARs', function (e, snap) {
-    let child = runR('./Rscripts/identifyDARs.R', ["./data/" + snap], e);
-    child.on('exit', function (code) {
-        e.reply('identifyDARs:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/identifyDARs.R', ["./data/" + snap], e, STEPS.identifyDARs);
+    onExit(child, STEPS.identifyDARs, e);
 });
 
 ipcMain.on('motifAnalysis', function (e, snap) {
-    let child = runR('./Rscripts/motifAnalysis.R', ["./data/" + snap], e);
-    child.on('exit', function (code) {
-        e.reply('motifAnalysis:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/motifAnalysis.R', ["./data/" + snap], e, STEPS.motifAnalysis);
+    onExit(child, STEPS.motifAnalysis, e);
 });
 
 ipcMain.on('greatAnalysis', function (e, snap) {
-    let child = runR('./Rscripts/greatAnalysis.R', ["./data/" + snap], e);
-    child.on('exit', function (code) {
-        e.reply('greatAnalysis:reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+    let child = runR('./Rscripts/greatAnalysis.R', ["./data/" + snap], e, STEPS.greatAnalysis);
+    onExit(child, STEPS.greatAnalysis, e);
 });
 
 ipcMain.on('createCellByPeak', function (e, snap, peak_combined) {
     let del = snapDelete(snap);
     del.on('exit', function (code) {
         let message = code ? 'Delete Failure' : 'Delete Success';
-    });
-    let child = createCellByPeak(snap, peak_combined);
-    child.on('exit', function (code) {
-        e.reply('createCellByPeak:reply');
-        let message = code ? 'Failure' : 'Success';
         dialog.showMessageBoxSync(mainWindow, {
             type: 'info',
             buttons: [],
@@ -337,6 +180,8 @@ ipcMain.on('createCellByPeak', function (e, snap, peak_combined) {
             detail: message,
         })
     });
+    let child = createCellByPeak(snap, peak_combined);
+    onExit(child, STEPS.createCellByPeak, e);
 });
 
 function snapDelete(snap){
@@ -445,7 +290,21 @@ function createSnap(snap, fastq1, fastq2) {
     return child;
 }
 
-function runR(script, params, event) {
+function onExit(child, step_name, e){
+    child.on('exit', function (code) {
+        e.reply(step_name + ':reply');
+        let message = code ? 'Failure' : 'Success';
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title: 'Result',
+            message: 'Process has been completed',
+            detail: message,
+        })
+    });
+}
+
+function runR(script, params, event, step_name) {
     let RCall = [script];
     for (let i = 0; i < params.length; i++) {
         RCall.push(params[i]);
@@ -453,17 +312,13 @@ function runR(script, params, event) {
     console.log(RCall);
     const R = spawn('Rscript', RCall);
 
-    const step_name = RCall[0].substring(0, RCall[0].indexOf('.'));
     console.log("Step:" + step_name);
-
-    let scriptOutput = "";
 
     R.stdout.setEncoding('utf8');
     R.stdout.on('data', function (data) {
         console.log('stdout: ' + data);
 
         data = data.toString();
-        scriptOutput += data;
         event.reply("console:log", data);
     });
 
@@ -472,11 +327,8 @@ function runR(script, params, event) {
         console.log('stderr: ' + data);
 
         data = data.toString();
-        scriptOutput += data;
         event.reply("console:log", data);
     });
-
-    console.log(scriptOutput);
 
     R.on('exit', function (code) {
         let filename;
@@ -491,7 +343,8 @@ function runR(script, params, event) {
             console.log("success");
 
             const output_path = __dirname + "/output";
-            if (step_name === 'primary') {
+            console.log(output_path);
+            if (step_name === STEPS.primary) {
 
                 const barcode = "/" + RCall[3] + ".barcodeSelection.png";
                 const histogram = "/" + RCall[3] + ".histogram.png";
@@ -519,7 +372,7 @@ function runR(script, params, event) {
 
             } else {
 
-                if (step_name === 'plotDimReductPW' || step_name === 'plotViz' || step_name === 'plotFeatureSingle') {
+                if (step_name === STEPS.plotDimReductPW || step_name === STEPS.plotViz || step_name === STEPS.plotFeatureSingle) {
 
                     console.log("Loading plot...");
 
@@ -558,15 +411,6 @@ function runR(script, params, event) {
                             slashes: true
                         }));
                     }
-                    plotWindow = new BrowserWindow({
-                        useContentSize: true
-                    });
-                    
-                    plotWindow.loadURL(url.format({
-                        pathname: path.join(output_path, filename),
-                        protocol: 'file:',
-                        slashes: true
-                    }));
                 }
             }
         }

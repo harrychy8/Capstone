@@ -9,7 +9,7 @@ x.sp = readRDS(args[1])
 #What do i do about the path to snaptools and path to macs?
 
 #Need to check if clusters is empty
-if (x.sp@clusters == logical(0)){
+if (is.null(x.sp@cluster)){
   # x.sp clusters is empty, need to re run clustering steps
   x.sp = runKNN(
     obj=x.sp,
