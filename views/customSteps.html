@@ -20,6 +20,10 @@
             width: 370px;
         }
 
+        #FastQ {
+            width: 370px;
+        }
+
         .button:hover {
             background-color: #283593;
         }
@@ -47,6 +51,13 @@
 
 <div style="margin-top: 20px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -30%);">
     <div class="section">
+        <div class="row">
+            <div class="col sa12">
+                <button class="waves-effect waves-light btn-large button" id="FastQ"
+                        onclick="window.location.href = './steps/snapTools.html'">FastQ -> Snap
+                </button>
+            </div>
+        </div>
         <div class="row">
             <div class="col sa12">
                 <button class="waves-effect waves-light btn-large button" id="Primary"
@@ -102,16 +113,16 @@
             </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/addCellByPeak.html'">Add Cell By Peak
+                        onclick="window.location.href = './steps/createCellByPeak.html'">Create Cell By Peak
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col sa6">
-                        <button class="waves-effect waves-light btn-large button"
-                                onclick="window.location.href = './steps/createCellByPeak.html'">Create Cell By Peak
-                        </button>
-                    </div>
+                <button class="waves-effect waves-light btn-large button"
+                        onclick="window.location.href = './steps/addCellByPeak.html'">Add Cell By Peak
+                </button>
+            </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
                         onclick="window.location.href = './steps/identifyDARs.html'">Identify DARS
@@ -131,12 +142,6 @@
             </div>
         </div>
         <div class="row">
-        <div class="col sa6">
-                <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/snapTools.html'">FastQ > Snap
-                </button>
-            </div>
-        </div>
     </div>
 </div>
 

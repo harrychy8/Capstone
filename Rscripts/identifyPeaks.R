@@ -9,7 +9,7 @@ x.sp = readRDS(args[1])
 #What do i do about the path to snaptools and path to macs?
 
 #Need to check if clusters is empty
-if (x.sp@clusters == logical(0)){
+if (is.null(x.sp@cluster)){
   # x.sp clusters is empty, need to re run clustering steps
   x.sp = runKNN(
     obj=x.sp,
@@ -53,4 +53,9 @@ write.table(peaks.df,file = "peaks.combined.bed",append=FALSE,
 		quote= FALSE,sep="\t", eol = "\n", na = "NA", dec = ".", 
 		row.names = FALSE, col.names = FALSE, qmethod = c("escape", "double"),
 		fileEncoding = "")
+
+system("mv *.narrowPeak ./data", intern=TRUE);
+system("mv *.bdg ./data", intern=TRUE);
+system("mv peaks.combined.bed ./data", intern=TRUE);
+
 saveRDS(x.sp, "./data/snap.rds")
