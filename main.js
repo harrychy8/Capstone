@@ -59,16 +59,32 @@ app.on('ready', function () {
 });
 
 //catch fastq > snap
-ipcMain.on('snaptools', function (e, fa, fastq1, fastq2, aligner, snap) {
-    console.log(e + fa + fastq1 + fastq2+  aligner+ snap);
-    let child = createBam(fa, fastq1, fastq2, aligner);
-    child.on('exit', function (code) {
-        console.log("executing next process");
-        let child = createSnap(snap, fastq1, fastq2);
-        child.on('exit', function (code) {
-            e.reply('snaptools:reply');
+ipcMain.on('snaptools', function (e, fastq1, fastq2, snap, indexgenome) {
+    console.log(e + fastq1 + fastq2 + snap + indexgenome);
+    if (indexgenome) {
+        let child = indexGenome();
+            child.on('exit', function (code) {
+            console.log("executing next process");
+            let child = createBam(fastq1, fastq2);
+            child.on('exit', function (code) {
+                console.log("executing next process");
+                let child = createSnap(snap, fastq1, fastq2);
+                child.on('exit', function (code) {
+                    e.reply('snaptools:reply');
+                });
+            });
         });
-    });
+    }
+    else {
+        let child = createBam(fastq1, fastq2);
+        child.on('exit', function (code) {
+            console.log("executing next process");
+            let child = createSnap(snap, fastq1, fastq2);
+            child.on('exit', function (code) {
+                e.reply('snaptools:reply');
+            });
+        });
+    }
 });
 
 ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
@@ -208,14 +224,44 @@ function createCellByPeak(snap, peak_combined) {
     return snap_peak;
 }
 
-function createBam(fa, fastq1, fastq2, aligner) {
+function indexGenome() {
+    const child = spawn("snaptools", ['index-genome',
+    '--input-fasta=./required/mm10.fa',
+	'--output-prefix=./required/mm10',
+    '--aligner=bwa',
+	'--path-to-aligner=./required/bwa_aligner/bin/',
+	'--num-threads=5']);
+
+    let scriptOutput = "";
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function (data) {
+        console.log('stdout: ' + data);
+
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+    child.stderr.setEncoding('utf8');
+    child.stderr.on('data', function (data) {
+        console.log('stderr: ' + data);
+
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+    console.log(scriptOutput);
+
+    return child;
+}
+
+function createBam(fastq1, fastq2) {
     const child = spawn("snaptools", ['align-paired-end',
-	'--input-reference='+fa,
-	'--input-fastq1='+fastq1,
-	'--input-fastq2='+fastq2,
-	'--output-bam='+fastq1+fastq2+'.bam',
+	'--input-reference=./required/mm10.fa',
+	'--input-fastq1=./data/'+fastq1,
+	'--input-fastq2=./data/'+fastq2,
+	'--output-bam=./output/'+fastq1+fastq2+'.bam',
 	'--aligner=bwa',
-	'--path-to-aligner='+aligner,
+	'--path-to-aligner=./required/bwa_aligner/bin/',
 	'--read-fastq-command=gzcat',
 	'--min-cov=0',
 	'--num-threads=5',
@@ -247,16 +293,16 @@ function createBam(fa, fastq1, fastq2, aligner) {
 
 function createSnap(snap, fastq1, fastq2) {
     const child = spawn("snaptools", ['snap-pre',
-	'--input-file='+fastq1+fastq2+'.bam',
+	'--input-file=./output/'+fastq1+fastq2+'.bam',
 	'--output-snap='+snap+'.snap',
 	'--genome-name=mm10',
-	'--genome-size=mm10.chrom.size',
+	'--genome-size=./required/mm10.chrom.size',
 	'--min-mapq=30',
 	'--min-flen=0',
 	'--max-flen=1000',
 	'--keep-chrm=TRUE',
 	'--keep-single=TRUE',
-	'--keep-secondary=False ',
+	'--keep-secondary=False',
 	'--overwrite=True',
 	'--max-num=1000000',
 	'--min-cov=100',
