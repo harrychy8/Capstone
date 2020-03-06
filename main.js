@@ -57,11 +57,6 @@ app.on('ready', function () {
     Menu.setApplicationMenu(mainMenu);
 });
 
-//Catch r:step1
-ipcMain.on('r:step1', function (e, input) {
-    e.reply('r:step1:reply');
-});
-
 //catch fastq > snap
 ipcMain.on('snaptools', function (e, fa, fastq1, fastq2, aligner, snap) {
     console.log(e + fa + fastq1 + fastq2+  aligner+ snap);
@@ -72,14 +67,6 @@ ipcMain.on('snaptools', function (e, fa, fastq1, fastq2, aligner, snap) {
         child.on('exit', function (code) {
             e.reply('snaptools:reply');
         });
-    });
-});
-
-//Catch Barcode selection
-ipcMain.on('barcodeSelection', function (e, name, snap, csv) {
-    let child = runR('./Rscripts/barcodeSelection.R', ["./data/" + snap, "./data/" + csv, name], e);
-    child.on('exit', function () {
-        e.reply('barcodeSelection:reply');
     });
 });
 
@@ -256,6 +243,7 @@ function createBam(fa, fastq1, fastq2, aligner) {
 
     return child;
 }
+
 function createSnap(snap, fastq1, fastq2) {
     const child = spawn("snaptools", ['snap-pre',
 	'--input-file='+fastq1+fastq2+'.bam',
