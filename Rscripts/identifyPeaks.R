@@ -53,4 +53,9 @@ write.table(peaks.df,file = "peaks.combined.bed",append=FALSE,
 		quote= FALSE,sep="\t", eol = "\n", na = "NA", dec = ".", 
 		row.names = FALSE, col.names = FALSE, qmethod = c("escape", "double"),
 		fileEncoding = "")
+
+system("mv *.narrowPeak ./data", intern=TRUE);
+system("mv *.bdg ./data", intern=TRUE);
+system("mv peaks.combined.bed ./data", intern=TRUE);
+
 saveRDS(x.sp, "./data/snap.rds")

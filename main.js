@@ -99,6 +99,7 @@ ipcMain.on('plotDimReductPW', function (e, name, snap) {
 });
 
 ipcMain.on('GBclustering', function (e, snap) {
+    console.log(snap);
     let child = runR('./Rscripts/GBclustering.R', ["./data/" + snap], e, STEPS.GBclustering);
     onExit(child, STEPS.GBclustering, e);
 });
@@ -169,44 +170,48 @@ ipcMain.on('greatAnalysis', function (e, snap) {
 });
 
 ipcMain.on('createCellByPeak', function (e, snap, peak_combined) {
-    let del = snapDelete(snap);
+    console.log(snap);
+    let del = snapDelete("./data/" + snap);
     del.on('exit', function (code) {
         let message = code ? 'Delete Failure' : 'Delete Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
+        if (code === 0){
+            let child = createCellByPeak("./data/" + snap, "./data/" + peak_combined);
+            onExit(child, STEPS.createCellByPeak, e);
+        } else {
+            e.reply('createCellByPeak:reply');
+            dialog.showMessageBoxSync(mainWindow, {
+                type: 'info',
+                buttons: [],
+                title: 'Result',
+                message: 'Process has been completed',
+                detail: message,
+            })
+        }
     });
-    let child = createCellByPeak(snap, peak_combined);
-    onExit(child, STEPS.createCellByPeak, e);
 });
 
 function snapDelete(snap){
-    let snap_call = ["snap-del"];
-    snap_call.push("--snap-file " + snap);
-    snap_call.push("--session-name PM");
-
-    const snap_del = spawn("snaptools", snap_call);
-
-    console.log(snap_call);
+    console.log(snap);
+    const snap_del = spawn("snaptools", ['snap-del',
+        '--snap-file=' + snap, 
+        '--session-name=PM']);
 
     snap_del.on("exit", function (code) {
-        console.log('got exit code: ' + code);
+        console.log('Snap Delete got exit code: ' + code);
     });
 
     return snap_del;
 }
 
 function createCellByPeak(snap, peak_combined) {
-    let snap_call = ["snap-add-pmat"];
-    snap_call.push("--snap-file " + snap);
-    snap_call.push("--peak-file " + peak_combined);
+    // let snap_call = ["snap-add-pmat"];
+    // snap_call.push("--snap-file " + snap);
+    // snap_call.push("--peak-file " + peak_combined);
 
-    console.log(snap_call);
-    const snap_peak = spawn("snaptools", snap_call);
+    // console.log(snap_call);
+    const snap_peak = spawn("snaptools", ['snap-add-pmat',
+        '--snap-file=' + snap, 
+        '--peak-file='+ peak_combined]);
 
     snap_peak.on("exit", function (code) {
         console.log('got exit code: ' + code);
