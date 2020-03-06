@@ -61,22 +61,6 @@
             <br>
             <input id="item3" type="file"/>
         </div>
-        <br>
-        <div>
-            <label>
-                Update your path to bwa aligner
-            </label>
-            <br>
-            <input id="item4" type="file"/>
-        </div>
-        <br>
-        <div>
-            <label>
-                Upload an input reference (.fa)
-            </label>
-            <br>
-            <input id="item5" type="file"/>
-        </div>
         <br><br>
         <button class="waves-effect waves-light btn" type="submit">Generate Snap File</button>
     </form>
@@ -114,11 +98,9 @@
         const snap = document.querySelector('#item').value;
         const fastq1 = document.querySelector('#item2').value;
         const fastq2 = document.querySelector('#item3').value;
-        const aligner = document.querySelector('#item4').value;
-        const fa = document.querySelector('#item5').value;
         loading();
-        ipcRenderer.send('snaptools', fa.replace(/^.*[\\\/]/, ''), fastq1.replace(/^.*[\\\/]/, ''),
-            fastq2.replace(/^.*[\\\/]/, ''), aligner.replace(/^.*[\\\/]/, ''), snap.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.send('snaptools', fastq1.replace(/^.*[\\\/]/, ''),
+            fastq2.replace(/^.*[\\\/]/, ''), snap.replace(/^.*[\\\/]/, ''));
         ipcRenderer.on('console:log', (e, arg) => {
             document.getElementById("myDiv").innerText = arg;
         })
