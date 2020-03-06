@@ -9,6 +9,14 @@
     z-index: 1;
 }
 
+.console-output{
+    position:relative;
+    left: 10px;
+    width: 97%;
+    top: 500px;
+    background-color: rgba(220, 220, 220, 1);
+}
+
 .cssload-container {
     display: block;
     position: relative;

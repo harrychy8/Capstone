@@ -27,7 +27,8 @@ const STEPS = {
     addCellByPeak: "addCellByPeak",
     motifAnalysis: "motifAnalysis",
     greatAnalysis: "greatAnalysis",
-    createCellByPeak: "createCellByPeak",  
+    createCellByPeak: "createCellByPeak", 
+    identifyDARs: "identifyDARs"
 }
 
 let mainWindow;

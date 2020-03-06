@@ -5,11 +5,33 @@ x.sp = readRDS(args[1])
 
 # Need input for 2 names for 2 motif analysis
 
+idy.ls = lapply(levels(x.sp@cluster), function(cluster_i){
+	DARs = findDAR(
+		obj=x.sp,
+		input.mat="pmat",
+		cluster.pos=cluster_i,
+		cluster.neg=NULL,
+		cluster.neg.method="knn",
+		bcv=0.1,
+		test.method="exactTest",
+		seed.use=10
+		);
+	DARs$FDR = p.adjust(DARs$PValue, method="BH");
+	idy = which(DARs$FDR < 5e-2 & DARs$logFC > 0);
+	if((x=length(idy)) < 2000L){
+			PValues = DARs$PValue;
+			PValues[DARs$logFC < 0] = 1;
+			idy = order(PValues, decreasing=FALSE)[1:2000];
+			rm(PValues); # free memory
+	}
+	idy
+  })
+
 motifs = runHomer(
 	x.sp[,idy.ls[["5"]],"pmat"], 
 	mat = "pmat",
-	path.to.homer = "/projects/ps-renlab/r3fang/public_html/softwares/homer/bin/findMotifsGenome.pl",
-	result.dir = "./homer/C5",
+	path.to.homer = "/Users/haizhouxi/homer/bin/findMotifsGenome.pl",
+	result.dir = "./homer/sample",
 	num.cores=5,
 	genome = 'mm10',
 	motif.length = 10,
@@ -52,7 +74,7 @@ p1 <- ggplot(dat, aes(x=x, y=y, fill=x)) +
 		  axis.ticks.x=element_blank(),
 		  legend.position = "none"
    );
-name <- paste(args[3], "motif-",motif_i, "png", sep = ".")
+name <- paste("example", "motif-",motif_i, "png", sep = ".")
 path1 <- paste("./output", name, sep = "/")
 motif_i = "MA0660.1_MEF2B";
 dat = data.frame(x=x.sp@metaData[,"cluster"], y=x.sp@mmat[,motif_i]);
