@@ -61,6 +61,11 @@
             <br>
             <input id="item3" type="file"/>
         </div>
+        <br>
+        <div>
+            <input class="my-checkbox" type="checkbox" id="item4">
+            <label for="item4">Index Reference Genome (Optional)</label>
+        </div>
         <br><br>
         <button class="waves-effect waves-light btn" type="submit">Generate Snap File</button>
     </form>
@@ -98,9 +103,10 @@
         const snap = document.querySelector('#item').value;
         const fastq1 = document.querySelector('#item2').value;
         const fastq2 = document.querySelector('#item3').value;
+        const indexgenome = document.querySelector('.my-checkbox').checked;
         loading();
         ipcRenderer.send('snaptools', fastq1.replace(/^.*[\\\/]/, ''),
-            fastq2.replace(/^.*[\\\/]/, ''), snap.replace(/^.*[\\\/]/, ''));
+            fastq2.replace(/^.*[\\\/]/, ''), snap.replace(/^.*[\\\/]/, ''), indexgenome);
         ipcRenderer.on('console:log', (e, arg) => {
             document.getElementById("myDiv").innerText = arg;
         })
