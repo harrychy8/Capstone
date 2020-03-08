@@ -1,10 +1,10 @@
-args <- commandArgs(trailingOnly = T)
+args <- commandArgs(trailingOnly = T);
 
 library(SnapATAC);
-x.sp = readRDS(args[1])
+x.sp = readRDS(args[1]);
 
-name <- paste(args[2], "identifyDARs", "pdf", sep = ".")
-path <- paste("./output", name, sep = "/")
+name <- paste(args[2], "identifyDARs", "pdf", sep = ".");
+path <- paste("./output", name, sep = "/");
 
  # Need Cluster Number as input
  # Need file name as input
@@ -15,7 +15,7 @@ path <- paste("./output", name, sep = "/")
 DARs = findDAR(
     obj=x.sp,
     input.mat="pmat",
-    cluster.pos=2,
+    cluster.pos=3,
     cluster.neg.method="knn",
     test.method="exactTest",
     bcv=0.1, #0.4 for human, 0.1 for mouse
@@ -39,19 +39,20 @@ abline(h = 0, lwd=1, lty=2);
 covs = Matrix::rowSums(x.sp@pmat);
 vals = Matrix::rowSums(x.sp@pmat[,idy]) / covs;
 vals.zscore = (vals - mean(vals)) / sd(vals);
-plotFeatureSingle(
-    obj=x.sp,
-    feature.value=vals.zscore,
-    method="tsne", 
-    main="Cluster 2",
-    point.size=0.1, 
-    point.shape=19, 
-    down.sample=5000,
-    quantiles=c(0.01, 0.99),
-    pdf.file.name = path,
-    pdf.height = 7,
-    pdf.width = 7
-  );
+
+
+# plotFeatureSingle(
+#     obj=x.sp,
+#     feature.value=vals.zscore,
+#     method="tsne", 
+#     main="Cluster 26",
+#     point.size = 0.2,
+#     point.shape = 19,
+#     down.sample = 10000,
+#     quantiles = c(0.01, 0.99),
+#     pdf.height = 7,
+#     pdf.width = 7
+#   );
 
 idy.ls = lapply(levels(x.sp@cluster), function(cluster_i){
 	DARs = findDAR(
@@ -75,25 +76,25 @@ idy.ls = lapply(levels(x.sp@cluster), function(cluster_i){
 	idy
   })
 names(idy.ls) = levels(x.sp@cluster);
-par(mfrow = c(3, 3));
-for(cluster_i in levels(x.sp@cluster)){
-	print(cluster_i)
-	idy = idy.ls[[cluster_i]];
-	vals = Matrix::rowSums(x.sp@pmat[,idy]) / covs;
-	vals.zscore = (vals - mean(vals)) / sd(vals);
-    name <- paste(args[2], "plotViz-", cluster_i, "pdf", sep = ".")
-    name_path <- paste("./output", name, sep = "/")
-	plotFeatureSingle(
-		obj=x.sp,
-		feature.value=vals.zscore,
-		method="tsne", 
-		main=cluster_i,
-		point.size=0.1, 
-		point.shape=19, 
-		down.sample=5000,
-		quantiles=c(0.01, 0.99),
-        pdf.file.name = name_path,
-        pdf.height = 7,
-        pdf.width = 7
-		);
-  }
+# par(mfrow = c(3, 3));
+# for(cluster_i in levels(x.sp@cluster)){
+# 	print(cluster_i)
+# 	idy = idy.ls[[cluster_i]];
+# 	vals = Matrix::rowSums(x.sp@pmat[,idy]) / covs;
+# 	vals.zscore = (vals - mean(vals)) / sd(vals);
+#   name <- paste(args[2], "plotViz-", cluster_i, "pdf", sep = ".");
+#   name_path <- paste("./output", name, sep = "/");
+# 	plotFeatureSingle(
+# 		obj=x.sp,
+# 		feature.value=vals.zscore,
+# 		method="tsne", 
+# 		main=cluster_i,
+# 		point.size=0.1, 
+# 		point.shape=19, 
+# 		down.sample=5000,
+# 		quantiles=c(0.01, 0.99),
+#         pdf.file.name = name_path,
+#         pdf.height = 7,
+#         pdf.width = 7
+# 		);
+#   }

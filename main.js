@@ -27,7 +27,8 @@ const STEPS = {
     addCellByPeak: "addCellByPeak",
     motifAnalysis: "motifAnalysis",
     greatAnalysis: "greatAnalysis",
-    createCellByPeak: "createCellByPeak",  
+    createCellByPeak: "createCellByPeak", 
+    identifyDARs: "identifyDARs"
 }
 
 let mainWindow;
@@ -207,11 +208,6 @@ function snapDelete(snap){
 }
 
 function createCellByPeak(snap, peak_combined) {
-    // let snap_call = ["snap-add-pmat"];
-    // snap_call.push("--snap-file " + snap);
-    // snap_call.push("--peak-file " + peak_combined);
-
-    // console.log(snap_call);
     const snap_peak = spawn("snaptools", ['snap-add-pmat',
         '--snap-file=' + snap, 
         '--peak-file='+ peak_combined]);
