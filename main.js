@@ -264,7 +264,7 @@ function createBam(fastq1, fastq2) {
 	'--input-reference=./required/mm10.fa',
 	'--input-fastq1=./data/'+fastq1,
 	'--input-fastq2=./data/'+fastq2,
-	'--output-bam=./output/'+fastq1+fastq2+'.bam',
+	'--output-bam=./tmp/'+fastq1+fastq2+'.bam',
 	'--aligner=bwa',
 	'--path-to-aligner=./required/bwa_aligner/bin/',
 	'--read-fastq-command=gzcat',
@@ -298,8 +298,8 @@ function createBam(fastq1, fastq2) {
 
 function createSnap(snap, fastq1, fastq2) {
     const child = spawn("snaptools", ['snap-pre',
-	'--input-file=./output/'+fastq1+fastq2+'.bam',
-	'--output-snap='+snap+'.snap',
+	'--input-file=./tmp/'+fastq1+fastq2+'.bam',
+	'--output-snap=./data/'+snap+'.snap',
 	'--genome-name=mm10',
 	'--genome-size=./required/mm10.chrom.size',
 	'--min-mapq=30',

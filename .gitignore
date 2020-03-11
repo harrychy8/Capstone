@@ -6,4 +6,5 @@ node_modules/
 data/
 output/
 required/
+tmp/
 .DS_Store
