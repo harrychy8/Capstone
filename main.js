@@ -25,11 +25,13 @@ const STEPS = {
     hereticalClustering: "hereticalClustering",
     identifyPeaks: "identifyPeaks",
     addCellByPeak: "addCellByPeak",
-    motifAnalysis: "motifAnalysis",
+    motifAnalysisHomer: "motifAnalysisHomer",
+    motifAnalysisChromVAR: "motifAnalysisChromVAR",
     greatAnalysis: "greatAnalysis",
-    createCellByPeak: "createCellByPeak",
-    identifyDARs: "identifyDARs"
-};
+    createCellByPeak: "createCellByPeak", 
+    identifyAllDARs: "identifyAllDARs",
+    identifySingleDAR: "identifySingleDAR"
+}
 
 let mainWindow;
 
@@ -115,11 +117,6 @@ ipcMain.on('visualization', function (e, name, snap) {
     onExit(child, STEPS.visualization, e);
 });
 
-ipcMain.on('geneBasedAnnotation', function (e, name, snap, gene) {
-    let child = runR('./Rscripts/geneBasedAnnotation.R', [name, "./data/" + snap, gene], e, STEPS.geneBasedAnnotation);
-    onExit(child, STEPS.geneBasedAnnotation, e);
-});
-
 ipcMain.on('runViz', function (e, snap, method) {
     let child = runR('./Rscripts/runViz.R', ["./data/" + snap, method], e, STEPS.runViz);
     onExit(child, STEPS.runViz, e);
@@ -160,14 +157,25 @@ ipcMain.on('addCellByPeak', function (e, snap) {
     onExit(child, STEPS.addCellByPeak, e);
 });
 
-ipcMain.on('identifyDARs', function (e, snap) {
-    let child = runR('./Rscripts/identifyDARs.R', ["./data/" + snap], e, STEPS.identifyDARs);
-    onExit(child, STEPS.identifyDARs, e);
+ipcMain.on('identifySingleDAR', function (e, name, snap, clusterNum, inputMat, bcv) {
+    console.log("entered single DAR");
+    let child = runR('./Rscripts/identifySingleDAR.R', ["./data/" + snap, name, inputMat, clusterNum, bcv], e, STEPS.identifySingleDAR);
+    onExit(child, STEPS.identifySingleDAR, e);
 });
 
-ipcMain.on('motifAnalysis', function (e, snap) {
-    let child = runR('./Rscripts/motifAnalysis.R', ["./data/" + snap], e, STEPS.motifAnalysis);
-    onExit(child, STEPS.motifAnalysis, e);
+ipcMain.on('identifyAllDARs', function (e, name, snap, inputMat, bcv) {
+    let child = runR('./Rscripts/identifyAllDARs.R', ["./data/" + snap, name, inputMat, bcv], e, STEPS.identifyAllDARs);
+    onExit(child, STEPS.identifyAllDARs, e);
+});
+
+ipcMain.on('motifAnalysisHomer', function (e, snap, inputMat, bcv, pathToHomer) {
+    let child = runR('./Rscripts/motifAnalysisHomer.R', ["./data/" + snap, inputMat, bcv, pathToHomer], e, STEPS.motifAnalysisHomer);
+    onExit(child, STEPS.motifAnalysisHomer, e);
+});
+
+ipcMain.on('motifAnalysisChromVAR', function (e, snap, inputMat, motif1, motif2) {
+    let child = runR('./Rscripts/motifAnalysisChromVAR.R', ["./data/" + snap, inputMat, motif1, motif2], e, STEPS.motifAnalysisChromVAR);
+    onExit(child, STEPS.motifAnalysisChromVAR, e);
 });
 
 ipcMain.on('greatAnalysis', function (e, snap) {
