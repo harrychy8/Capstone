@@ -1,4 +1,4 @@
-# Welcome to Snap-ATAT App
+# Welcome to Snap-ATAC App
 A desktop application using Electron
 
 
