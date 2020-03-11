@@ -27,9 +27,9 @@ const STEPS = {
     addCellByPeak: "addCellByPeak",
     motifAnalysis: "motifAnalysis",
     greatAnalysis: "greatAnalysis",
-    createCellByPeak: "createCellByPeak", 
+    createCellByPeak: "createCellByPeak",
     identifyDARs: "identifyDARs"
-}
+};
 
 let mainWindow;
 
@@ -37,6 +37,8 @@ let mainWindow;
 app.on('ready', function () {
     //Create new window
     mainWindow = new BrowserWindow({
+        minWidth: 820,
+        minHeight: 700,
         webPreferences: {
             nodeIntegration: true
         }
@@ -464,6 +466,28 @@ const mainMenuTemplate = [
                 accelerator: process.platform === 'darwin' ? 'Command+Q' : "Ctrl+Q",
                 click() {
                     app.quit();
+                }
+            },
+            {
+                role: 'reload'
+            },
+        ]
+    },
+    {
+        role: 'help',
+        submenu: [
+            {
+                label: 'Snap-ATAC Github',
+                click: async () => {
+                    const {shell} = require('electron');
+                    await shell.openExternal('https://github.com/r3fang/SnapATAC')
+                }
+            },
+            {
+                label: 'How to use the app',
+                click: async () => {
+                    const {shell} = require('electron');
+                    await shell.openExternal('https://github.com/harrychy8/Capstone')
                 }
             }
         ]

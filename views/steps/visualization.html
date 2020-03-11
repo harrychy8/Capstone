@@ -41,7 +41,7 @@
     <form id="viz">
         <div>
             <label>
-                Choose your snap object below:
+                Choose your (.rds) snap object below:
             </label>
             <br>
             <input id="item3" type="file"/>
@@ -63,12 +63,12 @@
     <h5>Visualization</h5>
     <form id='plot'>
         <div>
-            <label>Enter Name</label>
+            <label>Enter Name for the output figure</label>
             <label for="item"></label><input type="text" id="item" autofocus>
         </div>
         <div>
             <label>
-                Choose your snap object below:
+                Choose your (.rds) snap object below:
             </label>
             <br>
             <input id="item2" type="file"/>
@@ -80,17 +80,17 @@
                 <option value="PlotViz">PlotViz</option>
                 <option value="PlotFeatureSingle">PlotFeatureSingle</option>
             </select>
-            <label for="method2"> Select method: </label>
+            <label for="method2"> Select method: (Should be the same as the reduction step above)</label>
             <select style="display: inline-block" id="method2">
                 <option value="tsne">tsne</option>
                 <option value="umap">umap</option>
             </select>
         </div>
         <br>
-        <button class="waves-effect waves-light btn" type="submit">Run R</button>
+        <button class="waves-effect waves-light btn" type="submit">Plot</button>
     </form>
     <br>
-    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Steps</button>
+    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Main Menu</button>
 </div>
 
 <div class="cssload-wrap">

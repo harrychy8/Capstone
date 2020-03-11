@@ -39,22 +39,22 @@
 <div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
     <form>
         <div>
-            <label>Enter Name</label>
+            <label>Enter Name for the output figure</label>
             <label for="item"></label><input type="text" id="item" autofocus>
         </div>
         <br>
         <div>
             <label>
-                Choose your snap object below:
+                Choose your (.rds) snap object below:
             </label>
             <br>
             <input id="item2" type="file"/>
         </div>
         <br><br>
-        <button class="waves-effect waves-light btn" type="submit">Run R</button>
+        <button class="waves-effect waves-light btn" type="submit">Run</button>
     </form>
     <br>
-    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Steps</button>
+    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Main Menu</button>
 </div>
 
 <div class="cssload-wrap">
@@ -100,7 +100,7 @@
         document.querySelector('.cssload-wrap').style.display = 'none';
     }
     function customSteps() {
-        window.location.href = './customSteps.html';
+        window.location.href = '../customSteps.html';
     }
 
 </script>

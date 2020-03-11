@@ -39,7 +39,7 @@
 <div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
     <form>
         <div>
-            <label>Enter Name</label>
+            <label>Enter Name for the output figure</label>
             <label for="item"></label><input type="text" id="item" autofocus>
         </div>
         <br>
@@ -53,7 +53,7 @@
         <br>
         <div>
             <label>
-                Update your .csv dataset below:
+                Update your (.csv) dataset below:
             </label>
             <br>
             <input id="item3" type="file"/>
@@ -61,16 +61,16 @@
         <br>
         <div>
             <label>
-                Update your .gz blacklist below:
+                Update your (.gz) blacklist below:
             </label>
             <br>
             <input id="item4" type="file"/>
         </div>
         <br><br>
-        <button class="waves-effect waves-light btn" type="submit">Run R</button>
+        <button class="waves-effect waves-light btn" type="submit">Run</button>
     </form>
     <br>
-    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Steps</button>
+    <button class="waves-effect waves-light btn" onclick=customSteps()>Back to Main Menu</button>
 </div>
 
 <div class="cssload-wrap">
@@ -111,7 +111,7 @@
         ipcRenderer.send('primary', name, snap.replace(/^.*[\\\/]/, ''), csv.replace(/^.*[\\\/]/, ''), bl.replace(/^.*[\\\/]/, ''));
         ipcRenderer.on('console:log', (e, arg) => {
             document.getElementById("myDiv").innerText = arg;
-        })
+        });
         ipcRenderer.on('primary:reply', (e) => {
             unLoading();
         })
