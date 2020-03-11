@@ -24,11 +24,10 @@ idy.ls = lapply(levels(x.sp@cluster), function(cluster_i){
 			idy = order(PValues, decreasing=FALSE)[1:2000];
 			rm(PValues); # free memory
 	}
-	idy
   })
 
 motifs = runHomer(
-	x.sp[,idy.ls[["5"]],"pmat"], 
+	x.sp[,idy,"pmat"], 
 	mat = "pmat",
 	path.to.homer = "/Users/haizhouxi/homer/bin/findMotifsGenome.pl",
 	result.dir = "./homer/sample",
@@ -52,10 +51,11 @@ library(chromVAR);
 library(motifmatchr);
 library(SummarizedExperiment);
 library(BSgenome.Mmusculus.UCSC.mm10);
+library(ggplot2);
 x.sp = makeBinary(x.sp, "pmat");
 x.sp@mmat = runChromVAR(
     obj=x.sp,
-    input.mat="pmat",
+    input.mat="bmat",
     genome=BSgenome.Mmusculus.UCSC.mm10,
     min.count=10,
     species="Homo sapiens"

@@ -36,16 +36,70 @@
     </div>
 </nav>
 
-<div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
-    <form>
+<div style="margin-top: 20px; position: absolute; align-content: center; left: 50%; top: 100%; transform: translate(-50%, -50%); overflow: scroll;">
+    <h5>Identify Single Differential Accesible Region</h5>
+    <form id="single">
         <div>
-            <label>
-                Choose your snap object below:
-            </label>
-            <br>
-            <input id="item" type="file"/>
+            <label>Enter Name</label>
+            <input type="text" id="singleName" autofocus>
         </div>
-        <br><br>
+        <div>
+            <label>Choose your snap object below:</label>
+            <br>
+            <input id="singleFile" type="file"/>
+        </div>
+        <div>
+            <label>Select your input material:</label>
+            <select style="display: inline-block" id="singleInputMat">
+                    <option value="pmat">pmat</option>
+                    <option value="bmat">bmat</option>
+            </select>
+        </div>
+        <div>
+            <label>Select your cluster number:</label>
+            <input type="text" id="clusterNum">
+        </div>
+        <div>
+            <label>Select your bcv value:</label>
+            <select style="display: inline-block" id="singleBCV">
+                <option value="0.1">mouse: 0.1</option>
+                <option value="0.4">human: 0.4</option>
+            </select>
+            </div>
+        <br>
+        <br>
+        <button class="waves-effect waves-light btn" type="submit">Run R</button>
+    </form>
+    <br>
+    <br>
+
+    <h5>Identify All Differential Accesible Region</h5>
+    <form id="all">
+        <div>
+            <label>Enter Name</label>
+            <input type="text" id="allName" autofocus>
+        </div>
+        <div>
+            <label>Choose your snap object below:</label>
+            <br>
+            <input id="allFile" type="file"/>
+        </div>
+        <div>
+            <label>Select your input material:</label>
+            <select style="display: inline-block" id="allInputMat">
+                    <option value="pmat">pmat</option>
+                    <option value="bmat">bmat</option>
+            </select>
+        </div>
+        <div>
+            <label>Select your bcv value:</label>
+            <select style="display: inline-block" id="allBcv">
+                <option value="0.1">mouse: 0.1</option>
+                <option value="0.4">human: 0.4</option>
+            </select>
+            </div>
+        <br>
+        <br>
         <button class="waves-effect waves-light btn" type="submit">Run R</button>
     </form>
     <br>
@@ -73,15 +127,34 @@
 
     const electron = require('electron');
     const {ipcRenderer} = electron;
-    document.querySelector('form').addEventListener('submit', submitForm);
-    console.log(document.querySelector('.cssload-wrap'));
+    document.querySelector('#single').addEventListener('submit', singleDAR);
+    document.querySelector('#all').addEventListener('submit', allDARs);
 
-    async function submitForm(e) {
+    async function singleDAR(e) {
         e.preventDefault();
-        const snap = document.querySelector('#item').value;
+        const snap = document.querySelector('#singleFile').value;
+        const name = document.querySelector('#singleName').value;
+        const inputMat = document.querySelector('#singleInputMat').value;
+        const clusterNum = parseInt(document.querySelector('#clusterNum').value);
+        const bcv = parseFloat(document.querySelector('#singleBCV').value);
+
         loading();
-        ipcRenderer.send('identifyDARs', snap.replace(/^.*[\\\/]/, ''));
-        ipcRenderer.on('identifyDARs:reply', (e) => {
+        ipcRenderer.send('identifySingleDAR', name, snap.replace(/^.*[\\\/]/, ''), clusterNum, inputMat, bcv);
+        ipcRenderer.on('identifySingleDAR:reply', (e) => {
+            unLoading();
+        })
+    }
+
+    async function allDARs(e) {
+        e.preventDefault();
+        const snap = document.querySelector('#allFile').value;
+        const name = document.querySelector('#allName').value;
+        const inputMat = document.querySelector('#allInputMat').value;
+        const bcv = parseFloat(document.querySelector('#allBcv').value);
+
+        loading();
+        ipcRenderer.send('identifyAllDARs', name, snap.replace(/^.*[\\\/]/, ''), inputMat, bcv);
+        ipcRenderer.on('identifyAllDARs:reply', (e) => {
             unLoading();
         })
     }
@@ -96,7 +169,7 @@
     }
 
     function customSteps() {
-        window.location.href = './customSteps.html';
+        window.location.href = '../customSteps.html';
     }
 </script>
 </html>
