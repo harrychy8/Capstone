@@ -70,7 +70,8 @@
 
         const fs = require('fs');
 
-        // const { BrowserWindow } = require('electron');
+        const { BrowserWindow } = require('electron').remote;
+        const PDFWindow = require('electron-pdf-window');
 
         var directory = './output';
 
@@ -78,38 +79,36 @@
         var table = document.getElementById("insertRuns");
         var process_names = document.getElementsByClassName("process-name");
 
-        function addRun(name) {
-            let newRow = table.insertRow(1);
-            let newCell = newRow.insertCell(0);
-            let newText = document.createTextNode(name);
+        function addRun(process_name, step, row, format) {
+            let newText = document.createTextNode(process_name);
             let graph = document.createElement('button')
-            let graph2 = document.createElement('button')
-            let graph_text = document.createTextNode("barcode"); 
-            let graph_text2 = document.createTextNode("histogram"); 
-            let newCell2 = newRow.insertCell(1);
-            let newCell3 = newRow.insertCell(2);
+            let graph_text = document.createTextNode(step); 
+            let newPlot = row.insertCell(1);
             graph.appendChild(graph_text); 
             graph.className = "btn btn-light";
-            graph2.appendChild(graph_text2); 
-            graph2.className = "btn btn-light";
-            var graph_name = "Barcodes for process: "+name;
-            var graph_path = "../output/"+name+".barcodeSelection.png";
-            var dynamicHTML = 
-                '<html>'+
-                    '<body>'+
-                        '<h2 id="header">'+graph_name+'</h2>'+
-                        '<div id="insertplot">'+
-                            '<img src='+graph_path+' width="500" height="500">'+
-                        '</div>'+
-                    '</body>'+
-                '</html>';
             
             graph.addEventListener("click", function(){ 
-                window.open("data:text/html;charset=utf-8," + encodeURIComponent(dynamicHTML));
+
+                const output_path = __dirname + "/../output";            
+                var filename = "/" + process_name + "."+ step + "." + format;
+
+                if (format == "pdf") {
+                    const loadPlot_pdf = new BrowserWindow({
+                        useContentSize: true
+                    });
+
+                    PDFWindow.addSupport(loadPlot_pdf);
+
+                    loadPlot_pdf.loadURL(output_path+filename);
+                } 
+                else {
+                    const loadPlot = new BrowserWindow({
+                        useContentSize: true
+                    });
+                    loadPlot.loadFile(output_path+filename);
+                }
             });
-            newCell.appendChild(newText);
-            newCell2.appendChild(graph);
-            newCell3.appendChild(graph2);
+            newPlot.appendChild(graph);
         }
 
         fs.readdir(directory, (err, files) => {
@@ -134,7 +133,13 @@
             });
 
             for(i = 0;i < filtered_names.length; i++){
-                addRun(filtered_names[i]);
+                let newRow = table.insertRow(1);
+                let newCell = newRow.insertCell(0);
+                let newText = document.createTextNode(filtered_names[i]);
+                newCell.appendChild(newText);
+                addRun(filtered_names[i], "barcodeSelection", newRow, "png");
+                addRun(filtered_names[i], "histogram", newRow, "png");
+                addRun(filtered_names[i], "dimReduction", newRow, "pdf");
             }
         });
 
