@@ -130,6 +130,16 @@
     document.querySelector('#single').addEventListener('submit', singleDAR);
     document.querySelector('#all').addEventListener('submit', allDARs);
 
+    function getDataSetName() {
+        ipcRenderer.send('getDataSetName');
+        ipcRenderer.on('getDataSetName:reply', (e, name) => {
+            document.getElementById('singleName').value = name;
+            document.getElementById('allName').value = name;
+        });
+    }
+
+    getDataSetName();
+
     async function singleDAR(e) {
         e.preventDefault();
         const snap = document.querySelector('#singleFile').files[0].path;
@@ -139,8 +149,10 @@
         const bcv = parseFloat(document.querySelector('#singleBCV').value);
 
         loading();
+        ipcRenderer.send('updateDataSetName', name);
         ipcRenderer.send('identifySingleDAR', name, snap, clusterNum, inputMat, bcv);
         ipcRenderer.on('identifySingleDAR:reply', (e) => {
+            getDataSetName();
             unLoading();
         })
     }
@@ -153,8 +165,10 @@
         const bcv = parseFloat(document.querySelector('#allBcv').value);
 
         loading();
+        ipcRenderer.send('updateDataSetName', name);
         ipcRenderer.send('identifyAllDARs', name, snap, inputMat, bcv);
         ipcRenderer.on('identifyAllDARs:reply', (e) => {
+            getDataSetName();
             unLoading();
         })
     }

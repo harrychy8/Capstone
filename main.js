@@ -34,6 +34,7 @@ const STEPS = {
 };
 
 let mainWindow;
+let dataSetName = 'someName';
 
 // Listen for app to be ready
 app.on('ready', function () {
@@ -62,12 +63,20 @@ app.on('ready', function () {
     Menu.setApplicationMenu(mainMenu);
 });
 
+ipcMain.on('getDataSetName', function (e) {
+    e.reply('getDataSetName:reply', dataSetName);
+});
+
+ipcMain.on('updateDataSetName', function (e, name) {
+    dataSetName = name;
+});
+
 //catch fastq > snap
 ipcMain.on('snaptools', function (e, fastq1, fastq2, snap, indexgenome) {
     console.log(e + fastq1 + fastq2 + snap + indexgenome);
     if (indexgenome) {
         let child = indexGenome();
-            child.on('exit', function (code) {
+        child.on('exit', function (code) {
             console.log("executing next process");
             let child = createBam(fastq1, fastq2);
             child.on('exit', function (code) {
