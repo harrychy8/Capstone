@@ -99,14 +99,14 @@
     console.log(document.querySelector('.cssload-wrap'));
 
     async function submitForm(e) {
+        console.log("hi")
         e.preventDefault();
-        const snap = document.querySelector('#item').value;
-        const fastq1 = document.querySelector('#item2').value;
-        const fastq2 = document.querySelector('#item3').value;
+        const snap = document.getElementById("item").files[0].path;
+        const fastq1 = document.getElementById("item2").files[0].path;
+        const fastq2 = document.getElementById("item3").files[0].path;
         const indexgenome = document.querySelector('.my-checkbox').checked;
         loading();
-        ipcRenderer.send('snaptools', fastq1.replace(/^.*[\\\/]/, ''),
-            fastq2.replace(/^.*[\\\/]/, ''), snap.replace(/^.*[\\\/]/, ''), indexgenome);
+        ipcRenderer.send('snaptools', fastq1, fastq2, snap, indexgenome);
         ipcRenderer.on('console:log', (e, arg) => {
             document.getElementById("myDiv").innerText = arg;
         })

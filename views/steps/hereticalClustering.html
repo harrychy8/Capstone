@@ -83,10 +83,10 @@
 
     async function submitForm(e) {
         e.preventDefault();
-        const name = document.querySelector('#item').value;
-        const snap = document.querySelector('#item2').value;
+        const name = document.querySelector('#item');
+        const snap = document.querySelector('#item2').files[0].path;
         loading();
-        ipcRenderer.send('hereticalClustering', name, snap.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.send('hereticalClustering', name, snap);
         ipcRenderer.on('hereticalClustering:reply', (e) => {
             unLoading();
         })

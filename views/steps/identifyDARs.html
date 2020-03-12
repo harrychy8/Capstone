@@ -37,7 +37,7 @@
 </nav>
 
 <div style="margin-top: 20px; position: absolute; align-content: center; left: 50%; top: 100%; transform: translate(-50%, -50%); overflow: scroll;">
-    <h5>Identify Single Differential Accesible Region</h5>
+    <h5>Identify Single Differential Accessible Region</h5>
     <form id="single">
         <div>
             <label>Enter Name for the output figure</label>
@@ -73,7 +73,7 @@
     <br>
     <br>
 
-    <h5>Identify All Differential Accesible Region</h5>
+    <h5>Identify All Differential Accessible Region</h5>
     <form id="all">
         <div>
             <label>Enter Name for the output figure</label>
@@ -132,14 +132,14 @@
 
     async function singleDAR(e) {
         e.preventDefault();
-        const snap = document.querySelector('#singleFile').value;
+        const snap = document.querySelector('#singleFile').files[0].path;
         const name = document.querySelector('#singleName').value;
         const inputMat = document.querySelector('#singleInputMat').value;
         const clusterNum = parseInt(document.querySelector('#clusterNum').value);
         const bcv = parseFloat(document.querySelector('#singleBCV').value);
 
         loading();
-        ipcRenderer.send('identifySingleDAR', name, snap.replace(/^.*[\\\/]/, ''), clusterNum, inputMat, bcv);
+        ipcRenderer.send('identifySingleDAR', name, snap, clusterNum, inputMat, bcv);
         ipcRenderer.on('identifySingleDAR:reply', (e) => {
             unLoading();
         })
@@ -147,13 +147,13 @@
 
     async function allDARs(e) {
         e.preventDefault();
-        const snap = document.querySelector('#allFile').value;
+        const snap = document.querySelector('#allFile').files[0].path;
         const name = document.querySelector('#allName').value;
         const inputMat = document.querySelector('#allInputMat').value;
         const bcv = parseFloat(document.querySelector('#allBcv').value);
 
         loading();
-        ipcRenderer.send('identifyAllDARs', name, snap.replace(/^.*[\\\/]/, ''), inputMat, bcv);
+        ipcRenderer.send('identifyAllDARs', name, snap, inputMat, bcv);
         ipcRenderer.on('identifyAllDARs:reply', (e) => {
             unLoading();
         })

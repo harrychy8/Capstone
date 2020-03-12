@@ -120,18 +120,18 @@
     async function submitForm(e) {
         e.preventDefault();
         const name = document.querySelector('#item').value;
-        const snap = document.querySelector('#item2').value;
+        const snap = document.querySelector('#item2').files[0].path;
         const choice = document.querySelector('#function').value;
         const method = document.querySelector('#method2').value;
 
         loading();
         if (choice === 'PlotViz') {
-            ipcRenderer.send('plotViz', name, snap.replace(/^.*[\\\/]/, ''), method);
+            ipcRenderer.send('plotViz', name, snap, method);
             ipcRenderer.on('plotViz:reply', (e) => {
                 unLoading();
             })
         } else {
-            ipcRenderer.send('plotFeatureSingle', name, snap.replace(/^.*[\\\/]/, ''), method);
+            ipcRenderer.send('plotFeatureSingle', name, snap, method);
             ipcRenderer.on('plotFeatureSingle:reply', (e) => {
                 unLoading();
             })
@@ -140,10 +140,10 @@
 
     function runViz(e) {
         e.preventDefault();
-        const snap = document.querySelector('#item3').value;
+        const snap = document.querySelector('#item3').files[0].path;
         const method = document.querySelector('#method').value;
         loading();
-        ipcRenderer.send('runViz', snap.replace(/^.*[\\\/]/, ''), method);
+        ipcRenderer.send('runViz', snap, method);
         ipcRenderer.on('runViz:reply', (e) => {
             unLoading();
         })
