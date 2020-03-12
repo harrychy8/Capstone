@@ -1,4 +1,5 @@
 args <- commandArgs(trailingOnly = T);
+time <- format(Sys.time(), "%a-%b-%d-%Y-%H_%M_%S")
 
 library(SnapATAC);
 x.sp = readRDS(args[1]);
@@ -31,22 +32,22 @@ idy.ls = lapply(levels(x.sp@cluster), function(cluster_i){
 names(idy.ls) = levels(x.sp@cluster);
 par(mfrow = c(3, 3));
 covs = Matrix::rowSums(x.sp@pmat);
-for(cluster_i in levels(x.sp@cluster)){
+for(cluster_i in levels(x.sp@cluster)) {
 	print(cluster_i)
 	idy = idy.ls[[cluster_i]];
-	vals = Matrix::rowSums(x.sp@pmat[,idy]) / covs;
+	vals = Matrix::rowSums(x.sp@pmat[, idy]) / covs;
 	vals.zscore = (vals - mean(vals)) / sd(vals);
-  name <- paste(args[2], "identifyAllDARs-", cluster_i, "pdf", sep = ".");
-  name_path <- paste("./output", name, sep = "/");
+	name <- paste(time, args[2], "identifyAllDARs-", cluster_i, "pdf", sep = ".");
+	name_path <- paste("./output", name, sep = "/");
 	plotFeatureSingle(
-		obj=x.sp,
-		feature.value=vals.zscore,
-		method="tsne", 
-		main=cluster_i,
-		point.size=0.1, 
-		point.shape=19, 
-		down.sample=5000,
-		quantiles=c(0.01, 0.99),
+		obj = x.sp,
+		feature.value = vals.zscore,
+		method = "tsne",
+		main = cluster_i,
+		point.size = 0.1,
+		point.shape = 19,
+		down.sample = 5000,
+		quantiles = c(0.01, 0.99),
         pdf.file.name = name_path,
         pdf.height = 7,
         pdf.width = 7

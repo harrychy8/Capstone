@@ -1,5 +1,6 @@
 # Step 1: barcodeSelection
 args <- commandArgs(trailingOnly = T)
+time <- format(Sys.time(), "%a-%b-%d-%Y-%H_%M_%S")
 
 library(SnapATAC);
 x.sp <- createSnap(
@@ -23,11 +24,11 @@ p1 <- ggplot(
   aes(x = UMI, y = promoter_ratio)) +
   geom_point(size = 0.1, col = "grey") +
   theme_classic() +
-  ggtitle(args[3]) +
+  ggtitle("Barcode") +
   ylim(0, 1) +
   xlim(0, 6) +
   labs(x = "log10(UMI)", y = "promoter ratio")
-name <- paste(args[3], "barcodeSelection", "png", sep = ".")
+name <- paste(time, args[3], "barcodeSelection", "png", sep = ".")
 path <- paste("./output", name, sep = "/")
 ggsave(path)
 
@@ -65,7 +66,7 @@ ggplot(data.frame(x = bin.cov),
   xlim(0, 5) +
   geom_histogram(color = "darkblue", fill = "lightblue")
 
-name <- paste(args[3], "histogram", "png", sep = ".")
+name <- paste(time, args[3], "histogram", "png", sep = ".")
 path <- paste("./output", name, sep = "/")
 ggsave(path)
 bin.cutoff = quantile(bin.cov[bin.cov > 0], 0.95);

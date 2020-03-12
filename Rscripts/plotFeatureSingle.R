@@ -1,8 +1,9 @@
 args <- commandArgs(trailingOnly = T)
+time <- format(Sys.time(), "%a-%b-%d-%Y-%H_%M_%S")
 
 library(SnapATAC);
 x.sp = readRDS(args[1])
-name <- paste(args[2], "plotFeatureSingle", "pdf", sep = ".")
+name <- paste(time, args[2], "plotFeatureSingle", "pdf", sep = ".")
 path <- paste("./output", name, sep = "/")
 
 plotFeatureSingle(
