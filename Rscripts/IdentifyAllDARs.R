@@ -8,6 +8,22 @@ x.sp = readRDS(args[1]);
 #bcv
 #test.method
 
+if (is.null(x.sp@cluster)){
+  # x.sp clusters is empty, need to re run clustering steps
+  x.sp = runKNN(
+    obj=x.sp,
+    eigs.dims=1:20,
+    k=15
+  );
+  x.sp=runCluster(
+      obj=x.sp,
+      tmp.folder=tempdir(),
+      louvain.lib="R-igraph",
+      seed.use=10
+    );
+  x.sp@metaData$cluster = x.sp@cluster;
+}
+
 idy.ls = lapply(levels(x.sp@cluster), function(cluster_i){
 	DARs = findDAR(
 		obj=x.sp,

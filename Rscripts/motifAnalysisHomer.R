@@ -9,28 +9,31 @@ x.sp = readRDS(args[1])
 #args3 is bcv
 #args4 is path to homer
 
+DARs = findDAR(
+  obj = x.sp,
+  input.mat = "pmat",
+  cluster.pos = 5,
+  cluster.neg.method = "knn",
+  test.method = "exactTest",
+  bcv = 0.1, #0.4 for human, 0.1 for mouse
+  seed.use = 10
+);
+DARs$FDR = p.adjust(DARs$PValue, method = "BH");
+idy = which(DARs$FDR < 5e-2 & DARs$logFC > 0);
 
-idy.ls = lapply(levels(x.sp@cluster), function(cluster_i){
-	DARs = findDAR(
-		obj=x.sp,
-		input.mat=args[2],
-		cluster.pos=cluster_i,
-		cluster.neg=NULL,
-		cluster.neg.method="knn",
-		bcv=as.numeric(args[3]),
-		test.method="exactTest",
-		seed.use=10
-		);
-	DARs$FDR = p.adjust(DARs$PValue, method="BH");
-	idy = which(DARs$FDR < 5e-2 & DARs$logFC > 0);
-	if((x=length(idy)) < 2000L){
-			PValues = DARs$PValue;
-			PValues[DARs$logFC < 0] = 1;
-			idy = order(PValues, decreasing=FALSE)[1:2000];
-			rm(PValues); # free memory
-	}
-	idy
-  })
+df <- data.frame(seqnames=seqnames(x.sp@peak),
+  starts=start(x.sp@peak)-1,
+  ends=end(x.sp@peak),
+  names=c(rep(".", length(x.sp@peak))),
+  scores=c(rep(".", length(x.sp@peak))),
+  strands=strand(x.sp@peak))
+
+write.table( df, file = "temp.bed", quote=F, sep="\t", row.names=F, col.names=F)
+system("sed 's/b//g' temp.bed > test.bed");
+# source("https://bioconductor.org/biocLite.R")
+# biocLite("genomation")
+library(genomation)
+x.sp@peak = readBed("test.bed",track.line=FALSE,remove.unusual=FALSE)
 
 motifs = runHomer(
 	x.sp[,idy,"pmat"], 

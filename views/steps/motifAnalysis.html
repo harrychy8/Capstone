@@ -139,12 +139,12 @@
 
     async function runChromVar(e) {
         e.preventDefault();
-        const snap = document.querySelector('#chormVarSnap').value;
+        const snap = document.querySelector('#chromVarSnap').value;
         const inputMat = document.querySelector('#chromVarInputMat').value;
         const motif1 = document.querySelector('#motif1').value;
         const motif2 = document.querySelector('#motif2').value;
         loading();
-        ipcRenderer.send('motifAnalysisChromVAR', snap.replace(/^.*[\\\/]/, ''), inputMat, motif1, motif2);
+        ipcRenderer.send('motifAnalysisChromVAR', snap, inputMat, motif1, motif2);
         ipcRenderer.on('motifAnalysisChromVAR:reply', (e) => {
             unLoading();
         })

@@ -20,12 +20,12 @@ library(ggplot2);
 x.sp = makeBinary(x.sp, "pmat");
 x.sp@mmat = runChromVAR(
     obj=x.sp,
-    input.mat="bmat",
+    input.mat=args[2],
     genome=BSgenome.Mmusculus.UCSC.mm10,
     min.count=10,
     species="Homo sapiens"
   );
-motif_i = "MA0497.1_MEF2C";
+motif_i = args[3];
 dat = data.frame(x=x.sp@metaData[,"cluster"], y=x.sp@mmat[,motif_i]);
 p1 <- ggplot(dat, aes(x=x, y=y, fill=x)) + 
 	theme_classic() +
@@ -41,7 +41,8 @@ p1 <- ggplot(dat, aes(x=x, y=y, fill=x)) +
    );
 name <- paste(time, "motif1-", motif_i, "png", sep = ".")
 path1 <- paste("./output", name, sep = "/")
-motif_i = "MA0660.1_MEF2B";
+
+motif_i = args[4];
 dat = data.frame(x=x.sp@metaData[,"cluster"], y=x.sp@mmat[,motif_i]);
 p2 <- ggplot(dat, aes(x=x, y=y, fill=x)) + 
 	theme_classic() +

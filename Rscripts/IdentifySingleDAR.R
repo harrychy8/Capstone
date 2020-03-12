@@ -4,6 +4,22 @@ time <- format(Sys.time(), "%a-%b-%d-%Y-%H_%M_%S")
 library(SnapATAC);
 x.sp = readRDS(args[1]);
 
+if (is.null(x.sp@cluster)){
+  # x.sp clusters is empty, need to re run clustering steps
+  x.sp = runKNN(
+    obj=x.sp,
+    eigs.dims=1:20,
+    k=15
+  );
+  x.sp=runCluster(
+      obj=x.sp,
+      tmp.folder=tempdir(),
+      louvain.lib="R-igraph",
+      seed.use=10
+    );
+  x.sp@metaData$cluster = x.sp@cluster;
+}
+
 cluster_name <- paste("Cluster", args[4], sep = " ");
 name <- paste(time, args[2], "identifySingleDARtsne", cluster_name, "pdf", sep = ".");
 path <- paste("./output", name, sep = "/");

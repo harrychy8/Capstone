@@ -183,6 +183,7 @@ ipcMain.on('motifAnalysisHomer', function (e, snap, inputMat, bcv, pathToHomer) 
 });
 
 ipcMain.on('motifAnalysisChromVAR', function (e, snap, inputMat, motif1, motif2) {
+    console.log("Gets to caller in main");
     let child = runR('./Rscripts/motifAnalysisChromVAR.R', [snap, inputMat, motif1, motif2], e, STEPS.motifAnalysisChromVAR);
     onExit(child, STEPS.motifAnalysisChromVAR, e);
 });
