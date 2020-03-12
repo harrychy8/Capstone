@@ -1,9 +1,10 @@
 args <- commandArgs(trailingOnly = T)
+time <- format(Sys.time(), "%a-%b-%d-%Y-%H_%M_%S")
 
 library(SnapATAC);
 x.sp = readRDS(args[2])
 
-name <- paste(args[1], "plotDimReductPW", "pdf", sep = ".")
+name <- paste(time, args[1], "plotDimReductPW", "pdf", sep = ".")
 path <- paste("./output", name, sep = "/")
 plotDimReductPW(
   obj = x.sp,

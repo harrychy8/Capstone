@@ -31,9 +31,10 @@ const STEPS = {
     createCellByPeak: "createCellByPeak", 
     identifyAllDARs: "identifyAllDARs",
     identifySingleDAR: "identifySingleDAR"
-}
+};
 
 let mainWindow;
+let dataSetName = 'someName';
 
 // Listen for app to be ready
 app.on('ready', function () {
@@ -60,6 +61,14 @@ app.on('ready', function () {
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     //Insert menu
     Menu.setApplicationMenu(mainMenu);
+});
+
+ipcMain.on('getDataSetName', function (e) {
+    e.reply('getDataSetName:reply', dataSetName);
+});
+
+ipcMain.on('updateDataSetName', function (e, name) {
+    dataSetName = name;
 });
 
 //catch fastq > snap
@@ -92,104 +101,104 @@ ipcMain.on('snaptools', function (e, fastq1, fastq2, snap, indexgenome) {
 });
 
 ipcMain.on('primary', function (e, name, snap, csv, blacklist) {
-    let child = runR('./Rscripts/primary.R', ["./data/" + snap, "./data/" + csv, name, "./data/" + blacklist], e, STEPS.primary);
+    let child = runR('./Rscripts/primary.R', [snap, csv, name, blacklist], e, STEPS.primary);
     onExit(child, STEPS.primary, e);
 });
 
 ipcMain.on('dimReduction', function (e, snap) {
-    let child = runR('./Rscripts/dimReduction.R', ["./data/" + snap], e, STEPS.dimReduction);
+    let child = runR('./Rscripts/dimReduction.R', [snap], e, STEPS.dimReduction);
     onExit(child, STEPS.dimReduction, e);
 });
 
 ipcMain.on('plotDimReductPW', function (e, name, snap) {
-    let child = runR('./Rscripts/plotDimReductPW.R', [name, "./data/" + snap],e, STEPS.plotDimReductPW);
+    let child = runR('./Rscripts/plotDimReductPW.R', [name, snap], e, STEPS.plotDimReductPW);
     onExit(child, STEPS.plotDimReductPW, e);
 });
 
 ipcMain.on('GBclustering', function (e, snap) {
     console.log(snap);
-    let child = runR('./Rscripts/GBclustering.R', ["./data/" + snap], e, STEPS.GBclustering);
+    let child = runR('./Rscripts/GBclustering.R', [snap], e, STEPS.GBclustering);
     onExit(child, STEPS.GBclustering, e);
 });
 
 ipcMain.on('visualization', function (e, name, snap) {
-    let child = runR('./Rscripts/visualization.R', [name, "./data/" + snap], e, STEPS.visualization);
+    let child = runR('./Rscripts/visualization.R', [name, snap], e, STEPS.visualization);
     onExit(child, STEPS.visualization, e);
 });
 
 ipcMain.on('runViz', function (e, snap, method) {
-    let child = runR('./Rscripts/runViz.R', ["./data/" + snap, method], e, STEPS.runViz);
+    let child = runR('./Rscripts/runViz.R', [snap, method], e, STEPS.runViz);
     onExit(child, STEPS.runViz, e);
 });
 
 ipcMain.on('plotViz', function (e, name, snap, method) {
-    let child = runR('./Rscripts/plotViz.R', ["./data/" + snap, name, method], e, STEPS.plotViz);
+    let child = runR('./Rscripts/plotViz.R', [snap, name, method], e, STEPS.plotViz);
     onExit(child, STEPS.plotViz, e);
 });
 
 ipcMain.on('plotFeatureSingle', function (e, name, snap, method) {
-    let child = runR('./Rscripts/plotFeatureSingle.R', ["./data/" + snap, name, method], e, STEPS.plotFeatureSingle);
+    let child = runR('./Rscripts/plotFeatureSingle.R', [snap, name, method], e, STEPS.plotFeatureSingle);
     onExit(child, STEPS.plotFeatureSingle, e);
 });
 
 ipcMain.on('geneBasedAnnotation', function (e, snap, table) {
-    let child = runR('./Rscripts/geneBasedAnnotation.R', ["./data/" + snap, "./data/" + table], e, STEPS.geneBasedAnnotation);
+    let child = runR('./Rscripts/geneBasedAnnotation.R', [snap, table], e, STEPS.geneBasedAnnotation);
     onExit(child, STEPS.geneBasedAnnotation, e);
 });
 
 ipcMain.on('rnaBasedAnnotation', function (e, snap, table) {
-    let child = runR('./Rscripts/rnaBasedAnnotation.R', ["./data/" + snap, "./data/" + table], e, STEPS.rnaBasedAnnotation);
+    let child = runR('./Rscripts/rnaBasedAnnotation.R', [snap, table], e, STEPS.rnaBasedAnnotation);
     onExit(child, STEPS.rnaBasedAnnotation, e);
 });
 
 ipcMain.on('hereticalClustering', function (e, name, snap) {
-    let child = runR('./Rscripts/hereticalClustering.R', ["./data/" + snap, name], e, STEPS.hereticalClustering);
+    let child = runR('./Rscripts/hereticalClustering.R', [snap, name], e, STEPS.hereticalClustering);
     onExit(child, STEPS.hereticalClustering, e);
 });
 
 ipcMain.on('identifyPeaks', function (e, snap) {
-    let child = runR('./Rscripts/identifyPeaks.R', ["./data/" + snap], e, STEPS.identifyPeaks);
+    let child = runR('./Rscripts/identifyPeaks.R', [snap], e, STEPS.identifyPeaks);
     onExit(child, STEPS.identifyPeaks, e);
 });
 
 ipcMain.on('addCellByPeak', function (e, snap) {
-    let child = runR('./Rscripts/addCellByPeak.R', ["./data/" + snap], e, STEPS.addCellByPeak);
+    let child = runR('./Rscripts/addCellByPeak.R', [snap], e, STEPS.addCellByPeak);
     onExit(child, STEPS.addCellByPeak, e);
 });
 
 ipcMain.on('identifySingleDAR', function (e, name, snap, clusterNum, inputMat, bcv) {
     console.log("entered single DAR");
-    let child = runR('./Rscripts/identifySingleDAR.R', ["./data/" + snap, name, inputMat, clusterNum, bcv], e, STEPS.identifySingleDAR);
+    let child = runR('./Rscripts/identifySingleDAR.R', [snap, name, inputMat, clusterNum, bcv], e, STEPS.identifySingleDAR);
     onExit(child, STEPS.identifySingleDAR, e);
 });
 
 ipcMain.on('identifyAllDARs', function (e, name, snap, inputMat, bcv) {
-    let child = runR('./Rscripts/identifyAllDARs.R', ["./data/" + snap, name, inputMat, bcv], e, STEPS.identifyAllDARs);
+    let child = runR('./Rscripts/identifyAllDARs.R', [snap, name, inputMat, bcv], e, STEPS.identifyAllDARs);
     onExit(child, STEPS.identifyAllDARs, e);
 });
 
 ipcMain.on('motifAnalysisHomer', function (e, snap, inputMat, bcv, pathToHomer) {
-    let child = runR('./Rscripts/motifAnalysisHomer.R', ["./data/" + snap, inputMat, bcv, pathToHomer], e, STEPS.motifAnalysisHomer);
+    let child = runR('./Rscripts/motifAnalysisHomer.R', [snap, inputMat, bcv, pathToHomer], e, STEPS.motifAnalysisHomer);
     onExit(child, STEPS.motifAnalysisHomer, e);
 });
 
 ipcMain.on('motifAnalysisChromVAR', function (e, snap, inputMat, motif1, motif2) {
-    let child = runR('./Rscripts/motifAnalysisChromVAR.R', ["./data/" + snap, inputMat, motif1, motif2], e, STEPS.motifAnalysisChromVAR);
+    let child = runR('./Rscripts/motifAnalysisChromVAR.R', [snap, inputMat, motif1, motif2], e, STEPS.motifAnalysisChromVAR);
     onExit(child, STEPS.motifAnalysisChromVAR, e);
 });
 
 ipcMain.on('greatAnalysis', function (e, snap) {
-    let child = runR('./Rscripts/greatAnalysis.R', ["./data/" + snap], e, STEPS.greatAnalysis);
+    let child = runR('./Rscripts/greatAnalysis.R', [snap], e, STEPS.greatAnalysis);
     onExit(child, STEPS.greatAnalysis, e);
 });
 
 ipcMain.on('createCellByPeak', function (e, snap, peak_combined) {
     console.log(snap);
-    let del = snapDelete("./data/" + snap);
+    let del = snapDelete(snap);
     del.on('exit', function (code) {
         let message = code ? 'Delete Failure' : 'Delete Success';
         if (code === 0){
-            let child = createCellByPeak("./data/" + snap, "./data/" + peak_combined);
+            let child = createCellByPeak(snap, peak_combined);
             onExit(child, STEPS.createCellByPeak, e);
         } else {
             e.reply('createCellByPeak:reply');
@@ -261,18 +270,18 @@ function indexGenome() {
 
 function createBam(fastq1, fastq2) {
     const child = spawn("snaptools", ['align-paired-end',
-	'--input-reference=./required/mm10.fa',
-	'--input-fastq1=./data/'+fastq1,
-	'--input-fastq2=./data/'+fastq2,
-	'--output-bam=./tmp/'+fastq1+fastq2+'.bam',
-	'--aligner=bwa',
-	'--path-to-aligner=./required/bwa_aligner/bin/',
-	'--read-fastq-command=gzcat',
-	'--min-cov=0',
-	'--num-threads=5',
-	'--if-sort=True',
-	'--tmp-folder=./',
-    '--overwrite=TRUE']);
+        '--input-reference=./required/mm10.fa',
+        '--input-fastq1=' + fastq1,
+        '--input-fastq2=' + fastq2,
+        '--output-bam=./tmp/' + fastq1 + fastq2 + '.bam',
+        '--aligner=bwa',
+        '--path-to-aligner=./required/bwa_aligner/bin/',
+        '--read-fastq-command=gzcat',
+        '--min-cov=0',
+        '--num-threads=5',
+        '--if-sort=True',
+        '--tmp-folder=./',
+        '--overwrite=TRUE']);
 
     let scriptOutput = "";
     child.stdout.setEncoding('utf8');
@@ -298,18 +307,18 @@ function createBam(fastq1, fastq2) {
 
 function createSnap(snap, fastq1, fastq2) {
     const child = spawn("snaptools", ['snap-pre',
-	'--input-file=./tmp/'+fastq1+fastq2+'.bam',
-	'--output-snap=./data/'+snap+'.snap',
-	'--genome-name=mm10',
-	'--genome-size=./required/mm10.chrom.size',
-	'--min-mapq=30',
-	'--min-flen=0',
-	'--max-flen=1000',
-	'--keep-chrm=TRUE',
-	'--keep-single=TRUE',
-	'--keep-secondary=False',
-	'--overwrite=True',
-	'--max-num=1000000',
+        '--input-file=./tmp/' + fastq1 + fastq2 + '.bam',
+        '--output-snap=' + snap + '.snap',
+        '--genome-name=mm10',
+        '--genome-size=./required/mm10.chrom.size',
+        '--min-mapq=30',
+        '--min-flen=0',
+        '--max-flen=1000',
+        '--keep-chrm=TRUE',
+        '--keep-single=TRUE',
+        '--keep-secondary=False',
+        '--overwrite=True',
+        '--max-num=1000000',
 	'--min-cov=100',
     '--verbose=True']);
 

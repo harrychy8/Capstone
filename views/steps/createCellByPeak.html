@@ -85,11 +85,11 @@
 
     async function submitForm(e) {
         e.preventDefault();
-        const snap = document.querySelector('#item1').value;
-        const peaks_combined = document.querySelector('#item2').value;
+        const snap = document.querySelector('#item1').files[0].path;
+        const peaks_combined = document.querySelector('#item2').files[0].path;
         loading();
         console.log(snap);
-        ipcRenderer.send('createCellByPeak', snap.replace(/^.*[\\\/]/, ''), peaks_combined.replace(/^.*[\\\/]/, ''));
+        ipcRenderer.send('createCellByPeak', snap, peaks_combined);
         ipcRenderer.on('createCellByPeak:reply', (e) => {
             unLoading();
         })

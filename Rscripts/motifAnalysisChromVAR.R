@@ -1,4 +1,5 @@
 args <- commandArgs(trailingOnly = T)
+time <- format(Sys.time(), "%a-%b-%d-%Y-%H_%M_%S")
 
 library(SnapATAC);
 x.sp = readRDS(args[1])
@@ -38,7 +39,7 @@ p1 <- ggplot(dat, aes(x=x, y=y, fill=x)) +
 		  axis.ticks.x=element_blank(),
 		  legend.position = "none"
    );
-name <- paste("motif1-",motif_i, "png", sep = ".")
+name <- paste(time, "motif1-", motif_i, "png", sep = ".")
 path1 <- paste("./output", name, sep = "/")
 motif_i = "MA0660.1_MEF2B";
 dat = data.frame(x=x.sp@metaData[,"cluster"], y=x.sp@mmat[,motif_i]);
@@ -54,7 +55,7 @@ p2 <- ggplot(dat, aes(x=x, y=y, fill=x)) +
 		  axis.ticks.x=element_blank(),
 		  legend.position = "none"
    );
-name <- paste("motif2-",motif_i, "png", sep = ".")
+name <- paste(time, "motif2-", motif_i, "png", sep = ".")
 path2 <- paste("./output", name, sep = "/")
 ggsave(path1)
 ggsave(path2)

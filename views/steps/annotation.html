@@ -95,16 +95,16 @@
     async function submitForm(e) {
         e.preventDefault();
         const method = document.querySelector('#method').value;
-        const snap = document.querySelector('#item2').value;
-        const table = document.querySelector('#item3').value;
+        const snap = document.querySelector('#item2').files[0].path;
+        const table = document.querySelector('#item3').files[0].path;
         loading();
         if (method === 'gene-based') {
-            ipcRenderer.send('geneBasedAnnotation', snap.replace(/^.*[\\\/]/, ''), table.replace(/^.*[\\\/]/, ''));
+            ipcRenderer.send('geneBasedAnnotation', snap, table);
             ipcRenderer.on('geneBasedAnnotation:reply', (e) => {
                 unLoading();
             });
         } else {
-            ipcRenderer.send('rnaBasedAnnotation', snap.replace(/^.*[\\\/]/, ''), table.replace(/^.*[\\\/]/, ''));
+            ipcRenderer.send('rnaBasedAnnotation', snap, table);
             ipcRenderer.on('rnaBasedAnnotation:reply', (e) => {
                 unLoading();
             });
