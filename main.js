@@ -28,7 +28,7 @@ const STEPS = {
     motifAnalysisHomer: "motifAnalysisHomer",
     motifAnalysisChromVAR: "motifAnalysisChromVAR",
     greatAnalysis: "greatAnalysis",
-    createCellByPeak: "createCellByPeak",
+    createCellByPeak: "createCellByPeak", 
     identifyAllDARs: "identifyAllDARs",
     identifySingleDAR: "identifySingleDAR"
 };
@@ -76,7 +76,7 @@ ipcMain.on('snaptools', function (e, fastq1, fastq2, snap, indexgenome) {
     console.log(e + fastq1 + fastq2 + snap + indexgenome);
     if (indexgenome) {
         let child = indexGenome();
-        child.on('exit', function (code) {
+            child.on('exit', function (code) {
             console.log("executing next process");
             let child = createBam(fastq1, fastq2);
             child.on('exit', function (code) {
@@ -282,6 +282,18 @@ function createBam(fastq1, fastq2) {
         '--if-sort=True',
         '--tmp-folder=./',
         '--overwrite=TRUE']);
+	'--input-reference=./required/mm10.fa',
+	'--input-fastq1=./data/'+fastq1,
+	'--input-fastq2=./data/'+fastq2,
+	'--output-bam=./tmp/'+fastq1+fastq2+'.bam',
+	'--aligner=bwa',
+	'--path-to-aligner=./required/bwa_aligner/bin/',
+	'--read-fastq-command=gzcat',
+	'--min-cov=0',
+	'--num-threads=5',
+	'--if-sort=True',
+	'--tmp-folder=./',
+    '--overwrite=TRUE']);
 
     let scriptOutput = "";
     child.stdout.setEncoding('utf8');
@@ -307,8 +319,8 @@ function createBam(fastq1, fastq2) {
 
 function createSnap(snap, fastq1, fastq2) {
     const child = spawn("snaptools", ['snap-pre',
-	'--input-file=./output/'+fastq1+fastq2+'.bam',
-	'--output-snap='+snap+'.snap',
+	'--input-file=./tmp/'+fastq1+fastq2+'.bam',
+	'--output-snap=./data/'+snap+'.snap',
 	'--genome-name=mm10',
 	'--genome-size=./required/mm10.chrom.size',
 	'--min-mapq=30',

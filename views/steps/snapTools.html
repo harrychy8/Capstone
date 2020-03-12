@@ -40,12 +40,14 @@
     <form>
         <br>
         <br>
+        <div>
+            <label>Please use two fastq files to generate a snap file. Note the snap file will be generated in the /data folder. Check Index Reference Genome only if your mm10 has not been indexed yet.</label>
+        </div>
         <br>
         <div>
             <label>Enter Name For Snap (.snap)</label>
             <label for="item"></label><input type="text" id="item" autofocus>
         </div>
-        <br>
         <div>
             <label>
                 Upload your first fastq (.fastq.gz) file:
@@ -66,7 +68,7 @@
             <input class="my-checkbox" type="checkbox" id="item4">
             <label for="item4">Index Reference Genome (Optional)</label>
         </div>
-        <br><br>
+        <br>
         <button class="waves-effect waves-light btn" type="submit">Generate Snap File</button>
     </form>
     <br>

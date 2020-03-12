@@ -5,67 +5,75 @@
     <style>
         
         table {
-        vertical-align: middle;
-        border-collapse: collapse;
+            display: table;
+            vertical-align: middle;
+            border-collapse: collapse;
+            width: 105%;
+
         }
 
         td, th {
-        text-align: left;
-        padding: 8px;
+            text-align: left;
+            padding: 8px;
         }
 
         tr:nth-child(even) {
-        background-color: #e8eaf6;
+            background-color: #e8eaf6;
         }
         .center-plase {
-            margin: 1% 5%;
+            margin: 2% 5%;
         }
-        #squares div {
-            display: block;
-            float: left;
 
-            width: 75px;
-            height: 25px;
-            background:#3f51b5;
-            border-radius: 5px;
-
-            margin-right: 5px;
-        }
         .centered-text {
             text-align: center;
             vertical-align: middle;
             color: #e8eaf6;
         }
-        .button{background-color:#3f51b5; width: 100px; color: #e8eaf6; float:right; margin-right:5%} 
-        .button:hover{background-color:#283593;}
-        .button:active{background-color:#3f51b5;}
-        .button:focus{background-color:#3f51b5;}
+        .button:hover {
+            background-color: #283593;
+        }
+
+        .button:active {
+            background-color: #3f51b5;
+        }
+
+        .button:focus {
+            background-color: #3f51b5;
+        }
      
     </style>
 </head>
 <body onload=updateResults()>
-
-<div class="datasets">
-    <div class = "center-plase">
-    <table id="insertRuns">
-        <tr>
-            <th>Process</th>
-            <th>Plots</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-    </table>
-</div>
-    <button class="button" id = "toMain" onclick="window.location.href='./mainWindow.html'">Back</button>
-</div>
-
+    <nav>
+        <div class="nav-wrapper" style="background-color:#3f51b5;">
+            <ul class="left">
+                <li onclick=mainWindow()><a class="waves-effect waves-light btn"> &lt; Back </a></li>
+            </ul>
+            <a class="brand-logo center">Previous Results</a>
+        </div>
+    </nav>
+    <br>
+    <div class="datasets">
+        <div class = "center-plase">
+        <table id="insertRuns">
+            <tr>
+                <th>Dataset</th>
+                <th>Step</th>
+                <th>Timestamp</th>
+                <th>Action</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>
 </body>
 
 <script>
-   
+    
+    function mainWindow() {
+        window.location.href = './mainWindow.html';
+    }
+
     function updateResults(){
 
         const fs = require('fs');
@@ -74,23 +82,27 @@
         const PDFWindow = require('electron-pdf-window');
 
         var directory = './output';
-
-        var file_names = [];
         var table = document.getElementById("insertRuns");
         var process_names = document.getElementsByClassName("process-name");
 
-        function addRun(process_name, step, row, format) {
-            let newText = document.createTextNode(process_name);
-            let graph = document.createElement('button')
-            let graph_text = document.createTextNode(step); 
-            let newPlot = row.insertCell(1);
-            graph.appendChild(graph_text); 
-            graph.className = "btn btn-light";
+        function display(row, dataset, step, time, format) {
+
+            let view_btn = document.createElement('button')
+            let view_text = document.createTextNode("View"); 
+            let view_action = row.insertCell(3);
+            view_btn.appendChild(view_text); 
+            view_btn.className = "btn btn-light";
+
+            let remove_btn = document.createElement('button')
+            let remove_text = document.createTextNode("Delete"); 
+            let remove_action = row.insertCell(4);
+            remove_btn.appendChild(remove_text); 
+            remove_btn.className = "btn btn-light";
             
-            graph.addEventListener("click", function(){ 
+            view_btn.addEventListener("click", function(){ 
 
                 const output_path = __dirname + "/../output";            
-                var filename = "/" + process_name + "."+ step + "." + format;
+                var filename = "/" + dataset + "."+ step + "." + time + "." + format;
 
                 if (format == "pdf") {
                     const loadPlot_pdf = new BrowserWindow({
@@ -108,38 +120,66 @@
                     loadPlot.loadFile(output_path+filename);
                 }
             });
-            newPlot.appendChild(graph);
+
+            remove_btn.addEventListener("click", function(){
+
+            });
+
+            view_action.appendChild(view_btn);
+            remove_action.appendChild(remove_btn);
         }
+
+        var results = []; 
 
         fs.readdir(directory, (err, files) => {
             if(err) {
             // handle error; e.g., folder didn't exist
             }
             // 'files': array of the files found in the directory
+        
             files.forEach(function (file) {
-          
-                const filename = file.split(".")[0]
-                file_names.push(filename);
-                //alert(filename)
-            });
-            var dups = []
-            var filtered_names = file_names.filter(function (element) {
-                // remove duplicates and empty names
-                if ((dups.indexOf(element) == -1) && (element != "")) {
-                    dups.push(element);
-                    return true;
-                }
-                return false;
-            });
+                const filename_str = file.split(".");
 
-            for(i = 0;i < filtered_names.length; i++){
+                results.push({
+                    dataset: filename_str[0],
+                    step: filename_str[1],
+                    time: filename_str[2],
+                    format: filename_str[3],
+                });
+
+            });
+            // results sorted by dataset names in alphabetical and numerical order
+            results.sort((a, b) => (a.dataset > b.dataset) ? 1 : (a.dataset === b.dataset) ? ((a.time < b.time) ? 1 : -1) : -1 );
+
+            // This part of the code remove duplicates and empty names in collected filenames
+            // Not needed at this point
+            // var dups = []
+            // var filtered_names = file_names.filter(function (element) {
+            //     // remove duplicates and empty names
+            //     if ((dups.indexOf(element) == -1) && (element != "")) {
+            //         dups.push(element);
+            //         return true;
+            //     }
+            //     return false;
+            // });
+
+            for(i = results.length-1;i >= 1; i--){
                 let newRow = table.insertRow(1);
-                let newCell = newRow.insertCell(0);
-                let newText = document.createTextNode(filtered_names[i]);
-                newCell.appendChild(newText);
-                addRun(filtered_names[i], "barcodeSelection", newRow, "png");
-                addRun(filtered_names[i], "histogram", newRow, "png");
-                addRun(filtered_names[i], "dimReduction", newRow, "pdf");
+
+                let dataset = newRow.insertCell(0);
+                let dataset_name = document.createTextNode(results[i].dataset);
+                dataset.appendChild(dataset_name);
+
+                let step = newRow.insertCell(1);
+                let step_name = document.createTextNode(results[i].step);
+                step.appendChild(step_name);
+
+                let time = newRow.insertCell(2);
+                let time_stamp = document.createTextNode(results[i].time);
+                time.appendChild(time_stamp);
+
+                display(newRow, results[i].dataset, results[i].step, results[i].time, results[i].format);
+
             }
         });
 
