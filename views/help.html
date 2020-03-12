@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Steps</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <style>
+        .button {
+            background-color: #3f51b5;
+            width: 175px;
+            font-size: small;
+            height: 75px;
+            min-height: 0px;
+            line-height: 20px;
+            padding-top: 10px;
+            padding-bottom: 8px;
+        }
+
+        #Primary {
+            width: 370px;
+        }
+
+        #FastQ {
+            width: 370px;
+        }
+
+        .button:hover {
+            background-color: #283593;
+        }
+
+        .button:active {
+            background-color: #3f51b5;
+        }
+
+        .button:focus {
+            background-color: #3f51b5;
+        }
+
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper" style="background-color:#3f51b5;">
+        <ul class="left">
+            <li onclick=mainWindow()><a class="waves-effect waves-light btn"> &lt; Previous</a></li>
+        </ul>
+        <a class="brand-logo center">Help</a>
+    </div>
+</nav>
+<br>
+
+
+<div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+        <label>Welcome to the SnapATAC UI. We hope this simplifies your experience with the tool.</label>   
+    </div>
+    <br> 
+
+    <div style="font-weight:bold">
+        <label>What is SnapATAC?</label>  
+    </div>
+    <div>
+        <label>SnapATAC (Single Nucleus Analysis Pipeline for ATAC-seq) is a fast, accurate and
+             comprehensive method for analyzing single cell ATAC-seq datasets. This application
+              runs on contributions made by R. Fang et al.</label>   
+    </div>
+
+    <br>
+
+    <div style="font-weight:bold">
+        <label>What does this UI do?</label>  
+    </div>
+    <div>
+        <label>This interface gives users an ability to manipulate functions from SnapATAC in an
+             intuitive way without having to use command line. It generates and visualizes graphs
+              in the different steps of SnapATAC, and provides easy access to past runs.</label>   
+    </div>
+
+    <br>
+
+    <div style="font-weight:bold">
+        <label>What files do I need?</label>  
+    </div>
+    <div>
+        <label>You are required to have .fastq files to generate .snap files, or if you already
+             have .snap files, then you can skip the first step. Depending on the step, you may
+              be required to supplement additional files.</label>   
+    </div>
+
+    <br>
+
+    <div style="font-weight:bold">
+        <label>How long does does each step take?</label>  
+    </div>
+    <div>
+        <label>The steps largely depend on your computer’s processing capability as well as the
+             files you are using. As the file sizes are large and a lot of computation is required,
+              this takes a long time. Many steps have taken hours, this is normal.</label>   
+    </div>
+
+    <br>
+
+    <div style="font-weight:bold">
+        <label>What libraries do my computer need before running SnapATAC?</label>  
+    </div>
+    <div>
+        <label>SnapATAC requires many dependencies from packages such as Bioconductor and Conda.
+             Please ensure you have at least the following:</label>   
+    </div>
+    <div style = "font-style: italic;">
+        <label>snaptools, SnapATAC, viridisLite, ggplot2, GenomicRanges, chromVAR, motifmatchr,
+             SummarizedExperiment, rGREAT</label>   
+    </div>
+    <br>
+    <br>
+</div>
+
+</body>
+<script>
+    function mainWindow() {
+        window.location.href = './mainWindow.html';
+    }
+</script>
+</html>
