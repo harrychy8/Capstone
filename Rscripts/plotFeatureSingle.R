@@ -10,7 +10,7 @@ plotFeatureSingle(
   obj = x.sp,
   feature.value = log(x.sp@metaData[, "passed_filters"] + 1, 10),
   method = args[3],
-  main = args[2],
+  main = "10X Brain Read Depth",
   point.size = 0.2,
   point.shape = 19,
   down.sample = 10000,

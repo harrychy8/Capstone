@@ -10,7 +10,7 @@ path <- paste("./output", name, sep = "/")
 plotViz(
   obj = x.sp,
   method = args[3],
-  main = args[2],
+  main = "10X Brain Cluster",
   point.color = x.sp@cluster,
   point.size = 1,
   point.shape = 19,
