@@ -273,7 +273,7 @@ function createBam(fastq1, fastq2) {
         '--input-reference=./required/mm10.fa',
         '--input-fastq1=' + fastq1,
         '--input-fastq2=' + fastq2,
-        '--output-bam=./output/' + fastq1 + fastq2 + '.bam',
+        '--output-bam=./tmp/' + fastq1 + fastq2 + '.bam',
         '--aligner=bwa',
         '--path-to-aligner=./required/bwa_aligner/bin/',
         '--read-fastq-command=gzcat',
@@ -282,18 +282,6 @@ function createBam(fastq1, fastq2) {
         '--if-sort=True',
         '--tmp-folder=./',
         '--overwrite=TRUE']);
-	'--input-reference=./required/mm10.fa',
-	'--input-fastq1=./data/'+fastq1,
-	'--input-fastq2=./data/'+fastq2,
-	'--output-bam=./tmp/'+fastq1+fastq2+'.bam',
-	'--aligner=bwa',
-	'--path-to-aligner=./required/bwa_aligner/bin/',
-	'--read-fastq-command=gzcat',
-	'--min-cov=0',
-	'--num-threads=5',
-	'--if-sort=True',
-	'--tmp-folder=./',
-    '--overwrite=TRUE']);
 
     let scriptOutput = "";
     child.stdout.setEncoding('utf8');
@@ -319,18 +307,18 @@ function createBam(fastq1, fastq2) {
 
 function createSnap(snap, fastq1, fastq2) {
     const child = spawn("snaptools", ['snap-pre',
-	'--input-file=./tmp/'+fastq1+fastq2+'.bam',
-	'--output-snap=./data/'+snap+'.snap',
-	'--genome-name=mm10',
-	'--genome-size=./required/mm10.chrom.size',
-	'--min-mapq=30',
-	'--min-flen=0',
-	'--max-flen=1000',
-	'--keep-chrm=TRUE',
-	'--keep-single=TRUE',
-	'--keep-secondary=False',
-	'--overwrite=True',
-	'--max-num=1000000',
+        '--input-file=./tmp/' + fastq1 + fastq2 + '.bam',
+        '--output-snap=' + snap + '.snap',
+        '--genome-name=mm10',
+        '--genome-size=./required/mm10.chrom.size',
+        '--min-mapq=30',
+        '--min-flen=0',
+        '--max-flen=1000',
+        '--keep-chrm=TRUE',
+        '--keep-single=TRUE',
+        '--keep-secondary=False',
+        '--overwrite=True',
+        '--max-num=1000000',
 	'--min-cov=100',
     '--verbose=True']);
 
