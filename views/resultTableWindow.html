@@ -97,7 +97,7 @@
             remove_btn.className = "btn btn-light";
 
             const output_path = __dirname + "/../output";            
-            var filename = "/" + dataset + "."+ step + "." + time + "." + format;
+            var filename = "/" + time + "."+ dataset + "." + step + "." + format;
             
             view_btn.addEventListener("click", function(){ 
 
@@ -155,15 +155,15 @@
                 const filename_str = file.split(".");
 
                 results.push({
-                    dataset: filename_str[0],
-                    step: filename_str[1],
-                    time: filename_str[2],
+                    dataset: filename_str[1],
+                    step: filename_str[2],
+                    time: filename_str[0],
                     format: filename_str[3],
                 });
 
             });
             // results sorted by dataset names in alphabetical and numerical order
-            results.sort((a, b) => (a.dataset > b.dataset) ? 1 : (a.dataset === b.dataset) ? ((a.time < b.time) ? 1 : -1) : -1 );
+            results.sort((a, b) => (a.dataset > b.dataset) ? 1 : (a.dataset === b.dataset) ? ((a.time > b.time) ? 1 : -1) : -1 );
 
             // This part of the code remove duplicates and empty names in collected filenames
             // Not needed at this point
@@ -178,6 +178,15 @@
             // });
 
             for(i = results.length-1;i >= 1; i--){
+
+                let formatted_time = results[i].time.split("-");
+                let month = formatted_time[1];
+                let date = formatted_time[2];
+                let year = formatted_time[3];
+                let hms = formatted_time[4].split("_");
+                let hr = hms[0];
+                let min = hms[1];
+
                 let newRow = table.insertRow(1);
 
                 let dataset = newRow.insertCell(0);
@@ -189,7 +198,8 @@
                 step.appendChild(step_name);
 
                 let time = newRow.insertCell(2);
-                let time_stamp = document.createTextNode(results[i].time);
+                let time_text = month+" "+date+", "+year+"  "+hr+":"+min;
+                let time_stamp = document.createTextNode(time_text);
                 time.appendChild(time_stamp);
 
                 display(newRow, results[i].dataset, results[i].step, results[i].time, results[i].format);
