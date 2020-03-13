@@ -183,7 +183,6 @@ ipcMain.on('motifAnalysisHomer', function (e, snap, inputMat, bcv, pathToHomer) 
 });
 
 ipcMain.on('motifAnalysisChromVAR', function (e, snap, inputMat, motif1, motif2) {
-    console.log("Gets to caller in main");
     let child = runR('./Rscripts/motifAnalysisChromVAR.R', [snap, inputMat, motif1, motif2], e, STEPS.motifAnalysisChromVAR);
     onExit(child, STEPS.motifAnalysisChromVAR, e);
 });
@@ -430,9 +429,6 @@ function runR(script, params, event, step_name) {
     R.on('exit', function (code) {
         let filename;
         console.log('got exit code: ' + code);
-        let plotWindow;
-        let plotWindow2;
-        let plotWindow1;
         if (code === 1) {
             // do something special
             console.log("failure")
