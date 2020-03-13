@@ -10,8 +10,8 @@ ensemble.ls = lapply(split(seq(length(x.sp@cluster)), x.sp@cluster), function(x)
 # cluster using 1-cor as distance
 hc = hclust(as.dist(1 - cor(t(do.call(rbind, ensemble.ls)))), method = "ward.D2");
 
-name <- paste(time, args[2], "hereticalClustering", "png", sep = ".")
+name <- paste(time, args[2], "hereticalClustering", "pdf", sep = ".")
 path <- paste("./output", name, sep = "/")
-png(path)
+pdf(path)
 plot(hc, hang = -1, xlab = "");
 dev.off()

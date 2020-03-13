@@ -53,7 +53,8 @@ for(cluster_i in levels(x.sp@cluster)) {
 	idy = idy.ls[[cluster_i]];
 	vals = Matrix::rowSums(x.sp@pmat[, idy]) / covs;
 	vals.zscore = (vals - mean(vals)) / sd(vals);
-	name <- paste(time, args[2], "identifyAllDARs-", cluster_i, "pdf", sep = ".");
+	clusterName <- paste("identifyAllDARs-",cluster_i);
+	name <- paste(time, args[2], clusterName, "pdf", sep = ".");
 	name_path <- paste("./output", name, sep = "/");
 	plotFeatureSingle(
 		obj = x.sp,

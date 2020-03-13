@@ -359,6 +359,48 @@ function onExit(child, step_name, e){
     });
 }
 
+function createPDFWindow(){
+    plotWindow = new PDFWindow({
+        useContentSize: true
+    });
+    return plotWindow;
+}
+
+function createPNGWindow(){
+    plotWindow = new BrowserWindow({
+        useContentSize: true
+    });
+    return plotWindow;
+}
+
+function findFileName(directory, substring){
+    var fs = require('fs');
+    var files = fs.readdirSync(directory);
+    let latest;
+    files.forEach(filename=>{
+        // console.log(filename);
+        if (filename.indexOf(substring) != -1){
+            const stat = fs.lstatSync(path.join(directory, filename));
+            if (!latest) {
+                latest = {filename, mtime: stat.mtime};
+            }
+            if (stat.mtime > latest.mtime) {
+                latest.filename = filename;
+                latest.mtime = stat.mtime;
+              }
+        }
+    });
+    return latest.filename;
+}
+
+function loadWindow(plot, filename){
+    plot.loadURL(url.format({
+        pathname: filename,
+        protocol: 'file:',
+        slashes: true
+    }));
+}
+
 function runR(script, params, event, step_name) {
     let RCall = [script];
     for (let i = 0; i < params.length; i++) {
@@ -397,76 +439,50 @@ function runR(script, params, event, step_name) {
         } else {
             console.log("success");
 
-            const output_path = __dirname + "/output";
+            const output_path = __dirname + "/output/";
             console.log(output_path);
-            if (step_name === STEPS.primary) {
 
-                const barcode = "/" + RCall[3] + ".barcodeSelection.png";
-                const histogram = "/" + RCall[3] + ".histogram.png";
+            switch(step_name){
+                case STEPS.primary:
+                    plot1 = createPNGWindow();
+                    plot2 = createPNGWindow();
+                    filename1 = findFileName("output", "barcodeSelection");
+                    filename2 = findFileName("output", "histogram");
+                    loadWindow(plot1, output_path + filename1);
+                    loadWindow(plot2, output_path+ filename2);
+                    break;
+                case STEPS.plotDimReductPW:
+                    plot = createPDFWindow();
+                    filename = findFileName("output", "plotDimReductPW");
+                    loadWindow(plot, output_path+ filename);
+                    break;
+                case STEPS.plotViz:
+                    plot = createPDFWindow();
+                    filename = findFileName("output", "plotViz");
+                    loadWindow(plot, output_path+ filename);
+                    break;
+                case STEPS.plotFeatureSingle:
+                    plot = createPDFWindow();
+                    filename = findFileName("output", "plotFeatureSingle");
+                    loadWindow(plot, output_path+ filename);
+                    break;
+                case STEPS.identifySingleDAR:
+                    plot = createPDFWindow();
+                    filename = findFileName("output", "identifySingleDAR");
+                    loadWindow(plot, output_path+ filename);
+                    break;
+                case STEPS.identifyAllDARs:
+                    plot = createPDFWindow();
+                    filename = findFileName("output", "identifyAllDARs");
+                    loadWindow(plot, output_path+ filename);
+                    break;
+                case STEPS.hereticalClustering:
+                    plot = createPDFWindow();
+                    filename = findFileName("output", "hereticalClustering");
+                    loadWindow(plot, output_path+ filename);
+                    break;
 
-                console.log("Loading plots...");
-                plotWindow1 = new BrowserWindow({
-                    useContentSize: true
-                });
-
-                plotWindow1.loadURL(url.format({
-                    pathname: path.join(output_path, barcode),
-                    protocol: 'file:',
-                    slashes: true
-                }));
-
-                plotWindow2 = new BrowserWindow({
-                    useContentSize: true
-                });
-
-                plotWindow2.loadURL(url.format({
-                    pathname: path.join(output_path, histogram),
-                    protocol: 'file:',
-                    slashes: true
-                }));
-
-            } else {
-
-                if (step_name === STEPS.plotDimReductPW || step_name === STEPS.plotViz || step_name === STEPS.plotFeatureSingle) {
-
-                    console.log("Loading plot...");
-
-                    filename = "." + step_name + ".pdf";
-
-                    if (step_name === 'plotDimReductPW') {
-                        filename = "/" + RCall[1] + filename;
-                    } else {
-                        filename = "/" + RCall[2] + filename;
-                    }
-
-                    plotWindow = new PDFWindow({
-                        useContentSize: true
-                    });
-
-                    plotWindow.loadURL(url.format({
-                        pathname: path.join(output_path, filename),
-                        protocol: 'file:',
-                        slashes: true
-                    }));
-
-                } else {
-                    if (RCall[3] === undefined) {
-                        // do nothing;
-                    } else {
-                        filename = "/" + RCall[3] + "." + step_name;
-                        filename = filename + ".png";
-
-                        plotWindow = new BrowserWindow({
-                            useContentSize: true
-                        });
-
-                        plotWindow.loadURL(url.format({
-                            pathname: path.join(output_path, filename),
-                            protocol: 'file:',
-                            slashes: true
-                        }));
-                    }
-                }
+                default: 
             }
         }
         return null;
