@@ -39,12 +39,10 @@
 <div style="margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
     <div>
         <label>
-            This step determines the number of reduced dimensions to include for downstream analysis. We use an ad hoc
-            method by simply looking at a pairwise plot and select the number of dimensions in which the scatter plot
-            starts looking like a blob. It takes a snap object (.rds) which should be
-            generated from previous step. If you do not have it, please run the primary step.
-            Please also enter the name of the data set,
-            the name you used should be showed up as default if you have ran previous steps
+            This step determines the number of reduced dimensions to include for downstream analysis.
+            A graph of the first 20 dimensions will be generated. 
+            Please ensure you have a snap object (.rds) generated from the previous step.
+             This step will also generate a snap object (.rds) for the next step.
         </label>
     </div>
     <br><br>
