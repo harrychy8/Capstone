@@ -119,6 +119,9 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div class="console-output">
+            Console Output:
+    <div id ="myDiv"></div>
 </div>
 
 </body>
@@ -151,6 +154,9 @@
         loading();
         ipcRenderer.send('updateDataSetName', name);
         ipcRenderer.send('identifySingleDAR', name, snap, clusterNum, inputMat, bcv);
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
         ipcRenderer.on('identifySingleDAR:reply', (e) => {
             getDataSetName();
             unLoading();
@@ -167,6 +173,9 @@
         loading();
         ipcRenderer.send('updateDataSetName', name);
         ipcRenderer.send('identifyAllDARs', name, snap, inputMat, bcv);
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
         ipcRenderer.on('identifyAllDARs:reply', (e) => {
             getDataSetName();
             unLoading();

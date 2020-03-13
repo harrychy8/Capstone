@@ -72,6 +72,9 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div class="console-output">
+            Console Output:
+    <div id ="myDiv"></div>
 </div>
 
 </body>
@@ -88,8 +91,10 @@
         const snap = document.querySelector('#item1').files[0].path;
         const peaks_combined = document.querySelector('#item2').files[0].path;
         loading();
-        console.log(snap);
         ipcRenderer.send('createCellByPeak', snap, peaks_combined);
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
         ipcRenderer.on('createCellByPeak:reply', (e) => {
             unLoading();
         })

@@ -81,6 +81,9 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div class="console-output">
+            Console Output:
+    <div id ="myDiv"></div>
 </div>
 
 </body>
@@ -100,11 +103,17 @@
         loading();
         if (method === 'gene-based') {
             ipcRenderer.send('geneBasedAnnotation', snap, table);
+            ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
             ipcRenderer.on('geneBasedAnnotation:reply', (e) => {
                 unLoading();
             });
         } else {
             ipcRenderer.send('rnaBasedAnnotation', snap, table);
+            ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
             ipcRenderer.on('rnaBasedAnnotation:reply', (e) => {
                 unLoading();
             });

@@ -65,6 +65,9 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div class="console-output">
+            Console Output:
+    <div id ="myDiv"></div>
 </div>
 
 </body>
@@ -81,6 +84,9 @@
         const snap = document.querySelector('#item').files[0].path;
         loading();
         ipcRenderer.send('identifyPeaks', snap);
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
         ipcRenderer.on('identifyPeaks:reply', (e) => {
             unLoading();
         })

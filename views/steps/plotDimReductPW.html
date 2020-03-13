@@ -70,6 +70,9 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div class="console-output">
+            Console Output:
+    <div id ="myDiv"></div>
 </div>
 
 </body>
@@ -97,6 +100,9 @@
         loading();
         ipcRenderer.send('updateDataSetName', name);
         ipcRenderer.send('plotDimReductPW', name, snap);
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
         ipcRenderer.on('plotDimReductPW:reply', (e) => {
             unLoading();
         })

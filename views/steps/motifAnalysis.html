@@ -112,6 +112,9 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div class="console-output">
+            Console Output:
+    <div id ="myDiv"></div>
 </div>
 
 </body>
@@ -132,6 +135,9 @@
 
         loading();
         ipcRenderer.send('motifAnalysisHomer', snap, inputMat, bcv, pathToHomer);
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
         ipcRenderer.on('motifAnalysisHomer:reply', (e) => {
             unLoading();
         })
@@ -145,6 +151,9 @@
         const motif2 = document.querySelector('#motif2').value;
         loading();
         ipcRenderer.send('motifAnalysisChromVAR', snap, inputMat, motif1, motif2);
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
         ipcRenderer.on('motifAnalysisChromVAR:reply', (e) => {
             unLoading();
         })

@@ -106,6 +106,9 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div class="console-output">
+            Console Output:
+    <div id ="myDiv"></div>
 </div>
 
 </body>
@@ -137,11 +140,17 @@
         ipcRenderer.send('updateDataSetName', name);
         if (choice === 'PlotViz') {
             ipcRenderer.send('plotViz', name, snap, method);
+            ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
             ipcRenderer.on('plotViz:reply', (e) => {
                 unLoading();
             })
         } else {
             ipcRenderer.send('plotFeatureSingle', name, snap, method);
+            ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
             ipcRenderer.on('plotFeatureSingle:reply', (e) => {
                 unLoading();
             })
@@ -154,6 +163,9 @@
         const method = document.querySelector('#method').value;
         loading();
         ipcRenderer.send('runViz', snap, method);
+        ipcRenderer.on('console:log', (e, arg) => {
+            document.getElementById("myDiv").innerText = arg;
+        });
         ipcRenderer.on('runViz:reply', (e) => {
             unLoading();
         })
