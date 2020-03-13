@@ -1,5 +1,5 @@
 args <- commandArgs(trailingOnly = T);
-time <- format(Sys.time(), "%a-%b-%d-%Y-%H_%M_%S")
+time <- format(Sys.time(), "%a-%b-%d-%Y-%H-%M-%S")
 
 library(SnapATAC);
 x.sp = readRDS(args[1]);
@@ -11,17 +11,18 @@ if (is.null(x.sp@cluster)){
     eigs.dims=1:20,
     k=15
   );
-  x.sp=runCluster(
-      obj=x.sp,
-      tmp.folder=tempdir(),
-      louvain.lib="R-igraph",
-      seed.use=10
-    );
+  x.sp = runCluster(
+    obj = x.sp,
+    tmp.folder = tempdir(),
+    louvain.lib = "R-igraph",
+    seed.use = 10
+  );
   x.sp@metaData$cluster = x.sp@cluster;
 }
 
 cluster_name <- paste("Cluster", args[4], sep = " ");
-name <- paste(time, args[2], "identifySingleDARtsne", cluster_name, "pdf", sep = ".");
+prefix <- paste(time, args[2], "identifySingleDARtsne", cluster_name, sep = "_")
+name <- paste(prefix, "pdf", sep = ".");
 path <- paste("./output", name, sep = "/");
 
 # Need Cluster Number as input
@@ -38,7 +39,8 @@ DARs = findDAR(
 );
 DARs$FDR = p.adjust(DARs$PValue, method = "BH");
 idy = which(DARs$FDR < 5e-2 & DARs$logFC > 0);
-pdf_name <- paste(time, args[2], "identifySingleDAR", cluster_name, "pdf", sep = ".");
+prefix <- paste(time, args[2], "identifySingleDAR", cluster_name, sep = "_")
+pdf_name <- paste(prefix, "pdf", sep = ".");
 pdf_path <- paste("./output", pdf_name, sep = "/");
 pdf(pdf_path);
 par(mfrow = c(1, 2));

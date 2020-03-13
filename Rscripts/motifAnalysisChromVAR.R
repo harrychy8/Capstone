@@ -1,5 +1,5 @@
 args <- commandArgs(trailingOnly = T)
-time <- format(Sys.time(), "%a-%b-%d-%Y-%H_%M_%S")
+time <- format(Sys.time(), "%a-%b-%d-%Y-%H-%M-%S")
 
 library(SnapATAC);
 x.sp = readRDS(args[1])
@@ -29,34 +29,36 @@ motif_i = args[3];
 dat = data.frame(x=x.sp@metaData[,"cluster"], y=x.sp@mmat[,motif_i]);
 p1 <- ggplot(dat, aes(x=x, y=y, fill=x)) + 
 	theme_classic() +
-	geom_violin() + 
+	geom_violin() +
 	xlab("cluster") +
-	ylab("motif enrichment") + 
+	ylab("motif enrichment") +
 	ggtitle(motif_i) +
 	theme(
-		  plot.margin = margin(5,1,5,1, "cm"),
-		  axis.text.x = element_text(angle = 90, hjust = 1),
-		  axis.ticks.x=element_blank(),
-		  legend.position = "none"
-   );
-name <- paste(time, "motif1-", motif_i, "png", sep = ".")
+		plot.margin = margin(5, 1, 5, 1, "cm"),
+		axis.text.x = element_text(angle = 90, hjust = 1),
+		axis.ticks.x = element_blank(),
+		legend.position = "none"
+	);
+prefix <- paste(time, "motif1-", motif_i, sep = "_");
+name <- paste(prefix, "png", sep = ".")
 path1 <- paste("./output", name, sep = "/")
 
 motif_i = args[4];
-dat = data.frame(x=x.sp@metaData[,"cluster"], y=x.sp@mmat[,motif_i]);
-p2 <- ggplot(dat, aes(x=x, y=y, fill=x)) + 
+dat = data.frame(x = x.sp@metaData[, "cluster"], y = x.sp@mmat[, motif_i]);
+p2 <- ggplot(dat, aes(x = x, y = y, fill = x)) +
 	theme_classic() +
-	geom_violin() + 
+	geom_violin() +
 	xlab("cluster") +
-	ylab("motif enrichment") + 
+	ylab("motif enrichment") +
 	ggtitle(motif_i) +
 	theme(
-		  plot.margin = margin(5,1,5,1, "cm"),
-		  axis.text.x = element_text(angle = 90, hjust = 1),
-		  axis.ticks.x=element_blank(),
-		  legend.position = "none"
-   );
-name <- paste(time, "motif2-", motif_i, "png", sep = ".")
+		plot.margin = margin(5, 1, 5, 1, "cm"),
+		axis.text.x = element_text(angle = 90, hjust = 1),
+		axis.ticks.x = element_blank(),
+		legend.position = "none"
+	);
+prefix <- paste(time, "motif2-", motif_i, sep = "_")
+name <- paste(prefix, "png", sep = ".")
 path2 <- paste("./output", name, sep = "/")
 ggsave(path1)
 ggsave(path2)
