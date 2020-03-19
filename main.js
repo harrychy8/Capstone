@@ -75,13 +75,13 @@ ipcMain.on('updateDataSetName', function (e, name) {
 ipcMain.on('snaptools', function (e, fastq1, fastq2, snap, indexgenome) {
     console.log(e + fastq1 + fastq2 + snap + indexgenome);
     if (indexgenome) {
-        let child = indexGenome();
-            child.on('exit', function (code) {
+        let child = indexGenome(e);
+        child.on('exit', function (code) {
             console.log("executing next process");
-            let child = createBam(fastq1, fastq2);
+            let child = createBam(snap, fastq1, fastq2, e);
             child.on('exit', function (code) {
                 console.log("executing next process");
-                let child = createSnap(snap, fastq1, fastq2);
+                let child = createSnap(snap, e);
                 child.on('exit', function (code) {
                     e.reply('snaptools:reply');
                 });
@@ -89,10 +89,11 @@ ipcMain.on('snaptools', function (e, fastq1, fastq2, snap, indexgenome) {
         });
     }
     else {
-        let child = createBam(fastq1, fastq2);
+        console.log("skipping alignment");
+        let child = createBam(snap, fastq1, fastq2, e);
         child.on('exit', function (code) {
             console.log("executing next process");
-            let child = createSnap(snap, fastq1, fastq2);
+            let child = createSnap(snap, e);
             child.on('exit', function (code) {
                 e.reply('snaptools:reply');
             });
@@ -238,7 +239,7 @@ function createCellByPeak(snap, peak_combined) {
     return snap_peak;
 }
 
-function indexGenome() {
+function indexGenome(event) {
     const child = spawn("snaptools", ['index-genome',
     '--input-fasta=./required/mm10.fa',
 	'--output-prefix=./required/mm10',
@@ -253,6 +254,7 @@ function indexGenome() {
 
         data = data.toString();
         scriptOutput += data;
+        event.reply("console:log", data);
     });
 
     child.stderr.setEncoding('utf8');
@@ -261,6 +263,7 @@ function indexGenome() {
 
         data = data.toString();
         scriptOutput += data;
+        event.reply("console:log", data);
     });
 
     console.log(scriptOutput);
@@ -268,12 +271,12 @@ function indexGenome() {
     return child;
 }
 
-function createBam(fastq1, fastq2) {
+function createBam(snap, fastq1, fastq2, event) {
     const child = spawn("snaptools", ['align-paired-end',
         '--input-reference=./required/mm10.fa',
         '--input-fastq1=' + fastq1,
         '--input-fastq2=' + fastq2,
-        '--output-bam=./tmp/' + fastq1 + fastq2 + '.bam',
+        '--output-bam=./tmp/' + snap + '.bam',
         '--aligner=bwa',
         '--path-to-aligner=./required/bwa_aligner/bin/',
         '--read-fastq-command=gzcat',
@@ -290,6 +293,7 @@ function createBam(fastq1, fastq2) {
 
         data = data.toString();
         scriptOutput += data;
+        event.reply("console:log", data);
     });
 
     child.stderr.setEncoding('utf8');
@@ -298,6 +302,7 @@ function createBam(fastq1, fastq2) {
 
         data = data.toString();
         scriptOutput += data;
+        event.reply("console:log", data);
     });
 
     console.log(scriptOutput);
@@ -305,9 +310,9 @@ function createBam(fastq1, fastq2) {
     return child;
 }
 
-function createSnap(snap, fastq1, fastq2) {
+function createSnap(snap, event) {
     const child = spawn("snaptools", ['snap-pre',
-        '--input-file=./tmp/' + fastq1 + fastq2 + '.bam',
+        '--input-file=./tmp/' + snap + '.bam',
         '--output-snap=' + snap + '.snap',
         '--genome-name=mm10',
         '--genome-size=./required/mm10.chrom.size',
@@ -329,6 +334,7 @@ function createSnap(snap, fastq1, fastq2) {
 
         data = data.toString();
         scriptOutput += data;
+        event.reply("console:log", data);
     });
 
     child.stderr.setEncoding('utf8');
@@ -337,6 +343,7 @@ function createSnap(snap, fastq1, fastq2) {
 
         data = data.toString();
         scriptOutput += data;
+        event.reply("console:log", data);
     });
 
     console.log(scriptOutput);

@@ -88,6 +88,8 @@
         <span class="cssload-dots"></span>
         <span class="cssload-dots"></span>
     </div>
+    <div class="console-output">
+            Console Output:
     <div id ="myDiv"></div>
 </div>
 
@@ -103,9 +105,9 @@
     async function submitForm(e) {
         console.log("hi")
         e.preventDefault();
-        const snap = document.getElementById("item").files[0].path;
-        const fastq1 = document.getElementById("item2").files[0].path;
-        const fastq2 = document.getElementById("item3").files[0].path;
+        const snap = document.querySelector('#item').value;
+        const fastq1 = document.querySelector('#item2').files[0].path;
+        const fastq2 = document.querySelector('#item3').files[0].path;
         const indexgenome = document.querySelector('.my-checkbox').checked;
         loading();
         ipcRenderer.send('snaptools', fastq1, fastq2, snap, indexgenome);
