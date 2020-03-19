@@ -12,6 +12,7 @@ const {app, BrowserWindow, Menu, ipcMain} = electron;
 //process.env.NODE_ENV = 'production';
 
 const STEPS = {
+    snaptools: "snaptools",
     primary: "primary",
     dimReduction: "dimReduction",
     plotDimReductPW: "plotDimReductPW",
@@ -82,9 +83,7 @@ ipcMain.on('snaptools', function (e, fastq1, fastq2, snap, indexgenome) {
             child.on('exit', function (code) {
                 console.log("executing next process");
                 let child = createSnap(snap, e);
-                child.on('exit', function (code) {
-                    e.reply('snaptools:reply');
-                });
+                onExit(child, STEPS.snaptools, e);
             });
         });
     }
@@ -94,9 +93,7 @@ ipcMain.on('snaptools', function (e, fastq1, fastq2, snap, indexgenome) {
         child.on('exit', function (code) {
             console.log("executing next process");
             let child = createSnap(snap, e);
-            child.on('exit', function (code) {
-                e.reply('snaptools:reply');
-            });
+            onExit(child, STEPS.snaptools, e);
         });
     }
 });
