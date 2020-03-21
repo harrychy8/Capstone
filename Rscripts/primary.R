@@ -29,7 +29,7 @@ p1 <- ggplot(
   xlim(0, 6) +
   labs(x = "log10(UMI)", y = "promoter ratio")
 prefix <- paste(time, args[3], "barcodeSelection", sep = "_")
-name <- paste(prefix, sep = ".")
+name <- paste(prefix, "png", sep = ".")
 path <- paste("./output", name, sep = "/")
 ggsave(path)
 
@@ -68,7 +68,7 @@ ggplot(data.frame(x = bin.cov),
   geom_histogram(color = "darkblue", fill = "lightblue")
 
 prefix <- paste(time, args[3], "histogram", sep = "_")
-name <- paste(prefix, sep = ".")
+name <- paste(prefix, "png", sep = ".")
 path <- paste("./output", name, sep = "/")
 ggsave(path)
 bin.cutoff = quantile(bin.cov[bin.cov > 0], 0.95);
