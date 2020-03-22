@@ -61,7 +61,7 @@
         <table id="insertRuns">
             <tr>
                 <th>Dataset</th>
-                <th>Step</th>
+                <th>Description of Result</th>
                 <th>Timestamp</th>
                 <th>Action</th>
                 <th></th>
@@ -202,8 +202,36 @@
                 let dataset_name = document.createTextNode(results[i].dataset);
                 dataset.appendChild(dataset_name);
 
+                var full_step_name = results[i].step;
+                
+                switch(results[i].step) {
+                    case "barcodeSelection":
+                        full_step_name = "Quality Control";
+                        break;
+                    case "histogram":
+                        full_step_name = "Bin Coverage Distribution";
+                        break;
+                    case "plotDimReductPW":
+                        full_step_name = "Dimension Scatter";
+                        break;
+                    case "plotViz":
+                        full_step_name = "Visualization";
+                        break;
+                    case "plotFeatureSingle":
+                        full_step_name = "Feature Single";
+                        break;
+                    case "identifySingleDAR":
+                        full_step_name = "Single DAR";
+                        break;
+                    case "identifyAllDARs":
+                        full_step_name = "All DARs";
+                        break;
+                    case "hereticalClustering":
+                        full_step_name = "Heretical clustering";
+                        break;
+                }
                 let step = newRow.insertCell(1);
-                let step_name = document.createTextNode(results[i].step);
+                let step_name = document.createTextNode(full_step_name);
                 step.appendChild(step_name);
 
                 let time = newRow.insertCell(2);
