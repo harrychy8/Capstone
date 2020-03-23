@@ -61,7 +61,7 @@
         <table id="insertRuns">
             <tr>
                 <th>Dataset</th>
-                <th>Description of Result</th>
+                <th>Description of result</th>
                 <th>Timestamp</th>
                 <th>Action</th>
                 <th></th>
@@ -173,12 +173,12 @@
 
             });
             // results sorted by dataset names in alphabetical and numerical order
-            results.sort((a, b) => (a.dataset > b.dataset) ? 1 : (a.dataset === b.dataset) ? ((a.time > b.time) ? 1 : -1) : -1 );
+            results.sort((a, b) => (a.dataset > b.dataset) ? 1 : (a.dataset === b.dataset) ? ((a.step > b.step) ? 1 : ((a.step === b.step) ? ((a.time < b.time) ? 1 : -1) : -1)) : -1 );
 
-            // This part of the code remove duplicates and empty names in collected filenames
+            // This part of the code remove duplicates and empty names in collected filenamess
             // Not needed at this point
             // var dups = []
-            // var filtered_names = file_names.filter(function (element) {
+            // var filtered_names = file_names.filter(function (element) {s
             //     // remove duplicates and empty names
             //     if ((dups.indexOf(element) == -1) && (element != "")) {
             //         dups.push(element);
@@ -224,7 +224,7 @@
                         full_step_name = "Single DAR";
                         break;
                     case "identifyAllDARs":
-                        full_step_name = "All DARs";
+                        full_step_name = "All DARS";
                         break;
                     case "hereticalClustering":
                         full_step_name = "Heretical clustering";
