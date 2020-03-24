@@ -61,7 +61,7 @@
         <table id="insertRuns">
             <tr>
                 <th>Dataset</th>
-                <th>Step</th>
+                <th>Description of result</th>
                 <th>Timestamp</th>
                 <th>Action</th>
                 <th></th>
@@ -102,7 +102,7 @@
             remove_btn.className = "btn btn-light";
 
             const output_path = __dirname + "/../output";            
-            var filename = "/" + time + "."+ dataset + "." + step + "." + format;
+            var filename = "/" + time + "_"+ dataset + "_" + step + "." + format;
             
             view_btn.addEventListener("click", function(){ 
 
@@ -157,23 +157,28 @@
             // 'files': array of the files found in the directory
         
             files.forEach(function (file) {
-                const filename_str = file.split(".");
+                const filename = file.split(".");
+                const file_format = filename[1];
+                const file_info = filename[0];
+                const file_info_str = file_info.split("_");
 
-                results.push({
-                    dataset: filename_str[1],
-                    step: filename_str[2],
-                    time: filename_str[0],
-                    format: filename_str[3],
-                });
+                if (file_info_str[1] != undefined) {
+                    results.push({
+                        dataset: file_info_str[1],
+                        step: file_info_str[2],
+                        time: file_info_str[0],
+                        format: file_format,
+                    });
+                }
 
             });
             // results sorted by dataset names in alphabetical and numerical order
-            results.sort((a, b) => (a.dataset > b.dataset) ? 1 : (a.dataset === b.dataset) ? ((a.time > b.time) ? 1 : -1) : -1 );
+            results.sort((a, b) => (a.dataset > b.dataset) ? 1 : (a.dataset === b.dataset) ? ((a.step > b.step) ? 1 : ((a.step === b.step) ? ((a.time < b.time) ? 1 : -1) : -1)) : -1 );
 
-            // This part of the code remove duplicates and empty names in collected filenames
+            // This part of the code remove duplicates and empty names in collected filenamess
             // Not needed at this point
             // var dups = []
-            // var filtered_names = file_names.filter(function (element) {
+            // var filtered_names = file_names.filter(function (element) {s
             //     // remove duplicates and empty names
             //     if ((dups.indexOf(element) == -1) && (element != "")) {
             //         dups.push(element);
@@ -182,15 +187,14 @@
             //     return false;
             // });
 
-            for(i = results.length-1;i >= 1; i--){
+            for(i = results.length-1;i >= 0; i--){
 
                 let formatted_time = results[i].time.split("-");
                 let month = formatted_time[1];
                 let date = formatted_time[2];
                 let year = formatted_time[3];
-                let hms = formatted_time[4].split("_");
-                let hr = hms[0];
-                let min = hms[1];
+                let hr = formatted_time[4];
+                let min = formatted_time[5];
 
                 let newRow = table.insertRow(1);
 
@@ -198,8 +202,36 @@
                 let dataset_name = document.createTextNode(results[i].dataset);
                 dataset.appendChild(dataset_name);
 
+                var full_step_name = results[i].step;
+                
+                switch(results[i].step) {
+                    case "barcodeSelection":
+                        full_step_name = "Quality Control";
+                        break;
+                    case "histogram":
+                        full_step_name = "Bin Coverage Distribution";
+                        break;
+                    case "plotDimReductPW":
+                        full_step_name = "Dimension Scatter";
+                        break;
+                    case "plotViz":
+                        full_step_name = "Visualization";
+                        break;
+                    case "plotFeatureSingle":
+                        full_step_name = "Feature Single";
+                        break;
+                    case "identifySingleDAR":
+                        full_step_name = "Single DAR";
+                        break;
+                    case "identifyAllDARs":
+                        full_step_name = "All DARS";
+                        break;
+                    case "hereticalClustering":
+                        full_step_name = "Heretical clustering";
+                        break;
+                }
                 let step = newRow.insertCell(1);
-                let step_name = document.createTextNode(results[i].step);
+                let step_name = document.createTextNode(full_step_name);
                 step.appendChild(step_name);
 
                 let time = newRow.insertCell(2);

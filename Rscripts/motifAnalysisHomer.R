@@ -21,19 +21,14 @@ DARs = findDAR(
 DARs$FDR = p.adjust(DARs$PValue, method = "BH");
 idy = which(DARs$FDR < 5e-2 & DARs$logFC > 0);
 
-df <- data.frame(seqnames=seqnames(x.sp@peak),
-  starts=start(x.sp@peak)-1,
-  ends=end(x.sp@peak),
-  names=c(rep(".", length(x.sp@peak))),
-  scores=c(rep(".", length(x.sp@peak))),
-  strands=strand(x.sp@peak))
-
-write.table( df, file = "temp.bed", quote=F, sep="\t", row.names=F, col.names=F)
+library(RIPSeeker)
+exportGRanges(x.sp@peak, outfile="test.bed", exportFormat="bed")
+system("sed \"s/\'//g\" test.bed > temp.bed");
 system("sed 's/b//g' temp.bed > test.bed");
 # source("https://bioconductor.org/biocLite.R")
 # biocLite("genomation")
 library(genomation)
-x.sp@peak = readBed("test.bed",track.line=FALSE,remove.unusual=FALSE)
+x.sp@peak = readBed("test.bed",track.line=FALSE,remove.unusual=FALSE, zero.based= TRUE)
 
 motifs = runHomer(
 	x.sp[,idy,"pmat"], 

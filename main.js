@@ -180,8 +180,8 @@ ipcMain.on('motifAnalysisHomer', function (e, snap, inputMat, bcv, pathToHomer) 
     onExit(child, STEPS.motifAnalysisHomer, e);
 });
 
-ipcMain.on('motifAnalysisChromVAR', function (e, snap, inputMat, motif1, motif2) {
-    let child = runR('./Rscripts/motifAnalysisChromVAR.R', [snap, inputMat, motif1, motif2], e, STEPS.motifAnalysisChromVAR);
+ipcMain.on('motifAnalysisChromVAR', function (e, snap, inputMat, motif) {
+    let child = runR('./Rscripts/motifAnalysisChromVAR.R', [snap, inputMat, motif], e, STEPS.motifAnalysisChromVAR);
     onExit(child, STEPS.motifAnalysisChromVAR, e);
 });
 
@@ -349,17 +349,17 @@ function createSnap(snap, event) {
 }
 
 function onExit(child, step_name, e){
-    child.on('exit', function (code) {
-        e.reply(step_name + ':reply');
-        let message = code ? 'Failure' : 'Success';
-        dialog.showMessageBoxSync(mainWindow, {
-            type: 'info',
-            buttons: [],
-            title: 'Result',
-            message: 'Process has been completed',
-            detail: message,
-        })
-    });
+        child.on('exit', function (code) {
+            e.reply(step_name + ':reply');
+            let message = code ? 'Failure' : 'Success';
+            dialog.showMessageBoxSync(mainWindow, {
+                type: 'info',
+                buttons: [],
+                title: 'Result',
+                message: 'Process has been completed',
+                detail: message,
+            })
+        });
 }
 
 function createPDFWindow(){
@@ -428,6 +428,17 @@ function runR(script, params, event, step_name) {
 
         data = data.toString();
         event.reply("console:log", data);
+    });
+
+    R.on('error', function(err) {
+        e.reply(step_name + ':reply');
+        dialog.showMessageBoxSync(mainWindow, {
+            type: 'info',
+            buttons: [],
+            title: 'Result',
+            message: 'Process has failed to complete',
+            detail: err,
+        })
     });
 
     R.on('exit', function (code) {

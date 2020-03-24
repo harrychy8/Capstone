@@ -84,12 +84,8 @@
                 </select>
             </div>
             <div>
-                <label>Enter Motif 1:</label>
-                <input type="text" id="motif1">
-            </div>
-            <div>
-                <label>Enter Motif 2:</label>
-                <input type="text" id="motif2">
+                <label>Enter Motif:</label>
+                <input type="text" id="motif1" value="MA0497.1_MEF2C">
             </div>
             <br>
             <br>
@@ -145,12 +141,11 @@
 
     async function runChromVar(e) {
         e.preventDefault();
-        const snap = document.querySelector('#chromVarSnap').value;
+        const snap = document.querySelector('#chromVarSnap').files[0].path;
         const inputMat = document.querySelector('#chromVarInputMat').value;
         const motif1 = document.querySelector('#motif1').value;
-        const motif2 = document.querySelector('#motif2').value;
         loading();
-        ipcRenderer.send('motifAnalysisChromVAR', snap, inputMat, motif1, motif2);
+        ipcRenderer.send('motifAnalysisChromVAR', snap, inputMat, motif1);
         ipcRenderer.on('console:log', (e, arg) => {
             document.getElementById("myDiv").innerText = arg;
         });

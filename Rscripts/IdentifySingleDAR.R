@@ -20,8 +20,8 @@ if (is.null(x.sp@cluster)){
   x.sp@metaData$cluster = x.sp@cluster;
 }
 
-cluster_name <- paste("Cluster", args[4], sep = " ");
-prefix <- paste(time, args[2], "identifySingleDARtsne", cluster_name, sep = "_")
+cluster_name <- paste("identifySingleDARtsne","Cluster", args[4], sep = "-");
+prefix <- paste(time, args[2], cluster_name, sep = "_")
 name <- paste(prefix, "pdf", sep = ".");
 path <- paste("./output", name, sep = "/");
 
