@@ -22,6 +22,16 @@ DARs = findDAR(
   );
 DARs$FDR = p.adjust(DARs$PValue, method="BH");
 idy = which(DARs$FDR < 5e-2 & DARs$logFC > 0);
+
+library(RIPSeeker)
+exportGRanges(x.sp@peak, outfile="test.bed", exportFormat="bed")
+system("sed \"s/\'//g\" test.bed > temp.bed");
+system("sed 's/b//g' temp.bed > test.bed");
+# source("https://bioconductor.org/biocLite.R")
+# biocLite("genomation")
+library(genomation)
+x.sp@peak = readBed("test.bed",track.line=FALSE,remove.unusual=FALSE, zero.based= TRUE)
+
 job = submitGreatJob(
     gr                    = x.sp@peak[idy],
     bg                    = NULL,
