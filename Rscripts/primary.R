@@ -24,7 +24,7 @@ p1 <- ggplot(
   aes(x = UMI, y = promoter_ratio)) +
   geom_point(size = 0.1, col = "grey") +
   theme_classic() +
-  ggtitle("Barcode") +
+  ggtitle("Fragments in promoter ratio") +
   ylim(0, 1) +
   xlim(0, 6) +
   labs(x = "log10(UMI)", y = "promoter ratio")
