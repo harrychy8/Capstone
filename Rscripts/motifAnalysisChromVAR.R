@@ -38,7 +38,7 @@ p1 <- ggplot(dat, aes(x=x, y=y, fill=x)) +
 		axis.ticks.x = element_blank(),
 		legend.position = "none"
 	);
-prefix <- paste(time, "motif-", motif_i, sep = "_");
+prefix <- paste(time, "motif", motif_i, sep = "-");
 name <- paste(prefix, "png", sep = ".")
 path1 <- paste("./output", name, sep = "/")
 
