@@ -1,11 +1,11 @@
 {
-  "name": "snapatac",
+  "name": "snap-atac",
   "version": "1.0.0",
   "description": "SnapATAC application \u001b[D\u001b[D\u001b[D\u001b[D\u001b[\u001b[C\u001b[C\u001b[\u001b[C",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon1.icns --prune=true --out=release-builds",
+    "package-mac": "electron-packager . snap-atac --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon1.icns --prune=true --out=release-builds",
     "package-win": "electron-packager . snap-atac --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\"",
     "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/icon.png --prune=true --out=release-builds"
   },
