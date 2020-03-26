@@ -8,7 +8,7 @@ A desktop application using Electron. SnapATAC (Single Nucleus Analysis Pipe
 - R (>= 3.4.0 & < 3.6.0) (SnapATAC) (3.6 does not work for rhdf5 package);
 
 ### Library Requirements
-SnapATAC requires many dependencies from package managers and repositories such as pip (or pip3, you may need to try both), Bioconductor, Conda, and CRAN. Please ensure you have at least (but not limited to) the following, as well as their dependencies (links will help you get started with the installation process which may be different for your environment):
+SnapATAC requires many dependencies from package managers and repositories such as pip (or pip3, you may need to try both), Bioconductor, CRAN, and Conda. Please ensure you have at least (but not limited to) the following, as well as their dependencies (links will help you get started with the installation process which may be different for your environment):
 - **snaptools**:
 From command line, run ```$ pip install snaptools``` If you do not have pip, please consult https://pip.pypa.io/en/stable/installing/
 
