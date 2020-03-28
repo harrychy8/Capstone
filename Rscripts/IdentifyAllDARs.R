@@ -57,11 +57,12 @@ for(cluster_i in levels(x.sp@cluster)) {
   prefix <- paste(time, args[2], clusterName, sep = "_")
   name <- paste(prefix, "pdf", sep = ".");
   name_path <- paste("./output", name, sep = "/");
+  cluster <- paste("Cluster", cluster_i, sep = " ");
   plotFeatureSingle(
     obj = x.sp,
     feature.value = vals.zscore,
     method = "tsne",
-    main = cluster_i,
+    main = cluster,
     point.size = 0.1,
     point.shape = 19,
     down.sample = 5000,
