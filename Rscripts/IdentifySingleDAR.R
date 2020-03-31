@@ -20,7 +20,8 @@ if (is.null(x.sp@cluster)){
   x.sp@metaData$cluster = x.sp@cluster;
 }
 
-cluster_name <- paste("identifySingleDARtsne","Cluster", args[4], sep = "-");
+cluster <- paste("Cluster", args[4], sep = "-");
+cluster_name <- paste("identifySingleDARtsne", cluster, sep = "-");
 prefix <- paste(time, args[2], cluster_name, sep = "_")
 name <- paste(prefix, "pdf", sep = ".");
 path <- paste("./output", name, sep = "/");
@@ -47,7 +48,7 @@ par(mfrow = c(1, 2));
 plot(DARs$logCPM, DARs$logFC,
      pch = 19, cex = 0.1, col = "grey",
      ylab = "logFC", xlab = "logCPM",
-     main = cluster_name,
+     main = cluster,
 );
 points(DARs$logCPM[idy],
        DARs$logFC[idy],
@@ -67,7 +68,7 @@ plotFeatureSingle(
     obj=x.sp,
     feature.value=vals.zscore,
     method="tsne", 
-    main=cluster_name,
+    main=cluster,
     point.size = 0.2,
     point.shape = 19,
     down.sample = 10000,

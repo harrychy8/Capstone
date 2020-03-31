@@ -32,6 +32,8 @@ system("sed 's/b//g' temp.bed > test.bed");
 library(genomation)
 x.sp@peak = readBed("test.bed",track.line=FALSE,remove.unusual=FALSE, zero.based= TRUE)
 
+system("mv *.bed ./temp", intern=TRUE);
+
 job = submitGreatJob(
     gr                    = x.sp@peak[idy],
     bg                    = NULL,
@@ -48,4 +50,13 @@ job = submitGreatJob(
     version = "default",
     base_url = "http://great.stanford.edu/public/cgi-bin"
   );
-job
+
+Sys.sleep(90);
+
+tb = getEnrichmentTables(job);
+
+# lapply(tb, function(df) 
+#   saveRDS(tb[[df]], file = paste0("output/",df, ".rds")))
+
+res = plotRegionGeneAssociationGraphs(job)
+exportGRanges(res, outfile="output/rGreat.bed", exportFormat="bed")

@@ -30,6 +30,8 @@ system("sed 's/b//g' temp.bed > test.bed");
 library(genomation)
 x.sp@peak = readBed("test.bed",track.line=FALSE,remove.unusual=FALSE, zero.based= TRUE)
 
+system("mv *.bed ./temp", intern=TRUE);
+
 motifs = runHomer(
 	x.sp[,idy,"pmat"], 
 	mat = "pmat",
