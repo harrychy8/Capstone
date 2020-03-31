@@ -50,46 +50,30 @@
 <br>
 
 <div style="margin-top: 20px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -30%);">
-    <div class="section">
-        <div class="row">
-            <div class="col sa12">
-                <button class="waves-effect waves-light btn-large button" id="FastQ"
-                        onclick="window.location.href = './steps/snapTools.html'">FastQ -> Snap
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col sa12">
-                <button class="waves-effect waves-light btn-large button" id="Primary"
-                        onclick="window.location.href = './steps/primary.html'">Primary
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="divider"></div>
 
     <div class="section">
         <div class="row">
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/dimReduction.html'"><div>Dimensionality<br/>Reduction</div>
+                        onclick="window.location.href = './steps/snapTools.html'">
+                    <div>FastQ -> Snap</div>
                 </button>
             </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/plotDimReductPW.html'">Significant Components
+                        onclick="window.location.href = './steps/primary.html'">Pre-processing
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/GBclustering.html'">Graph Based Clustering
+                        onclick="window.location.href = './category/dimRe.html'">Dimensionality<br/>Reduction
                 </button>
             </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/visualization.html'">Visualization
+                        onclick="window.location.href = './category/cluster.html'">Clustering
                 </button>
             </div>
         </div>
@@ -101,48 +85,117 @@
             </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/hereticalClustering.html'">Heretical Clustering
+                        onclick="window.location.href = './steps/visualization.html'">Visualization
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/identifyPeaks.html'">Identify Peaks
+                        onclick="window.location.href = './category/cellByPeak.html'">Create Cell By Peak
                 </button>
             </div>
             <div class="col sa6">
                 <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/createCellByPeak.html'">Create Cell By Peak
+                        onclick="window.location.href = './category/downStream.html'">Downstream Analysis
                 </button>
             </div>
         </div>
-        <div class="row">
-            <div class="col sa6">
-                <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/addCellByPeak.html'">Add Cell By Peak
-                </button>
-            </div>
-            <div class="col sa6">
-                <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/identifyDARs.html'">Identify DARS
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col sa6">
-                        <button class="waves-effect waves-light btn-large button"
-                                onclick="window.location.href = './steps/motifAnalysis.html'">Motif Analysis
-                        </button>
-                    </div>
-            <div class="col sa6">
-                <button class="waves-effect waves-light btn-large button"
-                        onclick="window.location.href = './steps/greatAnalysis.html'">Great Analysis
-                </button>
-            </div>
-        </div>
-        <div class="row">
     </div>
+
+    <!--    <div class="section">-->
+    <!--        <div class="row">-->
+    <!--            <div class="col sa12">-->
+    <!--                <button class="waves-effect waves-light btn-large button" id="FastQ"-->
+    <!--                        onclick="window.location.href = './steps/snapTools.html'">FastQ -> Snap-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="row">-->
+    <!--            <div class="col sa12">-->
+    <!--                <button class="waves-effect waves-light btn-large button" id="Primary"-->
+    <!--                        onclick="window.location.href = './steps/primary.html'">Pre-processing-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div class="divider"></div>-->
+
+    <!--    <div class="section">-->
+    <!--        <div class="row">-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/dimReduction.html'"><div>Dimensionality<br/>Reduction</div>-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/plotDimReductPW.html'">Significant Components-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="row">-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/GBclustering.html'">Graph Based Clustering-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/visualization.html'">Visualization-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="row">-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/annotation.html'">Annotation-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/hereticalClustering.html'">Heretical Clustering-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="row">-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/identifyPeaks.html'">Identify Peaks-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/createCellByPeak.html'">Create Cell By Peak-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="row">-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/addCellByPeak.html'">Add Cell By Peak-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/identifyDARs.html'">Identify DARS-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="row">-->
+    <!--            <div class="col sa6">-->
+    <!--                        <button class="waves-effect waves-light btn-large button"-->
+    <!--                                onclick="window.location.href = './steps/motifAnalysis.html'">Motif Analysis-->
+    <!--                        </button>-->
+    <!--                    </div>-->
+    <!--            <div class="col sa6">-->
+    <!--                <button class="waves-effect waves-light btn-large button"-->
+    <!--                        onclick="window.location.href = './steps/greatAnalysis.html'">Great Analysis-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="row">-->
+    <!--    </div>-->
 </div>
 
 </body>
