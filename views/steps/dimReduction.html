@@ -31,7 +31,8 @@
         </ul>
         <a class="brand-logo center">Dimensionality Reduction</a>
         <ul class="right">
-            <li onclick="window.location.href = './plotDimReductPW.html'"><a class="waves-effect waves-light btn">Next &gt;</a></li>
+            <li onclick="window.location.href = './GBclustering.html'"><a class="waves-effect waves-light btn">Next
+                &gt;</a></li>
         </ul>
     </div>
 </nav>
@@ -47,6 +48,11 @@
     </div>
     <br><br>
     <form>
+        <div>
+            <label>Enter Name for the dataset (Name should not contain ".", "_" or "-")</label>
+            <label for="item"></label><input type="text" id="item2" autofocus>
+        </div>
+        <br>
         <div>
             <label>
                 Choose your (.rds) snap object below:
@@ -91,16 +97,25 @@
     async function submitForm(e) {
         e.preventDefault();
         const snap = document.querySelector('#item').files[0].path;
+        const name = document.querySelector('#item2');
+
         loading();
         ipcRenderer.send('dimReduction', snap);
         ipcRenderer.on('console:log', (e, arg) => {
             document.getElementById("myDiv").innerText = arg;
         });
         ipcRenderer.on('dimReduction:reply', (e) => {
-            unLoading();
+            plotDimReductPW(name, snap);
         })
     }
 
+    function plotDimReductPW(name, snap) {
+        ipcRenderer.send('updateDataSetName', name);
+        ipcRenderer.send('plotDimReductPW', name, snap);
+        ipcRenderer.on('plotDimReductPW:reply', (e) => {
+            unLoading();
+        })
+    }
 
     function loading() {
         document.querySelector('.cssload-wrap').style.display = 'block';
@@ -109,6 +124,7 @@
     function unLoading() {
         document.querySelector('.cssload-wrap').style.display = 'none';
     }
+
     function customSteps() {
         window.location.href = '../customSteps.html';
     }
