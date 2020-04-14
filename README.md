@@ -80,3 +80,6 @@ There is a required folder that is too large which is necessary for snaptools to
 2. untar it into the repo folder using ```tar -zxvf required.tar.gz```
 
 3. cd into the created required directory, and unzip the mm.fa.gz file using ```gunzip mm10.fa.gz```
+
+### Start the application
+While there were plans to package this in an executable, for now please clone this repo and in terminal, navigate to the directory of the repo and run ```npm start```
